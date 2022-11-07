@@ -1,4 +1,5 @@
 import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
 import 'package:flutter/src/widgets/framework.dart';
@@ -56,72 +57,9 @@ class _AddPatientState extends State<AddPatient> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              Container(
-                height: size.height / 6,
-                width: size.width,
-                color: Colors.orange,
-                child: SizedBox(
-                  width: size.width,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      SizedBox(
-                          width: size.width * .2,
-                          child: Image.asset('lib/assets/minstery.jpeg')),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              'Republic of Sudan',
-                              style: fileTitle(size),
-                            ),
-                          ),
-                          Text(
-                            'Ministry of health - Khartoum State',
-                            style: kLoginSubtitleStyle(size),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                          width: size.width * .2,
-                          child: Image.asset('lib/assets/download.jpeg'))
-                    ],
-                  ),
-                ),
-              ),
+            TitleD(1, size),
               Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: Text(
-                    'Omdurman Maternity Hospital',
-                    style: kLoginOrSignUpTextStyle(size),
-                  ),
-                ),
-              ),
-              Container(
-                color: unit == 1
-                    ? Colors.teal
-                    : unit == 2
-                        ? Colors.pink
-                        : unit == 3
-                            ? Colors.amber
-                            : unit == 4
-                                ? Colors.purple
-                                : unit == 5
-                                    ? Colors.blue
-                                    : Colors.white,
-                height: size.height / 16,
-                width: size.width,
-                child: Center(
-                  child: Text(
-                    'Health Information & Research',
-                    style: healthStyle(size),
-                  ),
-                ),
-              ),
-              Padding(
+
                 padding: const EdgeInsets.all(8.0),
                 child: PopupMenuButton<int>(
                     child: Text(
@@ -165,7 +103,7 @@ class _AddPatientState extends State<AddPatient> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('Booking Status: '),
+                          const Text('Booking Status: '),
                           for (int i = 0; i < booking.length; i++)
                             Row(
                               children: [
@@ -221,6 +159,7 @@ class _AddPatientState extends State<AddPatient> {
                     ),
                   ),
                 ),
+             
                 ResponsiveGridCol(
                   xs: 6,
                   md: 3,
@@ -535,6 +474,7 @@ class _AddPatientState extends State<AddPatient> {
                                   : whatIsBlood,
                               style: bloodStyle(size),
                             )),
+                       
                         PopupMenuButton<int>(
                             itemBuilder: (context) => [
                                   for (int i = 0; i < insurance.length; i++)

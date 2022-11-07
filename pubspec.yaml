@@ -39,6 +39,7 @@ dependencies:
   google_fonts: ^3.0.1
   responsive_grid: ^2.1.0
   http: ^0.13.5
+  intl: ^0.17.0
 
 dev_dependencies:
   flutter_test:
