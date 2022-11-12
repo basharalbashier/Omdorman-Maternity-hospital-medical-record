@@ -82,7 +82,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Lab Request form',
-                  style: kLoginTitleStyle(size),
+                  style: kLoginTitleStyle(size,Colors.black),
                 ),
               ),
               Divider(),
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Routine Investigation',
-                      style: kLoginTitleStyle(size / 2),
+                      style: kLoginTitleStyle(size / 2,Colors.black),
                     ),
                   ],
                 ),
@@ -291,7 +291,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Hematology',
-                      style: kLoginTitleStyle(size / 2),
+                      style: kLoginTitleStyle(size / 2,Colors.black),
                     ),
                   ],
                 ),
@@ -490,7 +490,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Chemistry',
-                      style: kLoginTitleStyle(size / 2),
+                      style: kLoginTitleStyle(size / 2,Colors.black),
                     ),
                   ],
                 ),
@@ -765,7 +765,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Hormone',
-                      style: kLoginTitleStyle(size / 2),
+                      style: kLoginTitleStyle(size / 2,Colors.black),
                     ),
                   ],
                 ),
@@ -893,7 +893,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Microbiology',
-                      style: kLoginTitleStyle(size / 2),
+                      style: kLoginTitleStyle(size / 2,Colors.black),
                     ),
                   ],
                 ),
@@ -1077,7 +1077,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Histopathology + Cytology',
-                      style: kLoginTitleStyle(size / 2),
+                      style: kLoginTitleStyle(size / 2,Colors.black),
                     ),
                   ],
                 ),

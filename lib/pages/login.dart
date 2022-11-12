@@ -112,8 +112,8 @@ class _LoginViewState extends State<LoginView> {
                 Padding(
                   padding: const EdgeInsets.only(right: 8.0,top:8,left: 30),
                   child: SizedBox(
-                            width:size.height * .13,
-                            child: Image.asset('lib/assets/download.jpeg')),
+                            width:size.height * .2,
+                            child: Image.asset('lib/assets/download.png')),
                 ),
 
                 Padding(
@@ -141,7 +141,7 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.only(left: 20.0),
             child: Text(
               'Login',
-              style: kLoginTitleStyle(size),
+              style: kLoginTitleStyle(size,Colors.black),
             ),
           ),
           const SizedBox(

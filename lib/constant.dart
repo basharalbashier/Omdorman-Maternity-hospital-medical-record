@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-TextStyle kLoginTitleStyle(Size size) => GoogleFonts.ubuntu(
+TextStyle kLoginTitleStyle(Size size,Color color) => GoogleFonts.ubuntu(
       fontSize: size.height * 0.060,
       fontWeight: FontWeight.bold,
+      color: color
     );
 
 TextStyle kLoginSubtitleStyle(Size size) => GoogleFonts.ubuntu(
@@ -53,4 +54,10 @@ TextStyle fileTitle(Size size) => GoogleFonts.ubuntu(
       fontSize: size.height * 0.030,
       fontWeight: FontWeight.bold,
       color: Colors.indigo
+    );
+
+        TextStyle confirmStyle(Size size) => GoogleFonts.ubuntu(
+      fontSize: size.height * 0.030,
+      fontWeight: FontWeight.bold,
+      color: Colors.white
     );

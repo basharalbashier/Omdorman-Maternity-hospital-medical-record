@@ -1,11 +1,10 @@
 import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
+import '../models/blood_group.dart';
 
 class AddPatient extends StatefulWidget {
   const AddPatient({super.key});
@@ -24,18 +23,8 @@ class _AddPatientState extends State<AddPatient> {
   var husbandTelController = TextEditingController();
   var husbandOccupController = TextEditingController();
   var allergController = TextEditingController();
-  var unit = 1;
+  var unit = '1';
 
-  var blood = [
-    'A - ve',
-    'A + ve',
-    'B - ve',
-    'B + ve',
-    'AB - ve',
-    'AB +ve',
-    'O - ve',
-    'O + ve'
-  ];
 
   var whatIsBlood = '';
 
@@ -57,7 +46,7 @@ class _AddPatientState extends State<AddPatient> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-            TitleD(1, size),
+            TitleD(unit, size),
               Padding(
 
                 padding: const EdgeInsets.all(8.0),
@@ -83,7 +72,7 @@ class _AddPatientState extends State<AddPatient> {
 
                               onTap: () {
                                 setState(() {
-                                  unit = i;
+                                  unit = i.toString();
                                 });
                               },
                             ),
@@ -195,6 +184,7 @@ class _AddPatientState extends State<AddPatient> {
                     ),
                   ),
                 ),
+                
                 ResponsiveGridCol(
                   xs: 6,
                   md: 3,
@@ -398,7 +388,7 @@ class _AddPatientState extends State<AddPatient> {
                 ResponsiveGridCol(
                   lg: 12,
                   child: Container(
-                    height: size.height / 12,
+                    height: size.height / 9,
                     alignment: Alignment(0, 0),
                     // color: Colors.purple,
                     child: Column(
@@ -418,16 +408,7 @@ class _AddPatientState extends State<AddPatient> {
                             ),
                             // controller: nameController,
                             // The validator receives the text that the user has entered.
-                            validator: (value) {
-                              if (value == null || value.isEmpty) {
-                                return 'Please enter username';
-                              } else if (value.length < 4) {
-                                return 'at least enter 4 characters';
-                              } else if (value.length > 13) {
-                                return 'maximum character is 13';
-                              }
-                              return null;
-                            },
+                          
                           ),
                         ),
                       ],
@@ -443,38 +424,7 @@ class _AddPatientState extends State<AddPatient> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
                       children: [
-                        PopupMenuButton<int>(
-                            itemBuilder: (context) => [
-                                  for (int i = 0; i < blood.length; i++)
-                                    PopupMenuItem(
-                                      value: i,
-                                      // row with 2 children
-                                      child: Row(
-                                        children: [
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(blood[i])
-                                        ],
-                                      ),
-                                    ),
-                                ],
-                            offset: const Offset(0, 100),
-                            elevation: 2,
-                            // on selected we show the dialog box
-                            onSelected: (value) {
-                              // if value 1 show dialog
-                              setState(() {
-                                whatIsBlood = blood[value];
-                              });
-                            },
-                            child: Text(
-                              whatIsBlood == ''
-                                  ? 'Blood group & RH'
-                                  : whatIsBlood,
-                              style: bloodStyle(size),
-                            )),
-                       
+                     bloodGroup(context,size,whatIsBlood),
                         PopupMenuButton<int>(
                             itemBuilder: (context) => [
                                   for (int i = 0; i < insurance.length; i++)
@@ -509,6 +459,7 @@ class _AddPatientState extends State<AddPatient> {
                     ),
                   ),
                 ),
+              
               ]),
               submit()
             ],

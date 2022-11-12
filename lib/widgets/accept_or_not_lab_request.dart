@@ -19,7 +19,7 @@ Widget labRequstDialog(contexte,size){
 var whyIsItRejected='';
 return MaterialButton(
                     color: Colors.amber,
-                    child: Text('check'),
+                    child:  Text('check'),
                     onPressed: (() async{
                       await showDialog<void>(
   context: contexte,

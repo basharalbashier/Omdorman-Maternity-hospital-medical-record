@@ -1,8 +1,10 @@
+import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 import '../constant.dart';
+import '../models/check_input_isinteger.dart';
 
 class AddObs extends StatefulWidget {
   const AddObs({
@@ -27,6 +29,7 @@ class _MyHomePageState extends State<AddObs> {
   var socialHistorCont = TextEditingController();
   var familyHistoryCont = TextEditingController();
   var chestCont = TextEditingController();
+  var gAcont = TextEditingController();
   var comment = TextEditingController();
   String fineee = '';
   List<String> paraInfo = [
@@ -60,34 +63,6 @@ class _MyHomePageState extends State<AddObs> {
     super.initState();
   }
 
-  bool checkIfInt(String i) {
-    var num = [
-      0,
-      1,
-      2,
-      3,
-      4,
-      5,
-      6,
-      7,
-      8,
-      9,
-      10,
-      11,
-      12,
-      13,
-      14,
-    ];
-    bool isIt = false;
-    for (int n = 0; n < num.length; n++) {
-      if (i == num[n].toString()) {
-        isIt = true;
-      }
-    }
-
-    return isIt;
-  }
-
   @override
   Widget build(BuildContext context) {
     fineee = paraInfo.toString().replaceAll('[', ' ');
@@ -107,11 +82,13 @@ class _MyHomePageState extends State<AddObs> {
         child: SingleChildScrollView(
           child: Column(
             children: [
+
+              TitleD(2, size),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Obstetrical History',
-                  style: kLoginTitleStyle(size),
+                  style: kLoginTitleStyle(size,Colors.black),
                 ),
               ),
               ResponsiveGridRow(children: [
@@ -144,7 +121,8 @@ class _MyHomePageState extends State<AddObs> {
                               },
                               keyboardType: TextInputType.number,
                               controller: grController,
-                              decoration: const InputDecoration(label: Text('GR')),
+                              decoration:
+                                  const InputDecoration(label: Text('GR')),
                             )),
                         SizedBox(
                             width: size.width / 4,
@@ -220,47 +198,71 @@ class _MyHomePageState extends State<AddObs> {
                   child: Divider(),
                 ),
               ),
-              Container(
-                height: 100,
-                color: Colors.amber,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    SizedBox(
-                        width: size.width / 4,
-                        child: TextField(
-                          onSubmitted: (v) {
-                            DateTime date = DateFormat("yyyy-MM-dd").parse(v);
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Card(
+                  // height: 100,
+                  color: Colors.amber,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                          width: size.width / 5,
+                          child: TextField(
+                            onSubmitted: (v) {
+                              DateTime date = DateFormat("yyyy-MM-dd").parse(v);
+                              var edd = DateTime(date.year, date.month + 9, date.day + 9);
+                         var dateNow = DateTime.now();
+                              var def = edd.difference( dateNow).inDays;
+                              
+                           
 
-                            setState(() {
-                              eddCont.text =
-                                  '${DateTime(date.year, date.month + 9, date.day + 7)}'
-                                      .substring(0, 10);
-                            });
-                          },
-                          keyboardType: TextInputType.number,
-                          controller: lmpCont,
-                          decoration: const InputDecoration(
-                              hintText: "yyyy-MM-dd", label: Text('LMP')),
-                        )),
-                    SizedBox(
-                        width: size.width / 4,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          controller: eddCont,
-                          decoration: const InputDecoration(
-                              hintText: "yyyy-MM-dd", label: Text('EDD')),
-                        )),
-                    SizedBox(
-                        width: size.width / 4,
-                        child: TextField(
-                          keyboardType: TextInputType.number,
-                          controller: scanEddCont,
-                          decoration: InputDecoration(
-                              hintText: "yyyy-MM-dd",
-                              label: const Text('Scan EDD')),
-                        )),
-                  ],
+                              var ga = ((280 - def) / 7).toStringAsFixed(0);
+                              setState(() {
+                                eddCont.text =
+                                    '${edd}'
+                                        .substring(0, 10);
+                                        gAcont.text=ga.toString();
+                              });
+
+     
+                            },
+                            keyboardType: TextInputType.number,
+                            controller: lmpCont,
+                            decoration: const InputDecoration(
+                                hintText: "yyyy-MM-dd", label: Text('LMP')),
+                          )),
+                      SizedBox(
+                          width: size.width / 5,
+                          child: TextField(
+                                readOnly: true,
+                            keyboardType: TextInputType.number,
+                            controller: eddCont,
+                            decoration: const InputDecoration(
+                                hintText: "yyyy-MM-dd", label: Text('EDD')),
+                          )),
+                      SizedBox(
+                          width: size.width / 5,
+                          child: TextField(
+                            keyboardType: TextInputType.number,
+                            controller: scanEddCont,
+                            decoration: InputDecoration(
+                                hintText: "yyyy-MM-dd",
+                                label: const Text('Scan EDD')),
+                          )),
+                      SizedBox(
+                          width: size.width / 5,
+                          child: TextField(
+                            readOnly: true,
+                            keyboardType: TextInputType.number,
+                            controller: gAcont,
+                            decoration: InputDecoration(
+                              prefix: Text('+/-  '),
+                                  suffix: Text('Weeks'),
+                              label: const Text('GA')),
+                          )),
+                    ],
+                  ),
                 ),
               ),
               Padding(
