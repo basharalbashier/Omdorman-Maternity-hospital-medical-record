@@ -235,20 +235,21 @@ class _AddPatientState extends State<AddUser> {
                                     PopupMenuItem(
                                       value: i,
                                       // row with 2 children
-                                      child: Row(
-                                        children: [
-                                          const SizedBox(
-                                            width: 10,
-                                          ),
-                                          Text(
-                                            level[i],
-                                            style: TextStyle(
-                                       
-                                                backgroundColor: i % 2 == 0
+                                      child: Container(
+                                        color:    i % 2 == 0
                                                     ? Colors.white
-                                                    : Colors.grey),
-                                          )
-                                        ],
+                                                    : Colors.amber,
+                                        child: Row(
+                                          children: [
+                                            const SizedBox(
+                                              width: 10,
+                                            ),
+                                            Text(
+                                              level[i],
+                                           
+                                            )
+                                          ],
+                                        ),
                                       ),
                                     ),
                                 ],

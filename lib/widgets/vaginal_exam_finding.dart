@@ -134,7 +134,7 @@ class _VaginalExamState extends State<VaginalExam> {
                     BoxDecoration(border: Border.all(color: Colors.blueAccent)),
                 child: ResponsiveGridRow(children: [
                   ResponsiveGridCol(
-                    xs: 6,
+                    xs: 10,
                     md: 2,
                     child: PopupMenuButton<int>(
                         child: Padding(
@@ -177,7 +177,7 @@ class _VaginalExamState extends State<VaginalExam> {
                   ),
 
                   ResponsiveGridCol(
-                    xs: 6,
+                   xs: 10,
                     md: 2,
                     child: PopupMenuButton<int>(
                         child: Padding(
@@ -217,7 +217,7 @@ class _VaginalExamState extends State<VaginalExam> {
 
                   //  textFi("Dilatation", dilatation, true),
                   ResponsiveGridCol(
-                    xs: 6,
+          xs: 10,
                     md: 2,
                     child: PopupMenuButton<int>(
                         child: Padding(
@@ -260,7 +260,7 @@ class _VaginalExamState extends State<VaginalExam> {
                   ),
 
                   ResponsiveGridCol(
-                    xs: 6,
+                 xs: 10,
                     md: 2,
                     child: PopupMenuButton<int>(
                         child: Padding(
@@ -381,8 +381,8 @@ class _VaginalExamState extends State<VaginalExam> {
                 child: ResponsiveGridRow(children: [
                   for (int i = 0; i < intact_or_rupured.length; i++)
                     ResponsiveGridCol(
-                      xs: 4,
-                      md: 3,
+                      xs: 6,
+                      md: 2,
                       child: Container(
                         height: 50,
                         alignment: Alignment(0, 0),
@@ -443,8 +443,8 @@ class _VaginalExamState extends State<VaginalExam> {
                   ),
                   for (int i = 0; i < spon_arm.length; i++)
                     ResponsiveGridCol(
-                      xs: 4,
-                      md: 3,
+                      xs: 6,
+                      md: 2,
                       child: Visibility(
                         visible: whatIsintact_or_rupured == 'Ruptured',
                         child: Container(

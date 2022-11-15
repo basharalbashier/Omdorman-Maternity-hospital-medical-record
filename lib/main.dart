@@ -1,40 +1,44 @@
+import 'dart:io';
+
+import 'package:aldayat_screens/models/user_hive.dart';
+import 'package:aldayat_screens/pages/add_file.dart';
 import 'package:aldayat_screens/pages/login.dart';
 import 'package:aldayat_screens/pages/add_patient.dart';
 import 'package:aldayat_screens/pages/add_user.dart';
-import 'package:aldayat_screens/widgets/vaginal_exam_finding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:hive/hive.dart';
 
-import 'pages/add_obsHistory.dart';
-import 'pages/antenatal_addm.dart';
-import 'widgets/bar_code.dart';
-import 'pages/edd_expectation.dart';
-import 'pages/lab_request_form.dart';
-import 'pages/uSRespons.dart';
-import 'widgets/dr_porogress.dart';
-import 'widgets/nurse_prog.dart';
-
-String url ='https://aldayat.loca.lt/api/';
-var headr={
-      //  'Content-type': 'application/json',
-       'Accept': 'application/json',
-      //  'Authorization': '<Your token>'
-     };
+String url = 'https://aldayat.loca.lt/api/';
+var headr = {
+  'Content-type': 'application/json',
+  'Accept': 'application/json',
+  //  'Authorization': '<Your token>'
+};
 void main() {
-  runApp(const MyApp());
+  Hive.registerAdapter(UserAdapter());
+
+  HttpOverrides.global = MyHttpOverrides();
+  runApp(const DayatApp());
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-
+class DayatApp extends StatelessWidget {
+  const DayatApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: VaginalExam(),
-
-
+      home: LoginView(),
     );
+  }
+}
+
+class MyHttpOverrides extends HttpOverrides {
+  @override
+  HttpClient createHttpClient(SecurityContext? context) {
+    return super.createHttpClient(context)
+      ..badCertificateCallback =
+          (X509Certificate cert, String host, int port) => true;
   }
 }

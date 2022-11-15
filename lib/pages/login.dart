@@ -1,11 +1,14 @@
+import 'dart:convert';
+import 'package:aldayat_screens/models/error_message.dart';
+import 'package:aldayat_screens/models/user_hive.dart';
+import 'package:aldayat_screens/pages/home_page.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-
+import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../controller/simpleUIController.dart';
-
+import '../main.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -15,25 +18,54 @@ class LoginView extends StatefulWidget {
 }
 
 class _LoginViewState extends State<LoginView> {
-  TextEditingController nameController = TextEditingController();
+  bool show = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  @override
+  void initState() {
+    getinfo(context).then((value) => value.token != ''
+        ? {
+            print(value),
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => HomePage()),
+              (Route<dynamic> route) => false,
+            )
+          }
+        : setState(() {
+            show = true;
+            print(value.user);
+          }));
+
+
+
+    super.initState();
+  }
 
   @override
   void dispose() {
-    nameController.dispose();
     emailController.dispose();
     passwordController.dispose();
     super.dispose();
   }
+
   SimpleUIController simpleUIController = Get.put(SimpleUIController());
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     SimpleUIController simpleUIController = Get.find<SimpleUIController>();
+
+    if (!show) {
+      return Scaffold(
+        body: Center(
+            child: CircularProgressIndicator(
+          strokeWidth: 1,
+        )),
+      );
+    }
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: Scaffold(
@@ -104,28 +136,28 @@ class _LoginViewState extends State<LoginView> {
     return SingleChildScrollView(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment:
-            size.width > 600 ? MainAxisAlignment.center : MainAxisAlignment.start,
+        mainAxisAlignment: size.width > 600
+            ? MainAxisAlignment.center
+            : MainAxisAlignment.start,
         children: [
-            Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(right: 8.0,top:8,left: 30),
-                  child: SizedBox(
-                            width:size.height * .2,
-                            child: Image.asset('lib/assets/download.png')),
-                ),
-
-                Padding(
-                  padding: const EdgeInsets.only(right: 30.0,top:8),
-                  child: SizedBox(
-                            width:size.height * .2,
-                            //
-                            child: Image.asset('lib/assets/minstery.jpeg')),
-                ),
-              ],
-            )
-                  ,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 8.0, top: 8, left: 30),
+                child: SizedBox(
+                    width: size.height * .2,
+                    child: Image.asset('lib/assets/download.png')),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 30.0, top: 8),
+                child: SizedBox(
+                    width: size.height * .17,
+                    //
+                    child: Image.asset('lib/assets/minstery.jpeg')),
+              ),
+            ],
+          ),
           size.width > 600
               ? Container()
               : Lottie.asset(
@@ -141,7 +173,7 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.only(left: 20.0),
             child: Text(
               'Login',
-              style: kLoginTitleStyle(size,Colors.black),
+              style: kLoginTitleStyle(size, Colors.black),
             ),
           ),
           const SizedBox(
@@ -161,63 +193,39 @@ class _LoginViewState extends State<LoginView> {
             padding: const EdgeInsets.only(left: 20.0, right: 20),
             child: Form(
               key: _formKey,
-              
               child: Column(
                 children: [
                   /// username or Gmail
                   TextFormField(
                     style: kTextFormFieldStyle(),
                     decoration: const InputDecoration(
-                      prefixIcon: Icon(Icons.person),
+                      prefixIcon: Icon(Icons.email),
                       hintText: 'Email',
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
                     ),
-                    controller: nameController,
+                    controller: emailController,
                     // The validator receives the text that the user has entered.
                     validator: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'Please enter username';
+                        return 'Please enter Email';
                       } else if (value.length < 4) {
                         return 'at least enter 4 characters';
-                      } else if (value.length > 13) {
-                        return 'maximum character is 13';
-                      }
+                      } 
                       return null;
                     },
                   ),
-                  // SizedBox(
-                  //   height: size.height * 0.02,
-                  // ),
-                  // TextFormField(
-                  //   controller: emailController,
-                  //   decoration: const InputDecoration(
-                  //     prefixIcon: Icon(Icons.email_rounded),
-                  //     hintText: 'gmail',
-                  //     border: OutlineInputBorder(
-                  //       borderRadius: BorderRadius.all(Radius.circular(15)),
-                  //     ),
-                  //   ),
-                  //   // The validator receives the text that the user has entered.
-                  //   validator: (value) {
-                  //     if (value == null || value.isEmpty) {
-                  //       return 'Please enter gmail';
-                  //     } else if (!value.endsWith('@gmail.com')) {
-                  //       return 'please enter valid gmail';
-                  //     }
-                  //     return null;
-                  //   },
-                  // ),
                   SizedBox(
                     height: size.height * 0.02,
                   ),
-              
+
                   /// password
                   Obx(
                     () => TextFormField(
                       style: kTextFormFieldStyle(),
                       controller: passwordController,
+
                       obscureText: simpleUIController.isObscure.value,
                       decoration: InputDecoration(
                         prefixIcon: const Icon(Icons.lock_open),
@@ -236,11 +244,12 @@ class _LoginViewState extends State<LoginView> {
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
                       ),
+
                       // The validator receives the text that the user has entered.
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter some text';
-                        } else if (value.length < 7) {
+                          return 'Please enter your password';
+                        } else if (value.length < 6) {
                           return 'at least enter 6 characters';
                         } else if (value.length > 13) {
                           return 'maximum character is 13';
@@ -260,18 +269,18 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: size.height * 0.02,
                   ),
-              
+
                   /// Login Button
                   loginButton(),
                   SizedBox(
                     height: size.height * 0.03,
                   ),
-              
+
                   /// Navigate To Login Screen
                   GestureDetector(
                     onTap: () {
                       // Navigator.pop(context);
-                      nameController.clear();
+
                       emailController.clear();
                       passwordController.clear();
                       _formKey.currentState?.reset();
@@ -292,7 +301,6 @@ class _LoginViewState extends State<LoginView> {
                       ),
                     ),
                   ),
-                
                 ],
               ),
             ),
@@ -316,16 +324,65 @@ class _LoginViewState extends State<LoginView> {
             ),
           ),
         ),
-        onPressed: () {
+        onPressed: () async {
+         
+
+          send();
           // Validate returns true if the form is valid, or false otherwise.
-          if (_formKey.currentState!.validate()) {
-            // ... Navigate To your Home Page
-          }
         },
         child: const Text('Login'),
       ),
     );
   }
 
+  send() async {
+    setState(() {
+            show = false;
+          });
+    if (_formKey.currentState!.validate()) {
 
+final msg = jsonEncode({
+          "email": "${emailController.text}",
+          "password": "${passwordController.text}",
+        });
+
+      try {
+      var request=  await http.post(Uri.parse('${url}user/login'),headers: headr, body:msg );
+         print('USER :  ${request.body}');
+          if (request.statusCode == 201) {
+            // print('USER :  ${json.decode(request.body)['user']}');
+            // print('TOKEN:  ${json.decode(value.body)['token']}');
+            List<dynamic> info = [
+              json.decode(request.body)['user'],
+              json.decode(request.body)['token']
+            ];
+            stor(info).then((value) {
+              Navigator.pushAndRemoveUntil(
+                context,
+                MaterialPageRoute(builder: (context) => const HomePage()),
+                (Route<dynamic> route) => false,
+              );
+            });
+          } else {
+            print('Error : ${request.body}');
+            errono("${request.body}", "${request.body}", context, true,Container(),5);
+            setState(() {
+              show = true;
+            });
+          }
+      } catch (e) {
+                    errono("Connection error", "Connection error", context, true,Container(),5);
+
+        print('Catch Error: $e');
+        setState(() {
+          show = true;
+        });
+      }
+      // ... Navigate To your Home Page
+    }else{
+       setState(() {
+            show = true;
+          });
+    }
+  }
 }
