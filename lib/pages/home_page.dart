@@ -9,6 +9,7 @@ import '../models/error_message.dart';
 import '../models/user_hive.dart';
 import '../widgets/bar_code.dart';
 import '../widgets/title.dart';
+import 'patient_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -17,7 +18,10 @@ class HomePage extends StatefulWidget {
   State<HomePage> createState() => _HomePageState();
 }
 
+List patients = [];
+
 class _HomePageState extends State<HomePage> {
+  
   User user = User({}, '');
   @override
   void initState() {
@@ -32,16 +36,19 @@ class _HomePageState extends State<HomePage> {
 
   send() async {
     try {
-      await http.get(Uri.parse('${url}patient/${user.user!['unit']}'),
-          headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Bearer ${user.token!}'
-          }).then((value) {
-        if (value.statusCode == 201) {
-          print('Patients :  ${json.decode(value.body)}');
+      await http.get(Uri.parse('${url}patient'), headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${user.token!}'
+      }).then((value) {
+        if (value.statusCode == 200) {
+          setState(() {
+            patients = json.decode(value.body);
+          });
+          // print('Patients :  ${json.decode(value.body)}');
         } else {
-          print('Error : ${value.body}');
-          errono("${value.body}", "${value.body}", context, true,Container(),1);
+          // print('Error : ${value.body}');
+          errono("${json.decode(value.body)}", "${json.decode(value.body)}",
+              context, true, Container(), 1);
         }
       });
     } catch (e) {}
@@ -113,10 +120,7 @@ class _HomePageState extends State<HomePage> {
                         // The validator receives the text that the user has entered.
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 8.0),
-                      child: ScanCode(),
-                    ),
+                 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Material(
@@ -145,9 +149,63 @@ class _HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          Divider()
+          Divider(),
+
+          Visibility(visible: patients.isEmpty,
+            child:Center(
+            child: CircularProgressIndicator(
+          strokeWidth: 1,
+        )), ),
+          for (var item in patients)
+            ListTile(
+              leading: Text(item['id'].toString()),
+              title: GestureDetector(
+                onTap: (){
+                    Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>  PatientPage(patient: item,)),
+                                  (Route<dynamic> route) => true,
+                                );
+                },
+                child: Text(
+                  item['name'],
+                ),
+              ),
+              subtitle: Text(item['tel']),
+
+
+              // trailing: T,
+            )
+       
         ],
       )),
     );
   }
 }
+
+
+
+/*
+
+  send() async {
+    try {
+      await http.post(Uri.parse('${url}file/${user.user!['unit']}'),
+          headers: {
+            'Accept': 'application/json',
+            'Authorization': 'Bearer ${user.token!}'
+          }).then((value) {
+        if (value.statusCode == 200) {
+          print('Patients :  ${json.decode(value.body)}');
+        } else {
+          print('Error : ${value.body}');
+          errono("${json.decode(value.body)}", "${json.decode(value.body)}", context, true,Container(),1);
+        }
+      });
+    } catch (e) {}
+    // ... Navigate To your Home Page
+  }
+
+
+
+*/

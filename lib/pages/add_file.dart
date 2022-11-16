@@ -24,7 +24,7 @@ class _AddPatientState extends State<AddFile> {
   var husbandTelController = TextEditingController();
   var husbandOccupController = TextEditingController();
   var allergController = TextEditingController();
-  var unit = '1';
+  var unit = "1";
 
   var booking = ['PW', 'First Class', 'GW'];
 
@@ -45,14 +45,14 @@ class _AddPatientState extends State<AddFile> {
 
   @override
   Widget build(BuildContext context) {
-    //     if (user.token == '') {
-    //   return Scaffold(
-    //     body: Center(
-    //         child: CircularProgressIndicator(
-    //       strokeWidth: 1,
-    //     )),
-    //   );
-    // }
+    if (user.token == '') {
+      return Scaffold(
+        body: Center(
+            child: CircularProgressIndicator(
+          strokeWidth: 1,
+        )),
+      );
+    }
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -299,8 +299,8 @@ class _AddPatientState extends State<AddFile> {
               'husband': husbandController.text,
               'husband_tel': husbandTelController.text,
               'husband_occup': husbandOccupController.text,
-              'patient_id': widget.patienId,
-              'user_id': user.user!['id']
+              'patient_id': "${widget.patienId}",
+              'user_id': "${user.user!['id']}"
             });
             try {
               await http

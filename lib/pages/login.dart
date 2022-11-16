@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:aldayat_screens/models/error_message.dart';
+import 'package:aldayat_screens/models/route_manager.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/home_page.dart';
 import 'package:flutter/material.dart';
@@ -348,7 +349,7 @@ final msg = jsonEncode({
 
       try {
       var request=  await http.post(Uri.parse('${url}user/login'),headers: headr, body:msg );
-         print('USER :  ${request.body}');
+        //  print('USER :  ${request.body}');
           if (request.statusCode == 201) {
             // print('USER :  ${json.decode(request.body)['user']}');
             // print('TOKEN:  ${json.decode(value.body)['token']}');
@@ -357,15 +358,11 @@ final msg = jsonEncode({
               json.decode(request.body)['token']
             ];
             stor(info).then((value) {
-              Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
-                (Route<dynamic> route) => false,
-              );
+             routeManager(json.decode(request.body)['user']['level'].toString(), context);
             });
           } else {
             print('Error : ${request.body}');
-            errono("${request.body}", "${request.body}", context, true,Container(),5);
+            errono("${ json.decode(request.body)}", "${ json.decode(request.body)}", context, true,Container(),5);
             setState(() {
               show = true;
             });
