@@ -1,8 +1,11 @@
 import 'dart:convert';
 
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/pages/add_patient.dart';
+import 'package:aldayat_screens/widgets/log_out.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:qr_flutter/qr_flutter.dart';
 import '../constant.dart';
 import '../main.dart';
 import '../models/error_message.dart';
@@ -21,7 +24,8 @@ class HomePage extends StatefulWidget {
 List patients = [];
 
 class _HomePageState extends State<HomePage> {
-  
+  var searchController = TextEditingController();
+  List anotherList = [];
   User user = User({}, '');
   @override
   void initState() {
@@ -67,11 +71,17 @@ class _HomePageState extends State<HomePage> {
         )),
       );
     }
+    if(searchController.text.isEmpty){
+      setState(() {
+        anotherList=patients;
+      });
+    }
+
     return Scaffold(
       body: SingleChildScrollView(
           child: Column(
         children: [
-          TitleD(user.user!['unit'], size),
+          TitleD(setUniColor(user.user!['unit']), size),
           Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -108,10 +118,24 @@ class _HomePageState extends State<HomePage> {
                       height: 40,
                       width: size.width / 3,
                       child: TextFormField(
+                        onChanged: ((v) {
+                         setState(() {
+                            anotherList.clear();
+                         });
+                          for (var i in patients) {
+                              if (i['name'].toString().contains(v) ||
+                                  i['tel'].toString().contains(v) ) {
+                                setState(() {
+                                  anotherList.add(i);
+                                });
+                              }
+                            }
+                        }),
+                        controller: searchController,
                         style: kTextFormFieldStyle(),
                         decoration: const InputDecoration(
                           prefixIcon: Icon(Icons.search),
-                          hintText: 'Search by name,phone or file id',
+                          hintText: 'Search by phone',
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
@@ -120,7 +144,6 @@ class _HomePageState extends State<HomePage> {
                         // The validator receives the text that the user has entered.
                       ),
                     ),
-                 
                     Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Material(
@@ -143,30 +166,47 @@ class _HomePageState extends State<HomePage> {
                                   ))),
                         ),
                       ),
-                    )
+                    ),
+                    Visibility(
+                        visible: patients.isNotEmpty,
+                        child: ScanCode(
+                          context: context,
+                          patients: patients,
+                        )),
+                    IconButton(
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) =>
+                                  logout(context));
+                        },
+                        icon: Icon(Icons.logout_outlined))
                   ],
                 )
               ],
             ),
           ),
           Divider(),
-
-          Visibility(visible: patients.isEmpty,
-            child:Center(
-            child: CircularProgressIndicator(
-          strokeWidth: 1,
-        )), ),
-          for (var item in patients)
+          Visibility(
+            visible: patients.isEmpty,
+            child: Center(
+                child: LinearProgressIndicator(
+              color: setUniColor(user.user!['unit']),
+            )),
+          ),
+          for (var item in anotherList)
             ListTile(
               leading: Text(item['id'].toString()),
               title: GestureDetector(
-                onTap: (){
-                    Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>  PatientPage(patient: item,)),
-                                  (Route<dynamic> route) => true,
-                                );
+                onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => PatientPage(
+                              patient: item,
+                            )),
+                    (Route<dynamic> route) => true,
+                  );
                 },
                 child: Text(
                   item['name'],
@@ -174,10 +214,8 @@ class _HomePageState extends State<HomePage> {
               ),
               subtitle: Text(item['tel']),
 
-
               // trailing: T,
             )
-       
         ],
       )),
     );

@@ -6,10 +6,7 @@ errono(a, e,context,la,Widget ourWidget,int duratio) {
         backgroundColor: Colors.grey.withOpacity(0.5),
         content: Row(
           children: [
-            const Icon(
-              Icons.error,
-              color: Colors.pink,
-            ),
+           
             Container(
               width: 20,
               height: 12,

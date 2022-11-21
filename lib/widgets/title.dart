@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import '../constant.dart';
 
 class TitleD extends StatelessWidget {
-  final unit;
+  final Color color;
   final size;
 
-  const TitleD(this.unit, this.size, {Key? key}) : super(key: key);
+  const TitleD(this.color, this.size, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -57,17 +57,7 @@ class TitleD extends StatelessWidget {
           ),
         ),
         Container(
-          color: unit == '1'
-              ? Colors.teal
-              : unit == '2'
-                  ? Colors.pink
-                  : unit == '3'
-                      ? Colors.amber
-                      : unit == '4'
-                          ? Colors.purple
-                          : unit == '5'
-                              ? Colors.blue
-                              : Colors.grey,
+          color: color,
           height: size.height / 16,
           width: size.width,
           child: Center(

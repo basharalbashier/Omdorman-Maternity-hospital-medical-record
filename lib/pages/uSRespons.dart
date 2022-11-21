@@ -1,4 +1,5 @@
 import 'package:aldayat_screens/models/check_input_isinteger.dart';
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/accept_or_not_lab_request.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -75,7 +76,7 @@ class _MyHomePageState extends State<UsResponse> {
               crossAxisAlignment: CrossAxisAlignment.center,
         
               children: [
-                TitleD(4, size),
+                TitleD(setUniColor('unit'), size),
                 Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Text(

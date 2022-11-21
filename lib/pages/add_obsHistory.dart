@@ -1,3 +1,4 @@
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -83,7 +84,7 @@ class _MyHomePageState extends State<AddObs> {
           child: Column(
             children: [
 
-              TitleD(2, size),
+              TitleD(setUniColor('unit'), size),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -159,37 +160,7 @@ class _MyHomePageState extends State<AddObs> {
                     ),
                   ),
                 ),
-                // for (int i = 0; i < int.parse(grController.text); i++)
-                //   ResponsiveGridCol(
-                //     xs: 6,
-                //     md: 3,
-                //     child: Padding(
-                //       padding: const EdgeInsets.all(8.0)
-                //       child: Container(
-                //           height: 100,
-                //           alignment: Alignment(0, 0),
-                //           // color: Colors.green,
-                //           child: TextField(
-                //             keyboardType: TextInputType.number,
-                //             // controller: paraController,
-                //             onChanged: (value) {
-                //               setState(() {
-                //                 paraInfo[i] = '${i + 1} - $value\n ';
-                //               });
-                //               // if (int.parse(grController.text) > 0 &&
-                //               //     int.parse(paraController.text) > 0) {
-                //               //   setState(() {
-                //               //     remain = int.parse(grController.text) -
-                //               //         int.parse(paraController.text);
-                //               //   });
-                //               // }
-                //             },
-                //             decoration: InputDecoration(
-                //                 // suffix: Text('+  $remain'),
-                //                 label: Text('${i + 1} - ')),
-                //           )),
-                //     ),
-                //   ),
+               
               ]),
               const Padding(
                 padding: EdgeInsets.all(8.0),

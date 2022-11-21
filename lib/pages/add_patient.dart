@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/error_message.dart';
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/pages/add_file.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -53,7 +54,7 @@ class _AddPatientState extends State<AddPatient> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TitleD('General', size),
+              TitleD(setUniColor('General'), size),
               ResponsiveGridRow(children: [
                 ResponsiveGridCol(
                   xs: 6,
@@ -320,7 +321,7 @@ class _AddPatientState extends State<AddPatient> {
                       "${json.decode(value.body)['name']}", context, true,Container(),10);
                   // print('Patient exist:  ${value.body}');
                 } else {
-                  print('Patient Id:  ${json.decode(value.body)['id']}');
+              
                   print(value.statusCode);
                   if (value.statusCode == 201) {
                     Navigator.pushAndRemoveUntil(

@@ -1,4 +1,5 @@
 import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -60,7 +61,7 @@ class _AddPatientState extends State<AntenatalAddmission> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TitleD(1, size),
+              TitleD(setUniColor(unit), size),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

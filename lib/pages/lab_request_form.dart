@@ -1,14 +1,25 @@
+import 'dart:convert';
+
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/accept_or_not_lab_request.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-
+import 'package:http/http.dart' as http;
 import '../constant.dart';
+import '../main.dart';
+import '../models/error_message.dart';
+import '../models/user_hive.dart';
 import '../widgets/title.dart';
 
 class AddRequestForm extends StatefulWidget {
+  final Map patient;
+  final Map file;
   const AddRequestForm({
     super.key,
+    required this.patient,
+    required this.file,
   });
 
   @override
@@ -61,14 +72,28 @@ class _MyHomePageState extends State<AddRequestForm> {
   // var chestCont = TextEditingController();
   // var comment = TextEditingController();
 
+  var show = T;
+
   @override
   void initState() {
+    getinfo(context).then((value) => setState(() {
+          user = value;
+        }));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
+
+    if (user.token == '' || !show) {
+      return Scaffold(
+        body: Center(
+            child: CircularProgressIndicator(
+          strokeWidth: 1,
+        )),
+      );
+    }
     return Scaffold(
       body: SizedBox(
         height: size.height,
@@ -76,13 +101,12 @@ class _MyHomePageState extends State<AddRequestForm> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-
-                TitleD(4, size),
+              TitleD(setUniColor(widget.file['unit']), size),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Lab Request form',
-                  style: kLoginTitleStyle(size,Colors.black),
+                  style: kLoginTitleStyle(size, Colors.black),
                 ),
               ),
               Divider(),
@@ -92,7 +116,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Routine Investigation',
-                      style: kLoginTitleStyle(size / 2,Colors.black),
+                      style: kLoginTitleStyle(size / 2, Colors.black),
                     ),
                   ],
                 ),
@@ -285,13 +309,14 @@ class _MyHomePageState extends State<AddRequestForm> {
                   ]),
                 ),
               ),
+             
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
                   children: [
                     Text(
                       'Hematology',
-                      style: kLoginTitleStyle(size / 2,Colors.black),
+                      style: kLoginTitleStyle(size / 2, Colors.black),
                     ),
                   ],
                 ),
@@ -490,7 +515,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Chemistry',
-                      style: kLoginTitleStyle(size / 2,Colors.black),
+                      style: kLoginTitleStyle(size / 2, Colors.black),
                     ),
                   ],
                 ),
@@ -765,7 +790,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Hormone',
-                      style: kLoginTitleStyle(size / 2,Colors.black),
+                      style: kLoginTitleStyle(size / 2, Colors.black),
                     ),
                   ],
                 ),
@@ -893,7 +918,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Microbiology',
-                      style: kLoginTitleStyle(size / 2,Colors.black),
+                      style: kLoginTitleStyle(size / 2, Colors.black),
                     ),
                   ],
                 ),
@@ -1077,7 +1102,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                   children: [
                     Text(
                       'Histopathology + Cytology',
-                      style: kLoginTitleStyle(size / 2,Colors.black),
+                      style: kLoginTitleStyle(size / 2, Colors.black),
                     ),
                   ],
                 ),
@@ -1158,38 +1183,132 @@ class _MyHomePageState extends State<AddRequestForm> {
                 ),
               ),
               Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                   
-                    width: size.width ,
-                    alignment: Alignment(0, 0),
-                    // color: Colors.green,
-                    child: TextFormField(
-                      maxLines: 3,
-                      controller: comm,
-                      style: kTextFormFieldStyle(),
-                      decoration: const InputDecoration(
-                        // prefixIcon: Icon(Icons.person),
-                  
-                        label: Text('Comment'),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.all(Radius.circular(15)),
-                        ),
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  width: size.width,
+                  alignment: Alignment(0, 0),
+                  // color: Colors.green,
+                  child: TextFormField(
+                    maxLines: 3,
+                    controller: comm,
+                    style: kTextFormFieldStyle(),
+                    decoration: const InputDecoration(
+                      // prefixIcon: Icon(Icons.person),
+
+                      label: Text('Comment'),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(15)),
                       ),
-                      // controller: nameController,
-                      // The validator receives the text that the user has entered.
                     ),
+                    // controller: nameController,
+                    // The validator receives the text that the user has entered.
                   ),
                 ),
-              
-              Center(
-                child:labRequstDialog(context,size)
-              )
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Material(
+                  child: Center(
+                    child: ElevatedButton(
+
+                        // style:ButtonStyle(backgroundColor:Colors.te ),
+                        onPressed: () {
+                          postLabRequest();
+                        },
+                        child: SizedBox(
+                            height: 30,
+                            child: Center(
+                              child: Text("Confirm"),
+                            ))),
+                  ),
+                ),
+              ),
             ],
           ),
         ),
       ),
       // This trailing comma makes auto-formatting nicer for build methods.
     );
+  }
+
+  User user = User({}, '');
+
+  postLabRequest() async {
+    setState(() {
+      show = F;
+    });
+    final body = jsonEncode({
+      "urine": urine.toString(),
+      "stoolG": stoolG.toString(),
+      "bffm": bffm.toString(),
+      "esr": esr.toString(),
+      "stoolF": stoolF.toString(),
+      "viral": viral.toString(),
+      "bG": bG.toString(),
+      "cbc": cbc.toString(),
+      "sick": sick.toString(),
+      "retic": retic.toString(),
+      "plate": plate.toString(),
+      "coag": coag.toString(),
+      "pt": pt.toString(),
+      "ptt": ptt.toString(),
+      "fbg": fbg.toString(),
+      "hbb": hbb.toString(),
+      "rbg": rbg.toString(),
+      "hbAIC": hbAIC.toString(),
+      "crp": crp.toString(),
+      "ca": ca.toString(),
+      "lft": lft.toString(),
+      "rft": rft.toString(),
+      "thy": thy.toString(),
+      "fer": fer.toString(),
+      "ca125": ca125.toString(),
+      "histo": histo.toString(),
+      "cyto": cyto.toString(),
+      "urinC": urinC.toString(),
+      "stoolCul": stoolCul.toString(),
+      "bloodCul": bloodCul.toString(),
+      "fluidCul": fluidCul.toString(),
+      "wond": wond.toString(),
+      "hiVag": hiVag.toString(),
+      "comm": comm.text,
+      "status": "0",
+      "dr_id": user.user!['id'].toString(),
+      "patient_id": widget.patient['id'].toString(),
+      "file_id": widget.file['id'].toString(),
+      "money": "Free",
+    });
+    try {
+      await http
+          .post(Uri.parse('${url}lab/add'),
+              headers: {
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+                'Authorization': 'Bearer ${user.token!}'
+              },
+              body: body)
+          .then((value) {
+        if (value.statusCode == 201) {
+          errono(
+              "Lab investigation sent succesfully",
+              "Lab investigation sent succesfully",
+              context,
+              true,
+              Icon(
+                Icons.check,
+                color: Colors.green,
+              ),
+              5);
+          Navigator.of(context).pop();
+        } else {
+          setState(() {
+            show = T;
+          });
+
+          errono("${json.decode(value.body)}", "${json.decode(value.body)}",
+              context, true, Container(), 1);
+        }
+      });
+    } catch (e) {}
   }
 }

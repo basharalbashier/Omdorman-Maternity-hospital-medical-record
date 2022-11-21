@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -62,7 +63,7 @@ class _AddPatientState extends State<AddFile> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TitleD(unit, size),
+              TitleD(setUniColor(unit), size),
               ResponsiveGridRow(
                 children: [
                   ResponsiveGridCol(

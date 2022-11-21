@@ -1,3 +1,5 @@
+import 'package:aldayat_screens/pages/login.dart';
+import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
 
 class User extends HiveObject {
@@ -14,7 +16,26 @@ Future stor(List<dynamic> info) async {
   var user = User(info[0], info[1]);
 
   box.put(0, user);
+
   box.close();
+  } catch (e) {
+     
+    print("HIVE Error:  => $e");
+  }
+}
+Future remove(context) async {
+  try {
+      var box = await Hive.openBox<User>('info');
+
+  box.delete(0);
+  box.close();
+
+   Navigator.pushAndRemoveUntil(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const LoginView()),
+                                  (Route<dynamic> route) => false,
+                                );
   } catch (e) {
      
     print("HIVE Error:  => $e");

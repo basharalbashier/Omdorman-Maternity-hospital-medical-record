@@ -2,12 +2,16 @@ import 'dart:io';
 
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/add_file.dart';
+import 'package:aldayat_screens/pages/add_obsHistory.dart';
 import 'package:aldayat_screens/pages/login.dart';
 import 'package:aldayat_screens/pages/add_patient.dart';
 import 'package:aldayat_screens/pages/add_user.dart';
+import 'package:aldayat_screens/pages/maturational_assesment.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
+import 'pages/gyne_addmission.dart';
+import 'pages/icu_follow_up.dart';
 
 String url = 'https://aldayat.loca.lt/api/';
 var headr = {
@@ -29,7 +33,7 @@ class DayatApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: LoginView(),
+      home:GynaeAdmission(),
     );
   }
 }
