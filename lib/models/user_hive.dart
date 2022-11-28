@@ -9,7 +9,7 @@ class User extends HiveObject {
   User(this.user, this.token);
 }
 
-Future stor(List<dynamic> info) async {
+Future<User> stor(List<dynamic> info) async {
   try {
       var box = await Hive.openBox<User>('info');
 
@@ -18,10 +18,13 @@ Future stor(List<dynamic> info) async {
   box.put(0, user);
 
   box.close();
+  return user;
   } catch (e) {
      
     print("HIVE Error:  => $e");
+    return User({}, 'no');
   }
+  
 }
 Future remove(context) async {
   try {

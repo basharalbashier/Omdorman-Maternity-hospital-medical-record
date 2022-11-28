@@ -200,9 +200,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                   ),
                 ),
               ),
-              Center(
-                child: labRequstDialog(context, size),
-              )
+            
             ],
           ),
         ),

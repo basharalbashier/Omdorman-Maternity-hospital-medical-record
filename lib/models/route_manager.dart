@@ -1,98 +1,106 @@
+import 'package:aldayat_screens/pages/home_anesth.dart';
+import 'package:aldayat_screens/pages/home_clinical_pharmacy.dart';
+import 'package:aldayat_screens/pages/home_dentistry.dart';
+import 'package:aldayat_screens/pages/home_insuranse.dart';
+import 'package:aldayat_screens/pages/home_lab_spica.dart';
+import 'package:aldayat_screens/pages/home_medicine.dart';
+import 'package:aldayat_screens/pages/home_pediatric.dart';
+import 'package:aldayat_screens/pages/home_pharmacy.dart';
+import 'package:aldayat_screens/pages/home_psychiat.dart';
+import 'package:aldayat_screens/pages/home_statistics.dart';
+import 'package:aldayat_screens/pages/home_surgery.dart';
+import 'package:aldayat_screens/pages/home_us.dart';
 import 'package:flutter/material.dart';
+import '../pages/home_nutrition.dart';
+import '../pages/home_obs.dart';
+import 'user_hive.dart';
 
-import '../pages/home_page.dart';
 
-
-routeManager(String level, context) {
-  if (level == 'Consultant') {
+routeManager(String level, context,User user) {
+  if (level ==  'Department of Pediatrics') {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const HomePage()),
+      MaterialPageRoute(builder: (context) => const PediatricHome()),
       (Route<dynamic> route) => false,
     );
-  } else if (level == 'Specialist') {
+  } else if (level ==   'Department of Obstetrics') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>  Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) =>  HomePage()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Registrar') {
+  } else if (level == 'Department of Psychiatry') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>  Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) =>  PsychiatrcsHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Medical') {
+  } else if (level ==   'Department of Internal Medicine') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context)  =>  const HomePage()),
+                MaterialPageRoute(builder: (context)  =>  const MedicineHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'House Officer') {
+  } else if (level ==   'Department of Nutrition Medicine') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context)=> Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context)=> NutritioneHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Medical Director') {
+  } else if (level ==     'Department of Clinical Pharmacy') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>   Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) =>   ClinicalHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Nurse') {
+  } else if (level ==   'Department of Surgery') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>  Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) =>  SurgeryHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Clinical Pharmacist') {
+  } else if (level ==   'Department of Anesthesiology') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>  Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) =>  AnaesthiayHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Ultrasound specialist') {
+  } else if (level == 'Department of Dentistry') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context)  => Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context)  => DentistryHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Pharmacist') {
+  } else if (level ==  'Department of Statistics') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) => StatisticsHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Lab specialist') {
+  } else if (level ==    'Medical lab') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>  Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) =>  LabHome(user:user)),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Insuranse Agent') {
+  } else if (level ==      'Department of Ultrasound') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) => UltrasoundHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Statistics Officer') {
+  } else if (level ==     'Insuranse') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => const HomePage()),
+                MaterialPageRoute(builder: (context) => const InsuranseHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Nutritionist') {
+  } else if (level ==     'Department of Pharmacy') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>  Container(child: Text(level),)),
+                MaterialPageRoute(builder: (context) =>  PharmacyHome()),
                 (Route<dynamic> route) => false,
               );
-  } else if (level == 'Psychiatrist') {
-        Navigator.pushAndRemoveUntil(
-                context,
-                MaterialPageRoute(builder: (context) =>  Container(child: Text(level),)),
-                (Route<dynamic> route) => false,
-              );
-  }
+  } 
+
 }

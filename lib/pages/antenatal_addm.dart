@@ -75,7 +75,8 @@ class _AddPatientState extends State<AntenatalAddmission> {
                   // md: 3,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Container(
+                    child:
+                    Container(
                       height: 100,
 
                       alignment: Alignment(0, 0),
@@ -95,6 +96,7 @@ class _AddPatientState extends State<AntenatalAddmission> {
                         // The validator receives the text that the user has entered.
                       ),
                     ),
+                 
                   ),
                 ),
                 ResponsiveGridCol(

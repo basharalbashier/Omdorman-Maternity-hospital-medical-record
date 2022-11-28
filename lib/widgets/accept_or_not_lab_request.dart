@@ -1,11 +1,20 @@
+import 'dart:convert';
+
+import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
-
+import 'package:http/http.dart' as http;
 import '../constant.dart';
+import '../main.dart';
+import '../models/user_hive.dart';
 
-Widget labRequstDialog(contexte, size) {
+labRequstDialog(Map request, contexte, size, User user) async {
   bool arabicOrEnglish = F;
-    bool show = F;
+  bool show = F;
+  bool showAll = F;
+ Map patientInfo={};
+
+
   var why = [
     ['Specimen is received without a requistion', "وصول العينة بدون فورمة فحص"],
     ['Requistion is received without sample', "وصول طلب الفحص من غير العينة "],
@@ -43,90 +52,241 @@ Widget labRequstDialog(contexte, size) {
     ['Duplicate test request', "تكرار طلب الفحص  قبل ظهور النتيجة الأولى"],
   ];
   var whyIsItRejected = '';
-  return MaterialButton(
-      color: Colors.amber,
-      child: Text('check'),
-      onPressed: (() async {
-        await showDialog<void>(
-          context: contexte,
-          builder: (BuildContext context) {
-            return AlertDialog(
-              content: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  return SizedBox(
-                    child: SizedBox(
-                      child: Container(
-                        height: size.height,
-                        width: size.width,
-                        child: SingleChildScrollView(
+  List<MapEntry> singles = request.entries.map((e) => e).toList();
+
+         http.get(Uri.parse(url+"patient/find/${request['patient_id']}"),headers: {
+   'Content-type': 'application/json',
+                                            'Accept': 'application/json',
+                                            'Authorization':
+                                                'Baerer ${user.token}'
+
+}
+  
+).then((value) async{
+  patientInfo=json.decode(value.body);
+
+  showAll=T;
+   await showDialog<void>(
+    barrierDismissible:F,
+    context: contexte,
+    builder: (BuildContext context) {
+
+      return AlertDialog(
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            if (!showAll) {
+              return Center(
+                child: LinearProgressIndicator(
+                  color: setUniColor("general"),
+                  backgroundColor: Colors.white,
+                ),
+              );
+            }
+            return SizedBox(
+              child: SizedBox(
+                child: Container(
+                  height: size.height,
+                  width: size.width,
+                  child: SingleChildScrollView(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                     
+                      
+                         Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text("Name :  ", style: fileTitle(size)),
+                                Text(patientInfo['name'].toString(),
+                                    style: fileTitle(size)),
+                              ],
+                            ),
+                            Row(children: [
+                                Text("Age :  ", style: fileTitle(size)),
+                                     Text(patientInfo['age'].toString(),
+                                    style: fileTitle(size)),
+                            
+                          
+                            ],)
+                          ],
+                        ),
+                          Divider(),
+
+
+
+
+
+
+                           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Text("ID :  ", style: fileTitle(size)),
+                                Text(request['id'].toString(),
+                                    style: fileTitle(size)),
+                              ],
+                            ),
+                            Row(children: [
+                                Text("Investigation :  ", style: fileTitle(size)),
+                              Column(children: [
+                                  for (var i = 0; i < singles.length; i++)
+                          singles[i].value == "true"
+                              ? Container(
+                                  child: Text(
+                                  singles[i].key.toString().toUpperCase(),
+                                  style: fileTitle(size),
+                                ))
+                              : Container(),
+                              ],)
+                            ],)
+                          ],
+                        ),
+                      
+                        Divider(),
+                        Visibility(
+                          visible: show,
                           child: Column(
+                            // crossAxisAlignment: arabicOrEnglish?CrossAxisAlignment.end:CrossAxisAlignment.start,
                             children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                children: [
-                                  MaterialButton(
-                                    onPressed: () {
-                                      setState(() => show=!show);
-                                    },
-                                    color: Colors.red,
-                                    child: Text(
-                                      'Reject',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                  MaterialButton(
-                                    onPressed: () {},
-                                    color: Colors.green,
-                                    child: Text(
-                                      'Accept',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                ],
+                              MaterialButton(
+                                onPressed: () {
+                                  setState(
+                                      () => arabicOrEnglish = !arabicOrEnglish);
+                                },
+                                color: Colors.blue,
+                                child: Text(
+                                  'A/ع',
+                                  style: TextStyle(color: Colors.white),
+                                ),
                               ),
-                             Visibility(visible: show,
-                               child: Column(
-                                // crossAxisAlignment: arabicOrEnglish?CrossAxisAlignment.end:CrossAxisAlignment.start,
-                                children: [
-                                MaterialButton(
-                                    onPressed: () {setState(() => arabicOrEnglish=!arabicOrEnglish);},
-                                    color: Colors.blue,
-                                    child: Text(
-                                      'A/ع',
-                                      style: TextStyle(color: Colors.white),
-                                    ),
-                                  ),
-                                 for (int i = 0; i < why.length; i++)
-                                  PopupMenuItem(
-                                    value: i,
-                                    // row with 2 children
-                                    child: GestureDetector(
-                                      onTap: (() => setState(() => whyIsItRejected="${why[i][0]}\n${why[i][1]}",)),
-                                      child: SizedBox(
-                                   
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(why[i][arabicOrEnglish ? 1 : 0])
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                               ],),
-                             )
+                              for (int i = 0; i < why.length; i++)
+                                PopupMenuItem(
+                                  value: i,
+                                  // row with 2 children
+                                  child: GestureDetector(
+                                      onTap: (() async {
+                                        setState(() {
+                                          whyIsItRejected =
+                                              "${why[i][0]}\n${why[i][1]}";
+                                          showAll = F;
+                                        });
+
+                                        try {
+                                          await http
+                                              .post(
+                                                  Uri.parse(url +
+                                                      "lab/update/${request['id']}"),
+                                                  headers: {
+                                                    'Content-type':
+                                                        'application/json',
+                                                    'Accept':
+                                                        'application/json',
+                                                    'Authorization':
+                                                        'Baerer ${user.token}'
+                                                  },
+                                                  body: jsonEncode({
+                                                    "got_by_id": user
+                                                        .user!['id']
+                                                        .toString(),
+                                                    "seen_at":
+                                                        "${DateTime.now()}",
+                                                    "status": "5",
+                                                    "if_rejected_why":
+                                                        whyIsItRejected
+                                                  }))
+                                              .then((value) {
+                                            if (value.statusCode == 200 ||
+                                                value.statusCode == 201) {
+                                              Navigator.of(context).pop();
+                                            }
+                                          });
+                                        } catch (e) {
+                                          setState(() {
+                                            showAll = F;
+                                          });
+                                        }
+                                      }),
+                                      child: Text(
+                                        why[i][arabicOrEnglish ? 1 : 0],
+                                        overflow: TextOverflow.ellipsis,
+                                        textAlign: arabicOrEnglish
+                                            ? TextAlign.end
+                                            : null,
+                                      )),
+                                ),
                             ],
                           ),
                         ),
-                      ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            MaterialButton(
+                              onPressed: () {
+                                setState(() => show = !show);
+                              },
+                              color: Colors.red,
+                              child: Text(
+                                'Reject',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                            MaterialButton(
+                              onPressed: () async {
+                                setState(() {
+                                  showAll = F;
+                                });
+
+                                try {
+                                  await http
+                                      .post(
+                                          Uri.parse(url +
+                                              "lab/update/${request['id']}"),
+                                          headers: {
+                                            'Content-type': 'application/json',
+                                            'Accept': 'application/json',
+                                            'Authorization':
+                                                'Baerer ${user.token}'
+                                          },
+                                          body: jsonEncode({
+                                            "got_by_id":
+                                                user.user!['id'].toString(),
+                                            "seen_at": "${DateTime.now()}",
+                                            "status": "1",
+                                          }))
+                                      .then((value) {
+                                    if (value.statusCode == 200 ||
+                                        value.statusCode == 201) {
+                                      Navigator.of(context).pop();
+                                    }
+                                  });
+                                } catch (e) {
+                                  setState(() {
+                                    showAll = F;
+                                  });
+                                }
+                              },
+                              color: Colors.green,
+                              child: Text(
+                                'Accept',
+                                style: TextStyle(color: Colors.white),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
                     ),
-                  );
-                },
+                  ),
+                ),
               ),
             );
           },
-        );
-      }));
+        ),
+      );
+    },
+  );
+
+
+});
+ 
 }

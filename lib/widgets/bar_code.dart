@@ -7,7 +7,8 @@ import 'package:qr_bar_code_scanner_dialog/qr_bar_code_scanner_dialog.dart';
 class ScanCode extends StatefulWidget {
   final context;
   final List patients;
-  const ScanCode({Key? key, this.context,required this.patients}) : super(key: key);
+  const ScanCode({Key? key, this.context, required this.patients})
+      : super(key: key);
 
   @override
   State<ScanCode> createState() => _MyAppState();
@@ -21,31 +22,29 @@ class _MyAppState extends State<ScanCode> {
       _qrBarCodeScannerDialogPlugin.getScannedQrBarCode(
           context: context,
           onCode: (code) {
-            var patientFromList;
-            var patient_id = code!.substring(15).indexOf('-');
+            var s = code!.substring(15);
             var file_id = code.split('-')[1];
-           for(var patient in widget.patients){
-            if(patient['id']==patient_id){
-               setState(() {
-                 patientFromList=patient;
-               });
+            var type = code.split('-')[2];
+              var patient_id = s.split('-')[0];
+            // print(patient_id);
+            //    print(file_id);
+            //        print(type);
+            for (var patient in widget.patients) {
+              //  print(patient_id);
+              if (patient['id'].toString() == patient_id) {
+                Navigator.pushAndRemoveUntil(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => PatientPage(
+                            patient: patient,
+                            fileId: int.parse(file_id),
+                            type: type,
+                          )),
+                  (Route<dynamic> route) => true,
+                );
+              }
+            }
 
-                  Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(
-                  builder: (context) => PatientPage(
-                        patient: patientFromList,fileId: int.parse(file_id),
-                      )),
-              (Route<dynamic> route) => true,
-            );
-
-            
-
-           }
-           }
-
-         
-           
             setState(() {
               this.code = code;
             });

@@ -1,4 +1,9 @@
+import 'dart:convert';
+
+import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
+import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -8,8 +13,14 @@ import '../constant.dart';
 import '../models/check_input_isinteger.dart';
 
 class AddObs extends StatefulWidget {
+  final Map file;
+  final Map patient;
+  final User user;
   const AddObs({
     super.key,
+    required this.file,
+    required this.patient,
+    required this.user,
   });
 
   @override
@@ -69,12 +80,6 @@ class _MyHomePageState extends State<AddObs> {
     fineee = paraInfo.toString().replaceAll('[', ' ');
     fineee = paraInfo.toString().replaceAll(']', ' ');
     fineee = paraInfo.toString().replaceAll(',', ' ');
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: SizedBox(
@@ -83,13 +88,12 @@ class _MyHomePageState extends State<AddObs> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-
-              TitleD(setUniColor('unit'), size),
+              TitleD(setUniColor(widget.user.user!['unit']), size),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Obstetrical History',
-                  style: kLoginTitleStyle(size,Colors.black),
+                  style: kLoginTitleStyle(size, Colors.black),
                 ),
               ),
               ResponsiveGridRow(children: [
@@ -160,7 +164,6 @@ class _MyHomePageState extends State<AddObs> {
                     ),
                   ),
                 ),
-               
               ]),
               const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -182,21 +185,16 @@ class _MyHomePageState extends State<AddObs> {
                           child: TextField(
                             onSubmitted: (v) {
                               DateTime date = DateFormat("yyyy-MM-dd").parse(v);
-                              var edd = DateTime(date.year, date.month + 9, date.day + 9);
-                         var dateNow = DateTime.now();
-                              var def = edd.difference( dateNow).inDays;
-                              
-                           
+                              var edd = DateTime(
+                                  date.year, date.month + 9, date.day + 9);
+                              var dateNow = DateTime.now();
+                              var def = edd.difference(dateNow).inDays;
 
                               var ga = ((280 - def) / 7).toStringAsFixed(0);
                               setState(() {
-                                eddCont.text =
-                                    '${edd}'
-                                        .substring(0, 10);
-                                        gAcont.text=ga.toString();
+                                eddCont.text = '${edd}'.substring(0, 10);
+                                gAcont.text = ga.toString();
                               });
-
-     
                             },
                             keyboardType: TextInputType.number,
                             controller: lmpCont,
@@ -206,7 +204,7 @@ class _MyHomePageState extends State<AddObs> {
                       SizedBox(
                           width: size.width / 5,
                           child: TextField(
-                                readOnly: true,
+                            readOnly: true,
                             keyboardType: TextInputType.number,
                             controller: eddCont,
                             decoration: const InputDecoration(
@@ -228,9 +226,9 @@ class _MyHomePageState extends State<AddObs> {
                             keyboardType: TextInputType.number,
                             controller: gAcont,
                             decoration: InputDecoration(
-                              prefix: Text('+/-  '),
-                                  suffix: Text('Weeks'),
-                              label: const Text('GA')),
+                                prefix: Text('+/-  '),
+                                suffix: Text('Weeks'),
+                                label: const Text('GA')),
                           )),
                     ],
                   ),
@@ -335,13 +333,50 @@ class _MyHomePageState extends State<AddObs> {
                   ),
                 ),
               ]),
-              Center(
-                child: MaterialButton(
-                    color: Colors.amber,
-                    child: Text('check'),
-                    onPressed: (() {
-                      print(fineee);
-                    })),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: MaterialButton(
+                      color: Colors.amber,
+                      child: Text('Submit'),
+                      onPressed: (() async {
+                        var body = jsonEncode({
+                          "unit": widget.user.user!['unit'],
+                          "gr":grController.text,
+                          "para": paraController.text,
+                          "one": widget.user.user!['unit'],
+                          "two": widget.user.user!['unit'],
+                          "three": widget.user.user!['unit'],
+                          "four": widget.user.user!['unit'],
+                          "five": widget.user.user!['unit'],
+                          "six": widget.user.user!['unit'],
+                          "seven": widget.user.user!['unit'],
+                          "eight": widget.user.user!['unit'],
+                          "nine": widget.user.user!['unit'],
+                          "ten": 'ten',
+                          "lmp": lmpCont.text,
+                          "edd": eddCont.text,
+                          "scan_edd": "scanEddCont.text",
+                          "weeks":gAcont.text,
+                          "past_m_history": pastMedicalCont.text,
+                          "past_s_history":pastSurgicalCont.text,
+                          "drug_history": drugHistCont.text,
+                          "social_history": socialHistorCont.text,
+                          "hypertention": widget.user.user!['unit'],
+                          "diabetes": widget.user.user!['unit'],
+                          "multiple_pregnancy":'mul',
+                          "others": 'oth',
+                          "chest_cvs_exam":chestCont.text,
+                          "diagnosis":'dig',
+                          "comments_and_social_plans":
+                             comment.text,
+                          "dr_id": widget.user.user!['id'].toString(),
+                          "patient_id": widget.patient['id'].toString(),
+                          "file_id":widget.file['id'].toString(),
+                        });
+                        makeHttpRequest(url + "obs/add", body, true);
+                      })),
+                ),
               )
             ],
           ),

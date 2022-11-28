@@ -297,11 +297,7 @@ class _MyHomePageState extends State<ClinicalExam> {
               ]),
             
             
-              Center(
-                child: 
-                
-              labRequstDialog(context,size),
-              )
+             
             ],
           ),
         ),

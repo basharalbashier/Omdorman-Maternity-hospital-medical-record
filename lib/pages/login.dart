@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/route_manager.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
-import 'package:aldayat_screens/pages/home_page.dart';
+import 'package:aldayat_screens/pages/home_obs.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -28,19 +28,13 @@ class _LoginViewState extends State<LoginView> {
   void initState() {
     getinfo(context).then((value) => value.token != ''
         ? {
-            print(value),
-            Navigator.pushAndRemoveUntil(
-              context,
-              MaterialPageRoute(builder: (context) => HomePage()),
-              (Route<dynamic> route) => false,
-            )
+           
+          routeManager(value.user!['dep'], context,value)
           }
         : setState(() {
             show = true;
             print(value.user);
           }));
-
-
 
     super.initState();
   }
@@ -213,7 +207,7 @@ class _LoginViewState extends State<LoginView> {
                         return 'Please enter Email';
                       } else if (value.length < 4) {
                         return 'at least enter 4 characters';
-                      } 
+                      }
                       return null;
                     },
                   ),
@@ -250,10 +244,10 @@ class _LoginViewState extends State<LoginView> {
                       validator: (value) {
                         if (value == null || value.isEmpty) {
                           return 'Please enter your password';
-                        } else if (value.length < 6) {
-                          return 'at least enter 6 characters';
-                        } else if (value.length > 13) {
-                          return 'maximum character is 13';
+                        } else if (value.length < 5) {
+                          return 'at least enter 5 characters';
+                        } else if (value.length > 18) {
+                          return 'maximum character is 18';
                         }
                         return null;
                       },
@@ -326,8 +320,6 @@ class _LoginViewState extends State<LoginView> {
           ),
         ),
         onPressed: () async {
-         
-
           send();
           // Validate returns true if the form is valid, or false otherwise.
         },
@@ -338,37 +330,43 @@ class _LoginViewState extends State<LoginView> {
 
   send() async {
     setState(() {
-            show = false;
-          });
+      show = false;
+    });
     if (_formKey.currentState!.validate()) {
-
-final msg = jsonEncode({
-          "email": "${emailController.text}",
-          "password": "${passwordController.text}",
-        });
+      final msg = jsonEncode({
+        "email": "${emailController.text}",
+        "password": "${passwordController.text}",
+      });
 
       try {
-      var request=  await http.post(Uri.parse('${url}user/login'),headers: headr, body:msg );
+        var request = await http.post(Uri.parse('${url}user/login'),
+            headers: headr, body: msg);
         //  print('USER :  ${request.body}');
-          if (request.statusCode == 201) {
-            // print('USER :  ${json.decode(request.body)['user']}');
-            // print('TOKEN:  ${json.decode(value.body)['token']}');
-            List<dynamic> info = [
-              json.decode(request.body)['user'],
-              json.decode(request.body)['token']
-            ];
-            stor(info).then((value) {
-             routeManager(json.decode(request.body)['user']['level'].toString(), context);
-            });
-          } else {
-            print('Error : ${request.body}');
-            errono("${ json.decode(request.body)}", "${ json.decode(request.body)}", context, true,Container(),5);
-            setState(() {
-              show = true;
-            });
-          }
+        if (request.statusCode == 201) {
+          // print('USER :  ${json.decode(request.body)['user']}');
+          // print('TOKEN:  ${json.decode(value.body)['token']}');
+          List<dynamic> info = [
+            json.decode(request.body)['user'],
+            json.decode(request.body)['token']
+          ];
+          stor(info).then((value) {
+        if(value.token!='no'){
+              routeManager(
+                json.decode(request.body)['user']['dep'].toString(), context,value);
+         
+        }
+          });
+        } else {
+          print('Error : ${request.body}');
+          errono("${json.decode(request.body)}", "${json.decode(request.body)}",
+              context, true, Container(), 5);
+          setState(() {
+            show = true;
+          });
+        }
       } catch (e) {
-                    errono("Connection error", "Connection error", context, true,Container(),5);
+        errono("Connection error", "Connection error", context, true,
+            Container(), 5);
 
         print('Catch Error: $e');
         setState(() {
@@ -376,10 +374,10 @@ final msg = jsonEncode({
         });
       }
       // ... Navigate To your Home Page
-    }else{
-       setState(() {
-            show = true;
-          });
+    } else {
+      setState(() {
+        show = true;
+      });
     }
   }
 }

@@ -98,7 +98,8 @@ class _DataPageState extends State<LabHistory> {
         labRequestWidgets.add(Card(
           child: Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
+            child:
+             Column(
                 children: forWidget.entries.map((entry) {
               var w = Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -129,6 +130,7 @@ class _DataPageState extends State<LabHistory> {
               // doSomething(entry.key);
               return w;
             }).toList()),
+         
           ),
         ));
       });

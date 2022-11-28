@@ -11,6 +11,7 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../models/blood_group.dart';
+import '../models/choos_file_type.dart';
 import '../models/user_hive.dart';
 
 class AddPatient extends StatefulWidget {
@@ -274,7 +275,7 @@ class _AddPatientState extends State<AddPatient> {
                 //   ),
                 // ),
               ]),
-              submit()
+              submit(size)
             ],
           ),
         ),
@@ -283,7 +284,7 @@ class _AddPatientState extends State<AddPatient> {
   }
 
   // Login Button
-  Widget submit() {
+  Widget submit(size) {
     return Padding(
       padding: const EdgeInsets.only(left: 80.0, right: 80, bottom: 80),
       child: SizedBox(
@@ -317,26 +318,26 @@ class _AddPatientState extends State<AddPatient> {
                       body: msg)
                   .then((value) {
                 if (value.statusCode == 205) {
-                  errono("${json.decode(value.body)['name']}",
-                      "${json.decode(value.body)['name']}", context, true,Container(),10);
+                  errono(
+                      "${json.decode(value.body)['name']}",
+                      "${json.decode(value.body)['name']}",
+                      context,
+                      true,
+                      Container(),
+                      10);
                   // print('Patient exist:  ${value.body}');
                 } else {
-              
-                  print(value.statusCode);
+                  // print(value.statusCode);
                   if (value.statusCode == 201) {
-                    Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              AddFile(json.decode(value.body)['id'])),
-                      (Route<dynamic> route) => true,
-                    );
+                    chooseFileType(
+                        json.decode(value.body)['id'], context, size);
                   }
                 }
               });
             } catch (e) {
               // print(e);
             }
+
             // Validate returns true if the form is valid, or false otherwise.
             // if (_formKey.currentState!.validate()) {
             //   // ... Navigate To your Home Page

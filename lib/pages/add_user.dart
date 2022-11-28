@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
@@ -24,18 +26,19 @@ class _AddPatientState extends State<AddUser> {
 
   bool isScure = true;
   var unit = 'General';
-
+  var whichlevel = '';
+  var depart = '';
   var level = [
-    'Consultant',//full
-    'Specialist',//full
-    'Registrar',//unit only
-    'Medical',//unit only
-    'House Officer',//unit only
-    'Medical Director',//full
-    'Nurse',//ward
-    'Clinical Pharmacist',//ward
-    'Ultrasound specialist',//request only
-    'Pharmacist',//request only
+    'Consultant', //full
+    'Specialist', //full
+    'Registrar', //unit only
+    'Medical', //unit only
+    'House Officer', //unit only
+    'Medical Director', //full
+    'Nurse', //ward
+    'Clinical Pharmacist', //ward
+    'Ultrasound specialist', //request only
+    'Pharmacist', //request only
     'Lab specialist',
     'Insuranse Agent',
     'Statistics Officer',
@@ -43,8 +46,23 @@ class _AddPatientState extends State<AddUser> {
     'Psychiatrist',
   ];
 
-  var whichlevel = '';
-
+  var dep = [
+    'Department of Obstetrics',
+    'Department of Pediatrics', //full
+    'Department of Internal Medicine', //unit only
+    'Department of Nutrition Medicine', //unit only
+    'Department of Psychiatry', //unit only
+    'Department of Clinical Pharmacy', //full
+    'Department of Surgery', //ward
+    'Department of Anesthesiology',
+    'Department of Dentistry',
+    'Department of Statistics',
+    'Department of Ultrasound',
+    'Medical lab',
+    'Department of Pharmacy',
+    'Insuranse',
+  ];
+  final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -61,139 +79,143 @@ class _AddPatientState extends State<AddUser> {
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
                   'Add New Account',
-                  style: kLoginTitleStyle(size,Colors.black),
+                  style: kLoginTitleStyle(size, Colors.black),
                 ),
               ),
-              ResponsiveGridRow(children: [
-                ResponsiveGridCol(
-                  xs: 6,
-                  md: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 50,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: TextFormField(
-                        controller: nameController,
-                        style: kTextFormFieldStyle(),
-                        decoration: const InputDecoration(
-                          // prefixIcon: Icon(Icons.person),
-                          hintText: 'Name',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                        ),
-                        // controller: nameController,
-                        // The validator receives the text that the user has entered.
-                      ),
-                    ),
-                  ),
-                ),
-                ResponsiveGridCol(
-                  xs: 6,
-                  md: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 50,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: TextFormField(
-                        controller: emailContrller,
-                        style: kTextFormFieldStyle(),
-                        decoration: const InputDecoration(
-                          // prefixIcon: Icon(Icons.person),
-                          hintText: 'Email',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                        ),
-                        // controller: nameController,
-                        // The validator receives the text that the user has entered.
-                      ),
-                    ),
-                  ),
-                ),
-                ResponsiveGridCol(
-                  xs: 6,
-                  md: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 50,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: TextFormField(
-                        style: kTextFormFieldStyle(),
-                        controller: telController,
-                        decoration: const InputDecoration(
-                          // prefixIcon: Icon(Icons.person),
-                          hintText: 'Phone',
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
-                        ),
-                        // controller: nameController,
-                        // The validator receives the text that the user has entered.
-                      ),
-                    ),
-                  ),
-                ),
-                ResponsiveGridCol(
-                  xs: 6,
-                  md: 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 50,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: TextFormField(
-                        obscureText: isScure,
-                        controller: passWordController,
-                        style: kTextFormFieldStyle(),
-                        decoration: InputDecoration(
-                          suffix: GestureDetector(
-                            child: Icon(
-                              !isScure
-                                  ? Icons.visibility_off
-                                  : Icons.visibility,
-                              // size: 15,
+              Form(
+                key: _formKey,
+                child: ResponsiveGridRow(children: [
+                  ResponsiveGridCol(
+                    xs: 6,
+                    md: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment(0, 0),
+                        // color: Colors.green,
+                        child: TextFormField(
+                          controller: nameController,
+                          style: kTextFormFieldStyle(),
+                          decoration: const InputDecoration(
+                            // prefixIcon: Icon(Icons.person),
+                            hintText: 'Name',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
                             ),
-                            onTap: () => setState(() {
-                              isScure = !isScure;
-                            }),
                           ),
-                          hintText: 'Password',
-                          border: const OutlineInputBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(15)),
-                          ),
+                          // controller: nameController,
+                          // The validator receives the text that the user has entered.
                         ),
-                        // controller: nameController,
-                        // The validator receives the text that the user has entered.
                       ),
                     ),
                   ),
-                ),
-                ResponsiveGridCol(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Divider(),
+                  ResponsiveGridCol(
+                    xs: 6,
+                    md: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment(0, 0),
+                        // color: Colors.green,
+                        child: TextFormField(
+                          controller: emailContrller,
+                          style: kTextFormFieldStyle(),
+                          decoration: const InputDecoration(
+                            // prefixIcon: Icon(Icons.person),
+                            hintText: 'Email',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                          ),
+                          // controller: nameController,
+                          // The validator receives the text that the user has entered.
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-                ResponsiveGridCol(
-                  lg: 12,
-                  child: Container(
-                    height: size.height / 6,
-                    alignment: Alignment(0, 0),
-                    // color: Colors.purple,
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 8.0, right: 80),
-                          child: PopupMenuButton<int>(
+                  ResponsiveGridCol(
+                    xs: 6,
+                    md: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment(0, 0),
+                        // color: Colors.green,
+                        child: TextFormField(
+                          style: kTextFormFieldStyle(),
+                          controller: telController,
+                          decoration: const InputDecoration(
+                            // prefixIcon: Icon(Icons.person),
+                            hintText: 'Phone',
+                            border: OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                          ),
+                          // controller: nameController,
+                          // The validator receives the text that the user has entered.
+                        ),
+                      ),
+                    ),
+                  ),
+                  ResponsiveGridCol(
+                    xs: 6,
+                    md: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 50,
+                        alignment: Alignment(0, 0),
+                        // color: Colors.green,
+                        child: TextFormField(
+                          obscureText: isScure,
+                          controller: passWordController,
+                          style: kTextFormFieldStyle(),
+                          decoration: InputDecoration(
+                            suffix: GestureDetector(
+                              child: Icon(
+                                !isScure
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                // size: 15,
+                              ),
+                              onTap: () => setState(() {
+                                isScure = !isScure;
+                              }),
+                            ),
+                            hintText: 'Password',
+                            border: const OutlineInputBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(15)),
+                            ),
+                          ),
+                          // controller: nameController,
+                          // The validator receives the text that the user has entered.
+                        ),
+                      ),
+                    ),
+                  ),
+                  ResponsiveGridCol(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Divider(),
+                    ),
+                  ),
+                  ResponsiveGridCol(
+                    lg: 12,
+                    child: Container(
+                      height: size.height / 6,
+                      alignment: Alignment(0, 0),
+                      // color: Colors.purple,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          PopupMenuButton<int>(
                               child: Row(
                                 children: [
                                   Text(
@@ -226,60 +248,96 @@ class _AddPatientState extends State<AddUser> {
                                           });
                                         },
                                       ),
-
                                     // Pop
                                   ]),
-                        ),
-                        PopupMenuButton<int>(
-                            itemBuilder: (context) => [
-                                  for (int i = 0; i < level.length; i++)
-                                    PopupMenuItem(
-                                      value: i,
-                                      // row with 2 children
-                                      child: Container(
-                                        color:    i % 2 == 0
-                                                    ? Colors.white
-                                                    : Colors.amber,
-                                        child: Row(
-                                          children: [
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                              level[i],
-                                           
-                                            )
-                                          ],
+                          PopupMenuButton<int>(
+                              itemBuilder: (context) => [
+                                    for (int i = 0; i < level.length; i++)
+                                      PopupMenuItem(
+                                        value: i,
+                                        // row with 2 children
+                                        child: Container(
+                                          color: i % 2 == 0
+                                              ? Colors.white
+                                              : Colors.amber,
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                level[i],
+                                              )
+                                            ],
+                                          ),
                                         ),
                                       ),
-                                    ),
+                                  ],
+                              offset: const Offset(0, 100),
+                              elevation: 2,
+                              // on selected we show the dialog box
+                              onSelected: (value) {
+                                // if value 1 show dialog
+                                setState(() {
+                                  whichlevel = level[value];
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                      whichlevel == ''
+                                          ? 'Occupation'
+                                          : whichlevel,
+                                      style: insuranceStyle(size)),
+                                  const Icon(Icons.arrow_drop_down)
                                 ],
-                            offset: const Offset(0, 100),
-                            elevation: 2,
-                            // on selected we show the dialog box
-                            onSelected: (value) {
-                              // if value 1 show dialog
-                              setState(() {
-                                whichlevel = level[value];
-                              });
-                            },
-                            child: Row(
-                              children: [
-                                Text(
-                                    whichlevel == ''
-                                        ? 'Occupation'
-                                        : whichlevel,
-                                    style: insuranceStyle(size)),
-                                const Icon(Icons.arrow_drop_down)
-                              ],
-                            )),
-                     
-                      ],
+                              )),
+                          PopupMenuButton<int>(
+                              itemBuilder: (context) => [
+                                    for (int i = 0; i < dep.length; i++)
+                                      PopupMenuItem(
+                                        value: i,
+                                        // row with 2 children
+                                        child: Container(
+                                          color: i % 2 == 0
+                                              ? Colors.white
+                                              : Colors.amber,
+                                          child: Row(
+                                            children: [
+                                              const SizedBox(
+                                                width: 10,
+                                              ),
+                                              Text(
+                                                dep[i],
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                  ],
+                              offset: const Offset(0, 100),
+                              elevation: 2,
+                              // on selected we show the dialog box
+                              onSelected: (value) {
+                                // if value 1 show dialog
+                                setState(() {
+                                  depart = dep[value];
+                                });
+                              },
+                              child: Row(
+                                children: [
+                                  Text(depart == '' ? 'Department' : depart,
+                                      style: insuranceStyle(size)),
+                                  const Icon(Icons.arrow_drop_down)
+                                ],
+                              )),
+                        ],
+                      ),
                     ),
                   ),
-                ),
-              ]),
-     
+                ]),
+              ),
+              submit(size)
             ],
           ),
         ),
@@ -304,32 +362,30 @@ class _AddPatientState extends State<AddUser> {
             ),
           ),
           onPressed: () async {
-            try {
-              await http
-                  .post(Uri.parse('${url}patient'), headers: headr, body: {
+            if (_formKey.currentState!.validate()) {
+              var body = jsonEncode({
                 'unit': unit.toString(),
-             
                 'name': nameController.text,
-                // 'age': ageController.text,
-                // 'tel': telController.text,
-                // 'occup': occupController.text,
-                // 'residance': reseidancenameController.text,
-                // 'husband': husbandController.text,
-                // 'husband_tel': husbandTelController.text,
-                // 'husband_occup': husbandOccupController.text,
-                // 'blood': whatIsBlood.toString(),
-                // 'allerg': allergController.text,
-                // 'insurance': whichInsurance.toString(),
-              }).then((value) {
-                print('Value error:  ${value.body}');
+                'password': passWordController.text,
+                'email': emailContrller.text,
+                'phone': telController.text,
+                'level': whichlevel,
+                'dep': depart,
               });
-            } catch (e) {
-              // print(e);
+              try {
+                await http
+                    .post(Uri.parse('${url}user/donat'),
+                        headers: headr, body: body)
+                    .then((value) {
+                  print('Value error:  ${value.body}');
+                });
+              } catch (e) {
+                print(e);
+              }
+//Validate returns true if the form is valid, or false otherwise.
+
+              // ... Navigate To your Home Page
             }
-            // Validate returns true if the form is valid, or false otherwise.
-            // if (_formKey.currentState!.validate()) {
-            //   // ... Navigate To your Home Page
-            // }
           },
           child: Text(
             'Confirm',
@@ -339,5 +395,4 @@ class _AddPatientState extends State<AddUser> {
       ),
     );
   }
-
 }

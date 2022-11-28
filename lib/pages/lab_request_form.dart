@@ -16,10 +16,12 @@ import '../widgets/title.dart';
 class AddRequestForm extends StatefulWidget {
   final Map patient;
   final Map file;
+  final String type;
   const AddRequestForm({
     super.key,
     required this.patient,
     required this.file,
+      required this.type,
   });
 
   @override
@@ -1277,6 +1279,7 @@ class _MyHomePageState extends State<AddRequestForm> {
       "patient_id": widget.patient['id'].toString(),
       "file_id": widget.file['id'].toString(),
       "money": "Free",
+       "type": widget.type,
     });
     try {
       await http

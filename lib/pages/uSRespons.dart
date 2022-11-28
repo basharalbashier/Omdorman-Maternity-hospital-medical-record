@@ -855,7 +855,6 @@ class _MyHomePageState extends State<UsResponse> {
                     ),
                   ),
                 ),
-                Center(child: labRequstDialog(context, size))
               ],
             ),
           ),
