@@ -14,7 +14,8 @@ import '../widgets/title.dart';
 import 'patient_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final User user;
+  const HomePage({super.key, required this.user});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -25,15 +26,11 @@ List patients = [];
 class _HomePageState extends State<HomePage> {
   var searchController = TextEditingController();
 
-  User user = User({}, '');
+
   @override
   void initState() {
-    getinfo(context).then((value) => setState(() {
-          user = value;
-          send();
-          // print(user.user);
-        }));
-    ;
+
+
     super.initState();
   }
 
@@ -41,7 +38,7 @@ class _HomePageState extends State<HomePage> {
     try {
       await http.get(Uri.parse('${url}patient'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${user.token!}'
+        'Authorization': 'Bearer ${widget.user.token!}'
       }).then((value) {
         if (value.statusCode == 200) {
           setState(() {
@@ -62,7 +59,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    if (user.token == '') {
+    if (widget.user.token == '') {
       return Scaffold(
         body: Center(
             child: CircularProgressIndicator(
@@ -75,7 +72,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          TitleD(setUniColor(user.user!['unit']), size),
+          TitleD(setUniColor(widget.user.user!['unit']), size),
           Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -86,13 +83,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      user.user!['level'],
+                      widget.user.user!['level'],
                       style: kLoginSubtitleStyle(size * 1.2),
                     ),
                     SizedBox(
                       width: size.width / 3.1,
                       child: Text(
-                        user.user!['name'],
+                       widget. user.user!['name'],
                         overflow: TextOverflow.fade,
                         style: fileTitle(size),
                       ),
@@ -129,6 +126,7 @@ class _HomePageState extends State<HomePage> {
                           child: ScanCode(
                             context: context,
                             patients: patients,
+                            user: widget.user,
                           )),
                       IconButton(
                           onPressed: () {
@@ -151,7 +149,7 @@ class _HomePageState extends State<HomePage> {
             child: Center(
                 child: LinearProgressIndicator(
               backgroundColor: Colors.white,
-              color: setUniColor(user.user!['unit']),
+              color: setUniColor(widget.user.user!['unit']),
             )),
           ),
           for (var item in patients.reversed)
@@ -164,6 +162,7 @@ class _HomePageState extends State<HomePage> {
                     MaterialPageRoute(
                         builder: (context) => PatientPage(
                               patient: item,
+                              user: widget.user,
                             )),
                     (Route<dynamic> route) => true,
                   );
@@ -176,6 +175,7 @@ class _HomePageState extends State<HomePage> {
 
               // trailing: T,
             )
+       
         ],
       )),
     );

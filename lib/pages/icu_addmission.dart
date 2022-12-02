@@ -10,8 +10,9 @@ import '../models/check_input_isinteger.dart';
 import '../widgets/accept_or_not_lab_request.dart';
 
 class IcuAddmission extends StatefulWidget {
+  final int whichCu;
   const IcuAddmission({
-    super.key,
+    super.key, required this.whichCu,
   });
 
   @override
@@ -60,7 +61,7 @@ class _MyHomePageState extends State<IcuAddmission> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'ICU Admission',
+                  '${widget.whichCu==0?"IC":"HD"}U Admission',
                   style: kLoginTitleStyle(size, Colors.black),
                 ),
               ),
@@ -76,7 +77,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                         child: TextField(
                           controller: comment,
                           decoration: InputDecoration(
-                              label: const Text('Indication of ICU admission')),
+                              label:  Text('Indication of ${widget.whichCu==0?"IC":"HD"}U admission')),
                         )),
                   ),
                 ),

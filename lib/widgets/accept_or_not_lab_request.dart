@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aldayat_screens/models/replace_key.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -134,7 +135,7 @@ labRequstDialog(Map request, contexte, size, User user) async {
                           singles[i].value == "true"
                               ? Container(
                                   child: Text(
-                                  singles[i].key.toString().toUpperCase(),
+                                  replacLabKey(singles)[i].entries.first.key.toUpperCase(),
                                   style: fileTitle(size),
                                 ))
                               : Container(),

@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/models/change_arabic_numbers.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -8,12 +9,12 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../models/blood_group.dart';
+import '../models/error_message.dart';
 import '../models/user_hive.dart';
 
 class AddGynaeFile extends StatefulWidget {
-  int patienId;
-  AddGynaeFile(this.patienId, {super.key});
+ final int patienId;
+ const AddGynaeFile( this.patienId, {super.key});
 
   @override
   State<AddGynaeFile> createState() => _AddPatientState();
@@ -26,7 +27,7 @@ class _AddPatientState extends State<AddGynaeFile> {
   var husbandOccupController = TextEditingController();
   var allergController = TextEditingController();
   var unit = "1";
-
+bool show=true;
   var booking = ['PW', 'GW'];
 
   var whatIsBooking = '';
@@ -46,11 +47,11 @@ class _AddPatientState extends State<AddGynaeFile> {
 
   @override
   Widget build(BuildContext context) {
-    if (user.token == '') {
+    if (user.token == '' || !show) {
       return Scaffold(
         body: Center(
-            child: CircularProgressIndicator(
-          strokeWidth: 1,
+            child: LinearProgressIndicator(
+         color: setUniColor(unit),
         )),
       );
     }
@@ -204,11 +205,13 @@ class _AddPatientState extends State<AddGynaeFile> {
                         alignment: Alignment(0, 0),
                         // color: Colors.green,
                         child: TextFormField(
+                          maxLength: 9,
                           controller: husbandTelController,
                           style: kTextFormFieldStyle(),
                           decoration: const InputDecoration(
                             // prefixIcon: Icon(Icons.person),
-                            hintText: 'Husband\'s Tel',
+                            label: Text('Husband\'s Tel'),
+                              hintText: "1 or 9 xxxxxxx",
                             border: OutlineInputBorder(
                               borderRadius:
                                   BorderRadius.all(Radius.circular(15)),
@@ -293,12 +296,15 @@ class _AddPatientState extends State<AddGynaeFile> {
             ),
           ),
           onPressed: () async {
+              setState(() {
+                show = !show;
+              });
             final msg = jsonEncode({
               'unit': unit,
               'booking': whatIsBooking,
               'residance': reseidancenameController.text,
               'husband': husbandController.text,
-              'husband_tel': husbandTelController.text,
+              'husband_tel': replaceArabicNumber(husbandTelController.text),
               'husband_occup': husbandOccupController.text,
               'patient_id': "${widget.patienId}",
               'user_id': "${user.user!['id']}"
@@ -313,10 +319,17 @@ class _AddPatientState extends State<AddGynaeFile> {
                       },
                       body: msg)
                   .then((value) {
-                print('Value error:  ${value.body}');
+                           errono("File Added Successfully","File Added Successfully", context, true,
+                 Icon(Icons.check,color: Colors.teal,), 2);
+                    Navigator.of(context).pop();
+                 
               });
             } catch (e) {
-              print(e);
+                  errono("Connection Error", "Connection Error", context, true,
+                  Container(), 2);
+              setState(() {
+                show = !show;
+              });
             }
             // Validate returns true if the form is valid, or false otherwise.
             // if (_formKey.currentState!.validate()) {

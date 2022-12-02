@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/models/change_arabic_numbers.dart';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/pages/add_file.dart';
@@ -11,6 +12,7 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../models/blood_group.dart';
+import '../models/check_input_isinteger.dart';
 import '../models/choos_file_type.dart';
 import '../models/user_hive.dart';
 
@@ -35,14 +37,14 @@ class _AddPatientState extends State<AddPatient> {
         }));
     super.initState();
   }
-
+  bool show = true;
   @override
   Widget build(BuildContext context) {
-    if (user.token == '') {
+    if (user.token == '' || !show) {
       return Scaffold(
         body: Center(
-            child: CircularProgressIndicator(
-          strokeWidth: 1,
+            child: LinearProgressIndicator(
+          color: Colors.lightBlue,
         )),
       );
     }
@@ -76,18 +78,7 @@ class _AddPatientState extends State<AddPatient> {
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                         ),
-                        // controller: nameController,
-                        // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter username';
-                          } else if (value.length < 4) {
-                            return 'at least enter 4 characters';
-                          } else if (value.length > 13) {
-                            return 'maximum character is 13';
-                          }
-                          return null;
-                        },
+                     
                       ),
                     ),
                   ),
@@ -103,6 +94,7 @@ class _AddPatientState extends State<AddPatient> {
                       alignment: Alignment(0, 0),
                       // color: Colors.green,
                       child: TextFormField(
+                    
                         controller: ageController,
                         style: kTextFormFieldStyle(),
                         decoration: const InputDecoration(
@@ -114,16 +106,7 @@ class _AddPatientState extends State<AddPatient> {
                         ),
                         // controller: nameController,
                         // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter username';
-                          } else if (value.length < 4) {
-                            return 'at least enter 4 characters';
-                          } else if (value.length > 13) {
-                            return 'maximum character is 13';
-                          }
-                          return null;
-                        },
+                    
                       ),
                     ),
                   ),
@@ -139,27 +122,24 @@ class _AddPatientState extends State<AddPatient> {
                       alignment: Alignment(0, 0),
                       // color: Colors.green,
                       child: TextFormField(
+                            maxLength: 9,
+                        onChanged: ((v){
+                         
+
+                        }),
                         style: kTextFormFieldStyle(),
                         controller: telController,
                         decoration: const InputDecoration(
                           // prefixIcon: Icon(Icons.person),
-                          hintText: 'Tel',
+                            hintText: "1 or 9 xxxxxxx",
+                            label: Text('Phone'),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                         ),
                         // controller: nameController,
                         // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter username';
-                          } else if (value.length < 4) {
-                            return 'at least enter 4 characters';
-                          } else if (value.length > 13) {
-                            return 'maximum character is 13';
-                          }
-                          return null;
-                        },
+                     
                       ),
                     ),
                   ),
@@ -185,16 +165,7 @@ class _AddPatientState extends State<AddPatient> {
                         ),
                         // controller: nameController,
                         // The validator receives the text that the user has entered.
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter username';
-                          } else if (value.length < 4) {
-                            return 'at least enter 4 characters';
-                          } else if (value.length > 13) {
-                            return 'maximum character is 13';
-                          }
-                          return null;
-                        },
+                     
                       ),
                     ),
                   ),
@@ -300,10 +271,13 @@ class _AddPatientState extends State<AddPatient> {
             ),
           ),
           onPressed: () async {
+              setState(() {
+                show = !show;
+              });
             final msg = jsonEncode({
               'name': nameController.text,
-              'age': ageController.text,
-              'tel': telController.text,
+              'age': replaceArabicNumber(ageController.text),
+              'tel': replaceArabicNumber(telController.text),
               'occup': occupController.text,
               'user_id': user.user!['id']
             });
@@ -318,6 +292,9 @@ class _AddPatientState extends State<AddPatient> {
                       body: msg)
                   .then((value) {
                 if (value.statusCode == 205) {
+                           setState(() {
+                show = !show;
+              });
                   errono(
                       "${json.decode(value.body)['name']}",
                       "${json.decode(value.body)['name']}",
@@ -329,12 +306,20 @@ class _AddPatientState extends State<AddPatient> {
                 } else {
                   // print(value.statusCode);
                   if (value.statusCode == 201) {
+                      setState(() {
+                show = !show;
+              });
                     chooseFileType(
-                        json.decode(value.body)['id'], context, size);
+                        json.decode(value.body), context, size);
                   }
                 }
               });
             } catch (e) {
+                setState(() {
+                show = !show;
+              });
+                 errono("Connection Error", "Connection Error", context, true,
+                  Container(), 2);
               // print(e);
             }
 

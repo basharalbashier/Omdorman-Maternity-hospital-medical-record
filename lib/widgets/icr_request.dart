@@ -12,8 +12,6 @@ Widget iCuRequest(contexte, size, Map file, User user) {
 
   var commentController = TextEditingController();
 
-
-
   Widget submit(size, file, User user) {
     return Padding(
       padding: const EdgeInsets.only(left: 80.0, right: 80, bottom: 80),
@@ -30,23 +28,25 @@ Widget iCuRequest(contexte, size, Map file, User user) {
             ),
           ),
           onPressed: () async {
-            final body =jsonEncode({
-                'remarks': remarksController.text,
-                'unit': user.user!['unit'].toString(),
-     
-                'status': "0",
-                "dr_id": user.user!['id'].toString(),
-                "patient_id": file['patient_id'].toString(),
-                "file_id": file['id'].toString(),
-                'money': "free",
-              });
+            final body = jsonEncode({
+              'remarks': remarksController.text,
+              'unit': user.user!['unit'].toString(),
+              'status': "0",
+              "dr_id": user.user!['id'].toString(),
+              "patient_id": file['patient_id'].toString(),
+              "file_id": file['id'].toString(),
+              'money': "free",
+            });
             try {
-              await http.post(Uri.parse('${url}usrequest/add'), headers: {
-
-                      'Content-type': 'application/json',
-                'Accept': 'application/json',
-                'Authorization': 'Bearer ${user.token!}'
-              }, body: body).then((value) {
+              await http
+                  .post(Uri.parse('${url}usrequest/add'),
+                      headers: {
+                        'Content-type': 'application/json',
+                        'Accept': 'application/json',
+                        'Authorization': 'Bearer ${user.token!}'
+                      },
+                      body: body)
+                  .then((value) {
                 print('Value error:  ${json.decode(value.body)}');
               });
             } catch (e) {
@@ -66,10 +66,12 @@ Widget iCuRequest(contexte, size, Map file, User user) {
     );
   }
 
-
   return MaterialButton(
       color: Colors.pink,
-      child: Text('ICU Request',style: TextStyle(color: Colors.white),),
+      child: Text(
+        'ICU Request',
+        style: TextStyle(color: Colors.white),
+      ),
       onPressed: (() async {
         await showDialog<void>(
           context: contexte,
@@ -83,16 +85,13 @@ Widget iCuRequest(contexte, size, Map file, User user) {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-
-
                             Padding(
                               padding: const EdgeInsets.all(8.0),
                               child: Text(
-            'Should we move Mother to ICU?',
-            style: kLoginTitleStyle(size, Colors.black),
-          ),
+                                'Should we move Mother to ICU?',
+                                style: kLoginTitleStyle(size, Colors.black),
+                              ),
                             ),
-                        
                             ResponsiveGridRow(children: [
                               ResponsiveGridCol(
                                 child: Padding(
@@ -119,7 +118,6 @@ Widget iCuRequest(contexte, size, Map file, User user) {
                                   ),
                                 ),
                               ),
-                            
                               ResponsiveGridCol(
                                 child: Padding(
                                   padding: const EdgeInsets.all(8.0),
@@ -132,7 +130,6 @@ Widget iCuRequest(contexte, size, Map file, User user) {
                                       style: kTextFormFieldStyle(),
                                       controller: commentController,
                                       decoration: const InputDecoration(
-                                        
                                         // prefixIcon: Icon(Icons.person),
                                         label: Text('Comment'),
                                         border: OutlineInputBorder(
@@ -146,7 +143,6 @@ Widget iCuRequest(contexte, size, Map file, User user) {
                                   ),
                                 ),
                               ),
-                          
                             ]),
                             submit(size, file, user)
                           ]),

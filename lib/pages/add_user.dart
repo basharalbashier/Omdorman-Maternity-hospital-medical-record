@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/models/change_arabic_numbers.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -364,11 +365,11 @@ class _AddPatientState extends State<AddUser> {
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               var body = jsonEncode({
-                'unit': unit.toString(),
+                'unit': replaceArabicNumber(unit.toString()),
                 'name': nameController.text,
                 'password': passWordController.text,
                 'email': emailContrller.text,
-                'phone': telController.text,
+                'phone': replaceArabicNumber(telController.text),
                 'level': whichlevel,
                 'dep': depart,
               });

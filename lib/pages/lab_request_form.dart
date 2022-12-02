@@ -88,7 +88,7 @@ class _MyHomePageState extends State<AddRequestForm> {
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
-    if (user.token == '' || !show) {
+    if (!show) {
       return Scaffold(
         body: Center(
             child: CircularProgressIndicator(
@@ -284,6 +284,7 @@ class _MyHomePageState extends State<AddRequestForm> {
                         ),
                       ),
                     ),
+                   
                     ResponsiveGridCol(
                       xs: 4,
                       md: 2,

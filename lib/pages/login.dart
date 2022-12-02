@@ -332,7 +332,7 @@ class _LoginViewState extends State<LoginView> {
     setState(() {
       show = false;
     });
-    if (_formKey.currentState!.validate()) {
+    // if (_formKey.currentState!.validate()) {
       final msg = jsonEncode({
         "email": "${emailController.text}",
         "password": "${passwordController.text}",
@@ -374,10 +374,10 @@ class _LoginViewState extends State<LoginView> {
         });
       }
       // ... Navigate To your Home Page
-    } else {
-      setState(() {
-        show = true;
-      });
-    }
+    // } else {
+    //   setState(() {
+    //     show = true;
+    //   });
+    // }
   }
 }

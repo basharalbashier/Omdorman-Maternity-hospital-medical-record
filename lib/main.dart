@@ -1,10 +1,15 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/login.dart';
+import 'package:aldayat_screens/pages/neo_discharg.dart';
+import 'package:aldayat_screens/pages/neonatal_addmission.dart';
+import 'package:aldayat_screens/pages/testo.dart';
+import 'package:aldayat_screens/widgets/accept_or_not_lab_request.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-import 'pages/add_user.dart';
+
 
 
 String url = 'https://aldayat.loca.lt/api/';
@@ -13,21 +18,26 @@ var headr = {
   'Accept': 'application/json',
   //  'Authorization': '<Your token>'
 };
+//🐒💁👌🎍😍🦊👨
 void main() {
+    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Hive.registerAdapter(UserAdapter());
-
+ FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
-  runApp(const DayatApp());
+  runApp( DayatApp());
 }
 
 class DayatApp extends StatelessWidget {
-  const DayatApp({Key? key}) : super(key: key);
+   DayatApp({Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
-    return const GetMaterialApp(
+    return  GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home:LoginView(),
+      home:Testo(),
     );   
   }
 }
@@ -40,28 +50,3 @@ class MyHttpOverrides extends HttpOverrides {
           (X509Certificate cert, String host, int port) => true;
   }
 }
-/*
-
-add patient
-
-     Material(
-                        child: Center(
-                          child: ElevatedButton(
-
-                              // style:ButtonStyle(backgroundColor:Colors.te ),
-                              onPressed: () {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const AddPatient()),
-                                  (Route<dynamic> route) => true,
-                                );
-                              },
-                              child: SizedBox(
-                                  height: 30,
-                                  child: Center(
-                                    child: Text("Add Patient"),
-                                  ))),
-                        ),
-                      ),
-*/

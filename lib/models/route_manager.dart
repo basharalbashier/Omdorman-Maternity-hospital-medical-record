@@ -20,13 +20,13 @@ routeManager(String level, context,User user) {
   if (level ==  'Department of Pediatrics') {
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => const PediatricHome()),
+      MaterialPageRoute(builder: (context) =>  PediatricHome(user: user,)),
       (Route<dynamic> route) => false,
     );
   } else if (level ==   'Department of Obstetrics') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) =>  HomePage()),
+                MaterialPageRoute(builder: (context) =>  HomePage(user: user,)),
                 (Route<dynamic> route) => false,
               );
   } else if (level == 'Department of Psychiatry') {
@@ -44,7 +44,7 @@ routeManager(String level, context,User user) {
   } else if (level ==   'Department of Nutrition Medicine') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context)=> NutritioneHome()),
+                MaterialPageRoute(builder: (context)=> NutritioneHome(user: user,)),
                 (Route<dynamic> route) => false,
               );
   } else if (level ==     'Department of Clinical Pharmacy') {
@@ -74,7 +74,7 @@ routeManager(String level, context,User user) {
   } else if (level ==  'Department of Statistics') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => StatisticsHome()),
+                MaterialPageRoute(builder: (context) => StatisticsHome(user: user,)),
                 (Route<dynamic> route) => false,
               );
   } else if (level ==    'Medical lab') {
@@ -86,7 +86,7 @@ routeManager(String level, context,User user) {
   } else if (level ==      'Department of Ultrasound') {
         Navigator.pushAndRemoveUntil(
                 context,
-                MaterialPageRoute(builder: (context) => UltrasoundHome()),
+                MaterialPageRoute(builder: (context) => UltrasoundHome(user:user)),
                 (Route<dynamic> route) => false,
               );
   } else if (level ==     'Insuranse') {

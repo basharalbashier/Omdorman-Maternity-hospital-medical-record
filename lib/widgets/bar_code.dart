@@ -4,10 +4,13 @@ import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:qr_bar_code_scanner_dialog/qr_bar_code_scanner_dialog.dart';
 
+import '../models/user_hive.dart';
+
 class ScanCode extends StatefulWidget {
   final context;
   final List patients;
-  const ScanCode({Key? key, this.context, required this.patients})
+  final User user;
+  const ScanCode({Key? key, this.context, required this.patients, required this.user})
       : super(key: key);
 
   @override
@@ -39,6 +42,7 @@ class _MyAppState extends State<ScanCode> {
                             patient: patient,
                             fileId: int.parse(file_id),
                             type: type,
+                            user: widget.user,
                           )),
                   (Route<dynamic> route) => true,
                 );
@@ -56,10 +60,9 @@ class _MyAppState extends State<ScanCode> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: Center(
-        child: ElevatedButton(
-            onPressed: () {
+    return MaterialButton(
+      
+       onPressed: () {
               try {
                 runQrCode();
               } catch (e) {
@@ -69,11 +72,11 @@ class _MyAppState extends State<ScanCode> {
             child: SizedBox(
                 height: 30,
                 width: 20,
-                child: Center(
-                  child: Icon(Icons.qr_code),
-                ))),
-      ),
+                child: Icon(Icons.qr_code))
+            
+    
+     
     );
-    ;
+    
   }
 }
