@@ -35,7 +35,6 @@ Widget iCuRequest(contexte, size, Map file, User user) {
             final body =jsonEncode({
                 'remarks': remarksController.text,
                 'unit': user.user!['unit'].toString(),
-     
                 'status': "0",
                 "dr_id": user.user!['id'].toString(),
                 "patient_id": file['patient_id'].toString(),
@@ -54,10 +53,7 @@ Widget iCuRequest(contexte, size, Map file, User user) {
             } catch (e) {
               // print(e);
             }
-            // Validate returns true if the form is valid, or false otherwise.
-            // if (_formKey.currentState!.validate()) {
-            //   // ... Navigate To your Home Page
-            // }
+        
           },
           child: Text(
             'Confirm',

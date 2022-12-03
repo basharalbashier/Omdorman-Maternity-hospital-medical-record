@@ -71,7 +71,7 @@ Widget gyneInvTable(List data,context,Map file,User user) {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     // height: 32,
-                    child: Center(child: Text(i['inv'],textAlign:TextAlign.center,)),
+                    child: Center(child: Text(i['investigation']??"",textAlign:TextAlign.center,)),
                   ),
                 ),
              
@@ -79,7 +79,7 @@ Widget gyneInvTable(List data,context,Map file,User user) {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 32,
-                    child: Center(child: Text(i['result'],textAlign:TextAlign.center,)),
+                    child: Center(child: Text(i['result']??"",textAlign:TextAlign.center,)),
                   ),
                 ),
               
@@ -139,15 +139,15 @@ Future<void> addgyneInvTable(
                       if (_formKey.currentState!.validate()) {
                         setState(() => show = !show);
                         final body = jsonEncode({
-                          'inv': invController.text,
+                          'investigation': invController.text,
                                'result': resultController.text,
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
-                          "mother_id": file['patient_id'].toString(),
+                          "patient_id": file['patient_id'].toString(),
                         });
                         try {
                           await http
-                              .post(Uri.parse('${url}gynaldkjf;/add'),
+                              .post(Uri.parse('${url}gyninv/add'),
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',

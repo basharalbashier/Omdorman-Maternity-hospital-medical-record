@@ -58,34 +58,28 @@ Widget gynePerciptionTable(List data,context,Map file,User user) {
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 32,
-                    child: Center(child: Column(
-                      children: [
-                         Text(textAlign:TextAlign.center,i['created_at'].toString().substring(11,19)),
-                        Text(textAlign:TextAlign.center,i['created_at'].toString().substring(0,11)),
-                            
-                      ],
-                    )),
+                    child: Center(child: Text(i['start']??'',textAlign:TextAlign.center,)),
                   ),
                 ),
                  Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     // height: 32,
-                    child: Center(child: Text(i['gestation'],textAlign:TextAlign.center,)),
+                    child: Center(child: Text(i['end']??'',textAlign:TextAlign.center,)),
                   ),
                 ),
                  Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     // height: 32,
-                    child: Center(child: Text(i['note'],textAlign:TextAlign.center,)),
+                    child: Center(child: Text(i['name_drug']??'',textAlign:TextAlign.center,)),
                   ),
                 ),
                  Padding(
                   padding: const EdgeInsets.all(8.0),
                   child: Container(
                     height: 32,
-                    child: Center(child: Text(i['dr_id'],textAlign:TextAlign.center,)),
+                    child: Center(child: Text(i['dr_name']??'',textAlign:TextAlign.center,)),
                   ),
                 ),
               
@@ -150,11 +144,11 @@ Future<void> addgynePerciptionTable(
                              'name_drug': druCont.text,
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
-                          "mother_id": file['patient_id'].toString(),
+                          "patient_id": file['patient_id'].toString(),
                         });
                         try {
                           await http
-                              .post(Uri.parse('${url}gynaldkjf;/add'),
+                              .post(Uri.parse('${url}gyndrug/add'),
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',

@@ -9,38 +9,85 @@ class User extends HiveObject {
   User(this.user, this.token);
 }
 
-Future<User> stor(List<dynamic> info) async {
-  try {
-      var box = await Hive.openBox<User>('info');
+Future<List> findFromData(List<int> listId) async {
+  try{
+    //  await Hive.openBox<User>('info');
+      var nameFrom = [];
 
-  var user = User(info[0], info[1]);
+    // var connectionBox =
+    if (Hive.box<User>('info').isOpen) {
+      // Hive.box<User>('info').close();
+      //  print( Hive.box<User>('info').isOpen);
+     print('--1--');
+      for(var i in listId){
+        nameFrom.add(Hive.box<User>("info").get(i)?.user!['name']);
+      }
+    } else {
 
-  box.put(0, user);
+           for(var i in listId){
+        nameFrom.add(Hive.box<User>("info").get(i)?.user!['name']);
+      }
 
-  box.close();
-  return user;
+print('----');
+    }
+
+   
+
+    return nameFrom;
   } catch (e) {
-     
+    print("------$e -----");
+Hive.box<User>('info').close();
+    return ['error'];
+  }
+
+}
+
+
+Future<User> storTheFuckers(List<dynamic> info) async {
+  try {
+    var box = await Hive.openBox<User>('info');
+    for (var i in info) {
+      var user = User(i, i['unit']);
+
+      box.put(user.user!['id'], user);
+    }
+    // box.close();
+    return User({}, 'done');
+  } catch (e) {
     print("HIVE Error:  => $e");
     return User({}, 'no');
   }
-  
 }
+
+Future<User> stor(List<dynamic> info) async {
+  try {
+    var box = await Hive.openBox<User>('info');
+
+    var user = User(info[0], info[1]);
+
+    box.put(0, user);
+
+    box.close();
+    return user;
+  } catch (e) {
+    print("HIVE Error:  => $e");
+    return User({}, 'no');
+  }
+}
+
 Future remove(context) async {
   try {
-      var box = await Hive.openBox<User>('info');
+    var box = await Hive.openBox<User>('info');
 
-  box.delete(0);
-  box.close();
+    box.delete(0);
+    box.close();
 
-   Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => const LoginView()),
-                                  (Route<dynamic> route) => false,
-                                );
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => const LoginView()),
+      (Route<dynamic> route) => false,
+    );
   } catch (e) {
-     
     print("HIVE Error:  => $e");
   }
 }
@@ -71,24 +118,22 @@ Future<User> getinfo(context) async {
       // print();
       if (info.toMap()[0] != null) {
         user = info.toMap()[0];
- 
 
         info.close();
-         
+
         return user;
       } else {
         info.close();
-       
+
         return user;
       }
     }
-        info.close();
-   
+    info.close();
+
     return user;
   } catch (e) {
-      info.close();
+    info.close();
     print('eeeeeeeeee');
     return user;
   }
-  
 }

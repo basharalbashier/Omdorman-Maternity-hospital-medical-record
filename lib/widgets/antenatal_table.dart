@@ -1,20 +1,126 @@
 import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:http/http.dart' as http;
-import '../constant.dart';
 import '../main.dart';
+import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
+  List<String> titles = [
+    "Date",
+    "B.P",
+    "G.A",
+    'F.L',
+    'Pres.',
+    'Eng.',
+    'F.H',
+    'HB %',
+    'Urine',
+    'Comment',
+    'Next Visit',
+    'Dr Name'
+  ];
+  List<String> keys = [
+    "created_at",
+    "bp",
+    "ga",
+    'fl',
+    'pres',
+    'eng',
+    'fh',
+    'hb',
+    'urine',
+    'comment',
+    'next_visit',
+    'dr_name'
+  ];
+Widget anteFollowUpTable(List data, context, Map file, User user) {
 
-Future<void> gyneAddNote(
+  Size size = Size(500, 500);
+
+  return Column(
+    children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            addButtonModel("+",
+                (() async => anteFollowUpTabled(context, file, user, size))),
+          ],
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Table(
+          border: TableBorder.all(width: 2, color: Colors.grey),
+          columnWidths: <int, TableColumnWidth>{
+            // 0: IntrinsicColumnWidth(),
+
+            // 1: FlexColumnWidth(),
+            9: FlexColumnWidth(3),
+          },
+          children: <TableRow>[
+            TableRow(
+              children: <Widget>[
+                for (var i in titles)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 32,
+                      child: Center(
+                          child: Text(
+                        textAlign: TextAlign.center,
+                        i,
+                        style: fileTitle(size),
+                      )),
+                    ),
+                  ),
+              ],
+            ),
+            for (var row in data)
+              TableRow(
+                children: <Widget>[
+                  for (int i = 0; i < keys.length; i++)
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 32,
+                        child: Center(
+                            child: Text(
+                        i==0?row[keys[i]].toString().substring(0, 10):  row[keys[i]] ?? '',
+                          textAlign: TextAlign.center,
+                        )),
+                      ),
+                    ),
+                  //.toString().substring(0, 11)
+                ],
+              ),
+          ],
+        ),
+      ),
+    ],
+  );
+}
+
+Future<void> anteFollowUpTabled(
   contexte,
   Map file,
   User user,
   size,
 ) async {
-  var gestController = TextEditingController();
-  var noteController = TextEditingController();
+  var bp = TextEditingController();
+  var ga = TextEditingController();
+    var fl = TextEditingController();
+  var pres = TextEditingController();
+    var eng = TextEditingController();
+  var fh = TextEditingController();
+    var hb = TextEditingController();
+  var urine = TextEditingController();
+    var comment = TextEditingController();
+  var next_visit = TextEditingController();
+var controllers=[bp,ga,fl,pres,eng,fh,hb,urine,comment,next_visit];
   final _formKey = GlobalKey<FormState>();
   bool show = true;
   return await showDialog<void>(
@@ -41,19 +147,22 @@ Future<void> gyneAddNote(
                   MaterialButton(
                     color: Colors.teal,
                     onPressed: () async {
+                      
+                        
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {
                         setState(() => show = !show);
                         final body = jsonEncode({
-                          'gestation': gestController.text,
-                          'note': noteController.text,
+                          for(int i=1;i<keys.length-1;i++)
+                          keys[i]:controllers[i-1].text,
+                      
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
-                          "mother_id": file['patient_id'].toString(),
+                          "patient_id": file['patient_id'].toString(),
                         });
                         try {
                           await http
-                              .post(Uri.parse('${url}gynaldkjf;/add'),
+                              .post(Uri.parse('${url}antfollowup/add'),
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
@@ -107,6 +216,7 @@ Future<void> gyneAddNote(
                                   key: _formKey,
                                   child: Column(
                                     children: [
+                                      for(int i=0;i<controllers.length;i++)
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
@@ -114,48 +224,25 @@ Future<void> gyneAddNote(
                                           // color: Colors.green,
                                           child: TextFormField(
                                             style: kTextFormFieldStyle(),
-                                            controller: gestController,
-                                            decoration: const InputDecoration(
+                                            controller: controllers[i],
+                                            decoration:  InputDecoration(
                                               // prefixIcon: Icon(Icons.person),
-                                              label: Text('Gestation'),
+                                              label: Text(titles[i+1]),
                                               border: OutlineInputBorder(
                                                 borderRadius: BorderRadius.all(
                                                     Radius.circular(15)),
                                               ),
                                             ),
                                             validator: ((v) {
-                                              if (v!.length < 5) {
-                                                return "Is this a Gestation?";
+                                              if (v!.length < 1) {
+                                                return "Is this a ${titles[i+1]}?";
                                               }
                                             }),
                                           ),
                                         ),
                                       ),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          alignment: Alignment(0, 0),
-                                          // color: Colors.green,
-                                          child: TextFormField(
-                                            maxLines: 5,
-                                            style: kTextFormFieldStyle(),
-                                            controller: noteController,
-                                            decoration: const InputDecoration(
-                                              // prefixIcon: Icon(Icons.person),
-                                              label: Text('Note'),
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(15)),
-                                              ),
-                                            ),
-                                            validator: ((v) {
-                                              if (v!.length < 5) {
-                                                return "Is this a note?";
-                                              }
-                                            }),
-                                          ),
-                                        ),
-                                      ),
+                                      
+                                 
                                     ],
                                   ),
                                 ),
