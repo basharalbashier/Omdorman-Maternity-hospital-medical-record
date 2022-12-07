@@ -1,51 +1,29 @@
-import 'dart:convert';
 
 import 'package:http/http.dart' as http;
-import 'package:flutter/material.dart';
+import 'user_hive.dart';
 
-import '../main.dart';
-
-Widget submit(String title,size, Map body,String url, bool needToken, context) {
-  return Padding(
-    padding: const EdgeInsets.only(left: 80.0, right: 80, bottom: 80),
-    child: SizedBox(
-      width: double.infinity,
-      height: 55,
-      child: ElevatedButton(
-        style: ButtonStyle(
-          // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
-          shape: MaterialStateProperty.all(
-            RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
-            ),
-          ),
-        ),
-        onPressed: ()  {
-
-        },
-        child: Text(
-          title,
-          // style: confirmStyle(size),
-        ),
-      ),
-    ),
-  );
-}
-
-makeHttpRequest(url, body, needToken) async {
+Future<String> makeHttpRequest(
+    String url, body, bool needToken, User user) async {
+  String respons = '';
   try {
     await http
         .post(Uri.parse(url),
             headers: {
               'Content-type': 'application/json',
               'Accept': 'application/json',
-              needToken ? 'Authorization' : '<Your token>': ''
+              needToken ? 'Authorization' : 'Bearer ${user.token!}': ''
             },
             body: body)
         .then((value) {
-      print('Value error:  ${value.body}');
+      if ((value.statusCode == 200 || value.statusCode == 201) ) {
+      
+        respons = "Successfully Sent";
+      } else {
+        respons = "Connection Error";
+      }
     });
   } catch (e) {
-    // print(e);
+    respons = "Connection Error";
   }
+  return respons;
 }

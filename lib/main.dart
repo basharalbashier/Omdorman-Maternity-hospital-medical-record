@@ -1,16 +1,15 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
+import 'package:aldayat_screens/pages/add_user.dart';
 import 'package:aldayat_screens/pages/login.dart';
-import 'package:aldayat_screens/pages/neo_discharg.dart';
-import 'package:aldayat_screens/pages/neonatal_addmission.dart';
-import 'package:aldayat_screens/pages/testo.dart';
-import 'package:aldayat_screens/widgets/accept_or_not_lab_request.dart';
+import 'package:aldayat_screens/pages/uSRespons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:hive/hive.dart';
-
-
+import 'package:url_launcher/url_launcher.dart';
+import 'constant.dart';
+import 'models/error_message.dart';
 
 String url = 'https://aldayat.loca.lt/api/';
 var headr = {
@@ -20,25 +19,56 @@ var headr = {
 };
 //🐒💁👌🎍😍🦊👨
 void main() {
-    WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Hive.registerAdapter(UserAdapter());
- FlutterNativeSplash.remove();
+  FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
-  runApp( DayatApp());
+  runApp(DayatApp());
 }
 
 class DayatApp extends StatelessWidget {
-   DayatApp({Key? key}) : super(key: key);
-
-
+  DayatApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return  GetMaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home:Testo(),
-    );   
+      home:
+       Scaffold(
+          body: Stack(fit: StackFit.expand,
+        children: [
+             LoginView(),
+          Positioned(bottom: 0,
+          right: 10,
+            child: GestureDetector(
+              onTap: () async {
+                try {
+                  await launchUrl(Uri.parse("https://wa.me/+249117630388?text=Dr."));
+                } catch (e) {
+                  errono('+249117630388', '+249117630388', context, true,
+                      Container(), 1);
+                }
+              },
+              child: RichText(
+                text: TextSpan(
+                  text: 'Do you need any help?',
+                  style: kHaveAnAccountStyle(Size(500,500)),
+                  children: [
+                    TextSpan(
+                      text: " Contact us",
+                      style: kLoginOrSignUpTextStyle(
+                        Size(500,500)
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          )
+        ],
+      )),
+    );
   }
 }
 

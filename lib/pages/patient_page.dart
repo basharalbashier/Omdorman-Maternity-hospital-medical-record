@@ -57,7 +57,7 @@ class _PatientPage extends State<PatientPage> {
                       builder: (context) => FilePage(
                             patient: widget.patient,
                             file: file,
-                            type: "0",
+                            type: widget.type!,
                             user: widget.user,
                           )),
                   (Route<dynamic> route) => true,
@@ -121,6 +121,7 @@ class _PatientPage extends State<PatientPage> {
     super.initState();
   }
 
+  List titles = ['obstetrical', "Gynaecological"];
   @override
   Widget build(BuildContext context) {
     if (widget.user.token == '') {
@@ -129,166 +130,153 @@ class _PatientPage extends State<PatientPage> {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
-      body: SizedBox(
-        height: size.height,
-        width: size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TitleD(setUniColor(widget.user.user!['unit']), size),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Visibility(
+              visible: files.isEmpty && !showSorryMessage && gynFiles.isEmpty,
+              child: waitingWidget(widget.user.user!['unit']),
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Visibility(
+                visible:
+                    (files.isEmpty && gynFiles.isEmpty) && showSorryMessage,
                 child: Center(
-                  child: Text(
-                    widget.patient['name'],
-                    style: fileTitle(size),
-                  ),
-                ),
-              ),
-              Divider(),
-              // Visibility(
-              //   visible: widget.user.user!['dep'].toString() ==
-              //       'Department of Statistics',
-              //   child: Column(
-              //     children: [
-              //       Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child:addFile(widget.patient,context,size),
-                     
-              //       ),
-              //       Divider(),
-              //     ],
-              //   ),
-              // ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Visibility(
-                  visible:
-                      files.isEmpty && !showSorryMessage && gynFiles.isEmpty,
-                  child:  waitingWidget(widget.user.user!['unit']),
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Visibility(
-                  visible:
-                      (files.isEmpty && gynFiles.isEmpty) && showSorryMessage,
-                  child: Center(
-                      child: Column(
-                    children: [
-                      Text("Sorry, Mother"),
-                      Text(
-                        "${widget.patient['name']}",
-                        style: fileTitle(size),
-                      ),
-                      Text("has no file yet"),
-                    ],
-                  )),
-                ),
-              ),
-              SizedBox(
-                width: size.width,
-                child: Row(
+                    child: Column(
                   children: [
-                    Visibility(
-                      visible: files.isNotEmpty,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
+                    Text("Sorry, Mother"),
+                    Text(
+                      "${widget.patient['name']}",
+                      // style: fileTitle(size),
+                    ),
+                    Text("has no file yet"),
+                  ],
+                )),
+              ),
+            ),
+            Visibility(
+              visible: files.isNotEmpty || gynFiles.isNotEmpty,
+              child: Table(
+                  border: TableBorder.all(
+                      width: 1,
+                      color: Colors.blueGrey.shade900.withOpacity(.1)),
+                  columnWidths: const <int, TableColumnWidth>{
+                    0: FlexColumnWidth(),
+                    1: FlexColumnWidth(),
+                  },
+                  children: <TableRow>[
+                    TableRow(
+                        decoration: BoxDecoration(
+                          color: Colors.blueGrey.shade100,
+                        ),
+                        children: <Widget>[
+                          for (var i in titles)
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Container(
+                                // height: 32,
                                 child: Text(
-                              "Obs files",
-                              style: fileTitle(size / 2),
-                            )),
-                          ),
-                          for (var item in files)
-                            SizedBox(
-                              width: size.width / 2,
-                              child: Card(
-                                child: ListTile(
-                                  leading: Text(item['id'].toString()),
-                                  title: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushAndRemoveUntil(
+                                  i.toString().toUpperCase(),
+                                  textAlign: TextAlign.center,
+                                  style: fileTitle(size / 1.3),
+                                ),
+                              ),
+                            ),
+                        ]),
+                    TableRow(
+                        decoration: BoxDecoration(
+                            // color: Colors.blueGrey.shade100,
+                            ),
+                        children: <Widget>[
+                          Column(
+                            children: [
+                              for (var i in files)
+                                GestureDetector(
+                                  onTap: (() => Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => FilePage(
-                                                  file: item,
                                                   patient: widget.patient,
+                                                  file: i,
                                                   type: "0",
                                                   user: widget.user,
                                                 )),
                                         (Route<dynamic> route) => true,
-                                      );
-                                    },
-                                    child: Text(item['husband']),
+                                      )),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          i['husband'],
+                                          textAlign: TextAlign.center,
+                                          style: fileTitle(size / 1.3),
+                                        ),
+                                        Text(
+                                          i['created_at']
+                                              .toString()
+                                              .substring(0, 10),
+                                          textAlign: TextAlign.center,
+                                          // style: fileTitle(size / 1.3),
+                                        ),
+                                         Text(
+                                          i['booking'],
+                                          textAlign: TextAlign.center,
+                                          // style: fileTitle(size / 1.3),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  subtitle: Text(item['created_at']
-                                      .toString()
-                                      .substring(0, 10)),
-
-                                  // trailing: T,
                                 ),
-                              ),
-                            )
-                        ],
-                      ),
-                    ),
-                    Visibility(
-                      visible: gynFiles.isNotEmpty,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Center(
-                                child: Text(
-                              "Gynae files",
-                              style: fileTitle(size / 2),
-                            )),
+                            ],
                           ),
-                          for (var item in gynFiles)
-                            SizedBox(
-                              width: size.width / 2,
-                              child: Card(
-                                child: ListTile(
-                                  leading: Text(item['id'].toString()),
-                                  title: GestureDetector(
-                                    onTap: () {
-                                      Navigator.pushAndRemoveUntil(
+                          Column(
+                            children: [
+                              for (var i in gynFiles)
+                                GestureDetector(
+                                  onTap: (() => Navigator.pushAndRemoveUntil(
                                         context,
                                         MaterialPageRoute(
                                             builder: (context) => FilePage(
-                                                  file: item,
                                                   patient: widget.patient,
+                                                  file: i,
                                                   type: "1",
                                                   user: widget.user,
                                                 )),
                                         (Route<dynamic> route) => true,
-                                      );
-                                    },
-                                    child: Text(item['husband']),
+                                      )),
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          i['husband'],
+                                          textAlign: TextAlign.center,
+                                          style: fileTitle(size / 1.3),
+                                        ),
+                                        Text(
+                                          i['created_at']
+                                              .toString()
+                                              .substring(0, 10),
+                                          textAlign: TextAlign.center,
+                                          // style: fileTitle(size / 1.3),
+                                        ),
+                                        Text(
+                                          i['booking'],
+                                          textAlign: TextAlign.center,
+                                          // style: fileTitle(size / 1.3),
+                                        ),
+                                      ],
+                                    ),
                                   ),
-                                  subtitle: Text(item['created_at']
-                                      .toString()
-                                      .substring(0, 10)),
-
-                                  // trailing: T,
                                 ),
-                              ),
-                            )
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
-              )
-            ],
-          ),
+                            ],
+                          )
+                        ])
+                  ]),
+            )
+          ],
         ),
       ),
     );

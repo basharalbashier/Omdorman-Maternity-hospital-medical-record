@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:math';
 
 import 'package:flutter/material.dart';
+import '../constant.dart';
 import '../main.dart';
 import '../models/user_hive.dart';
 import '../widgets/ant_adm_folow.dart';
@@ -28,22 +30,135 @@ class Testo extends StatefulWidget {
 }
 
 class _SearchNameState extends State<Testo> {
+ 
+ List<List> genralList=[];
   @override
   void initState() {
-    doTheShit();
+
     super.initState();
+    for (int i = 0; i < gynAdmList.length; i++) {
+      print(gynAdmList[i].entries.toList());
+    }
+    // gynAdmList.every((element) {
+    //   print(element);
+
+    //   return true;
+    // });
   }
+
+  List<Map<String, dynamic>> gynAdmList = [
+    {
+      //0,3,4,5,6,7,8,9,10,
+      "unit": "1",
+      "gr": "1",
+      "para": "1",
+      "comment": "1",
+
+      "lmp": "2022-2-2",
+      "edd": "2022-11-11",
+      "scan_edd": "scanEddCont.text",
+      "weeks": "43",
+      "past_m_history": "ghfhgjfhghgf",
+      "past_s_history": "gffghghfhgf",
+      "drug_history": "hgfhgfhgfhgfhgfh",
+      "social_history": "hgfhgfhgfhgfhfhg",
+      "hypertention": "1",
+      "diabetes": "1",
+      "multiple_pregnancy": "mul",
+      "others": "oth",
+      "chest_cvs_exam": "hgfhgfjhfuyofiyf",
+      "diagnosis": "dig",
+      "comments_and_social_plans": "uyoguygyuvouybb",
+      "dr_id": "2",
+      "patient_id": "2",
+      "file_id": "2",
+      "updated_at": "2022-12-05T13:40:29.000000Z",
+      "created_at": "2022-12-05T13:40:29.000000Z",
+      "id": 1
+    }
+  ];
+
+  List obsTitles = [
+    'GR',
+    'Para',
+      'comment',
+    'LMP',
+    'EDD',
+    'Scan EDD',
+    'GA',
+    'Past Medical History',
+    'Past Surgical History',
+    'Drug History',
+    'Social History',
+    'Chest CVS  Examination',
+    ' Comments & Special Plans'
+  ];
 
   List dimo = [];
 
   @override
   Widget build(BuildContext context) {
-    final User user = User({}, "token");
+    var size = MediaQuery.of(context).size;
+
     return Scaffold(
-     
         body: SingleChildScrollView(
-            child:
-                obsTeatmentTable(dimo.reversed.toList(), context, {}, user)));
+            child: Column(
+      children: [
+        Table(
+            border: TableBorder.all(width: .1, color: Colors.grey),
+            columnWidths: <int, TableColumnWidth>{
+              0: IntrinsicColumnWidth(),
+              1: IntrinsicColumnWidth(),
+
+              // 1: FlexColumnWidth(),
+              // 9: FlexColumnWidth(3),
+            },
+            children: <TableRow>[
+              for (int i = 0; i < obsTitles.length; i++)
+                TableRow(
+                  children: <Widget>[
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                        height: 32,
+                        child: Center(
+                            child: Text(
+                          obsTitles[i],
+                          // textAlign: TextAlign.center,
+
+                          style: fileTitle(size),
+                        )),
+                      ),
+                    ),
+                    // gynAdmList[i].entries
+                    for (var map in gynAdmList)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 32,
+                          child: Center(
+                              child: Text(map.entries
+                                      // .skip(1)
+                                      // .skip(3)
+                                      // .skip(4)
+                                      // .skip(5)
+                                 
+                                      .skip(1) 
+                                     
+                                      .toList()[i]
+                                      .key.toString()
+                                  // textAlign: TextAlign.center,
+
+                                  // style: fileTitle(size),
+                                  )),
+                        ),
+                      ),
+                  ],
+                ),
+            ])
+    
+      ],
+    )));
   }
 
   doTheShit() async {

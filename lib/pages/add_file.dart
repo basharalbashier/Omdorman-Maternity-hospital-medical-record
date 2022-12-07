@@ -9,7 +9,6 @@ import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../models/blood_group.dart';
 import '../models/error_message.dart';
 import '../models/user_hive.dart';
 
@@ -321,12 +320,13 @@ class _AddPatientState extends State<AddFile> {
                       },
                       body: msg)
                   .then((value) {
+                    print(value.body);
                       errono("File Added Successfully","File Added Successfully", context, true,
                  Icon(Icons.check,color: Colors.teal,), 2);
                     Navigator.of(context).pop();
                  
               });
-            } catch (e) {
+            } catch (e) {print(e);
                   errono("Connection Error", "Connection Error", context, true,
                   Container(), 2);
               setState(() {

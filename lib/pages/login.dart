@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import '../constant.dart';
 import '../controller/simpleUIController.dart';
 import '../main.dart';
@@ -272,30 +273,7 @@ class _LoginViewState extends State<LoginView> {
                   ),
 
                   /// Navigate To Login Screen
-                  GestureDetector(
-                    onTap: () {
-                      // Navigator.pop(context);
-
-                      emailController.clear();
-                      passwordController.clear();
-                      _formKey.currentState?.reset();
-                      simpleUIController.isObscure.value = true;
-                    },
-                    child: RichText(
-                      text: TextSpan(
-                        text: 'Do you need any help?',
-                        style: kHaveAnAccountStyle(size),
-                        children: [
-                          TextSpan(
-                            text: " Contact us",
-                            style: kLoginOrSignUpTextStyle(
-                              size,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
+             
                 ],
               ),
             ),

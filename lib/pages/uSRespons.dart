@@ -9,12 +9,14 @@ import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../main.dart';
+import '../models/error_message.dart';
+import '../models/make_request.dart';
 import '../models/user_hive.dart';
 import '../widgets/title.dart';
 
 class UsResponse extends StatefulWidget {
   final User user;
-  final request;
+  final Map request;
   const UsResponse({
     super.key,
     required this.user,
@@ -863,7 +865,9 @@ var numPregnancesCon=TextEditingController();
                   ),
                 ),
               ),
-              Padding(
+              
+              
+               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: MaterialButton(
                   onPressed: () async {
@@ -871,64 +875,46 @@ var numPregnancesCon=TextEditingController();
                       showAll = false;
                     });
 
-                    try {
-                      await http
-                          .post(Uri.parse(url + "usresponse/add"),
-                              headers: {
-                                'Content-type': 'application/json',
-                                'Accept': 'application/json',
-                                'Authorization': 'Baerer ${widget.user.token}'
-                              },
-                              body: jsonEncode({
-                                "number_of_pregnancies": whatIsnumPregnan,
-                                "fetal_heart":
-                                    fetalHeart ? "Positive" : "Negative",
-                                "presentation": whatIspresentation,
-                                "bpd": bpd.text,
-                                "bpd_week": bpd_week.text,
-                                "hc": hc.text,
-                                "hc_week": hc_week.text,
-                                "fl": fl.text,
-                                "fl_week": fl_week.text,
-                                "ac": ac.text,
-                                "ac_week": ac_week.text,
-                                "crl": crl.text,
-                                "crl_week": crl_week.text,
-                                "efw": efw.text,
-                                "uss_edd": uss_edd.text,
-                                "placental_site": whatIsplacental,
-                                "placental_site_comm":
-                                    placental_site_comm.text,
-                                "mvp": whatIsanot,
-                                "structural_abnormalities":
-                                    structural_aabnormalities.text,
-                                "biophysical_profile": whatIsbioph,
-                                "doppler_edf": whatIsdoppler,
-                                "comm": comm.text,
-                                "seen_at": DateTime.now().toIso8601String(),
-                                "request_id": widget.request['id'].toString(),
-                                "dr_id": widget.request['dr_id'].toString(),
-                                "patient_id":
-                                    widget.request['patient_id'].toString(),
-                                "file_id":
-                                    widget.request['file_id'].toString(),
-                                "money": comm.text,
+                    var body = {
+                      "number_of_pregnancies": whatIsnumPregnan,
+                      "fetal_heart": fetalHeart ? "Positive" : "Negative",
+                      "presentation": whatIspresentation,
+                      "bpd": bpd.text,
+                      "bpd_week": bpd_week.text,
+                      "hc": hc.text,
+                      "hc_week": hc_week.text,
+                      "fl": fl.text,
+                      "fl_week": fl_week.text,
+                      "ac": ac.text,
+                      "ac_week": ac_week.text,
+                      "crl": crl.text,
+                      "crl_week": crl_week.text,
+                      "efw": efw.text,
+                      "uss_edd": uss_edd.text,
+                      "placental_site": whatIsplacental,
+                      "placental_site_comm": placental_site_comm.text,
+                      "mvp": whatIsanot,
+                      "structural_abnormalities":
+                          structural_aabnormalities.text,
+                      "biophysical_profile": whatIsbioph,
+                      "doppler_edf": whatIsdoppler,
+                      "comm": comm.text,
+                      "seen_at": DateTime.now().toString(),
+                      "request_id": widget.request['id'].toString(),
+                      "dr_id": widget.request['dr_id'].toString(),
+                      "patient_id": widget.request['patient_id'].toString(),
+                      "file_id": widget.request['file_id'].toString(),
+                      "money": 'free',
+                    };
+                    String respons = await makeHttpRequest(
+                         "${url}usresponse/add",jsonEncode(body) , true, widget.user);
 
-                             
-                              }))
-                          .then((value) {
-                        print(value.body);
-                        // if (value.statusCode == 200 ||
-                        //     value.statusCode == 201) {
-                        //   Navigator.of(context).pop();
-                        // }
-                        setState(() {
-                          showAll = true;
-                        });
-                      });
-                    } catch (e) {
+                    if (respons == "Successfully Sent") {
+                      Navigator.of(context).pop();
+                    } else {
+                      errono(respons, respons, context, true, Container(), 3);
                       setState(() {
-                        showAll = true;
+                        showAll = !showAll;
                       });
                     }
                   },
@@ -939,6 +925,7 @@ var numPregnancesCon=TextEditingController();
                   ),
                 ),
               ),
+    
             ],
           ),
         ),

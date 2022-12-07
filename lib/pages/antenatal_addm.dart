@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
@@ -7,9 +9,13 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
+import '../models/user_hive.dart';
 
 class AntenatalAddmission extends StatefulWidget {
-  const AntenatalAddmission({super.key});
+  final User user;
+  final Map patient;
+  final Map file;
+  const AntenatalAddmission({super.key, required this.user, required this.patient, required this.file});
 
   @override
   State<AntenatalAddmission> createState() => _AddPatientState();
@@ -35,21 +41,23 @@ class _AddPatientState extends State<AntenatalAddmission> {
   var unit = 1;
 
   bool pale = false;
-
-    bool jaundicw = false;
-      bool cyan = false;
-        bool odema = false;
-          bool espll = false;
-
-
-
+  bool jaundice = false;
+  bool cyan = false;
+  bool odema = false;
+  bool espll = false;
+@override
+  void initState() {
+    genralList=[["Pale",pale],["Jaundice",jaundice],["Cynosis",cyan],["Odema",odema],['Espll',espll]];
+    super.initState();
+  }
   var lie = ['Longitudinal', 'Transeverse', 'Oblique'];
 
   var whichlie = '';
 
-  var booking = ['PW', 'First Class', 'GW'];
+List<List> genralList=[];
 
-  var whatIsBooking = '';
+List<String> choosenGenalList=[];
+ 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -75,8 +83,7 @@ class _AddPatientState extends State<AntenatalAddmission> {
                   // md: 3,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child:
-                    Container(
+                    child: Container(
                       height: 100,
 
                       alignment: Alignment(0, 0),
@@ -96,7 +103,6 @@ class _AddPatientState extends State<AntenatalAddmission> {
                         // The validator receives the text that the user has entered.
                       ),
                     ),
-                 
                   ),
                 ),
                 ResponsiveGridCol(
@@ -149,12 +155,8 @@ class _AddPatientState extends State<AntenatalAddmission> {
                         // The validator receives the text that the user has entered.
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter username';
-                          } else if (value.length < 4) {
-                            return 'at least enter 4 characters';
-                          } else if (value.length > 13) {
-                            return 'maximum character is 13';
-                          }
+                            return 'Please enter Pulse';
+                          } 
                           return null;
                         },
                       ),
@@ -184,12 +186,8 @@ class _AddPatientState extends State<AntenatalAddmission> {
                         // The validator receives the text that the user has entered.
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter username';
-                          } else if (value.length < 4) {
-                            return 'at least enter 4 characters';
-                          } else if (value.length > 13) {
-                            return 'maximum character is 13';
-                          }
+                            return 'Please enter Bp';
+                          } 
                           return null;
                         },
                       ),
@@ -254,129 +252,32 @@ class _AddPatientState extends State<AntenatalAddmission> {
                     ),
                   ),
                 ),
-
-               
+                for(var i in genralList)
                 ResponsiveGridCol(
                   xs: 4,
                   md: 2,
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Container(
-                      height: 100,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: Row(children: [
-                        Checkbox(value: pale, onChanged: (v){
-
-                          setState(() {
-                            pale=!pale;
-                          });
-                        }),
-                          Text("Pale")
-                      ],)
-                      
-                     
-                    ),
+                        height: 100,
+                        alignment: Alignment(0, 0),
+                        // color: Colors.green,
+                        child: Row(
+                          children: [
+                            Checkbox(
+                                value: i[1],
+                                onChanged: (v) {
+                                  v!?choosenGenalList.add(i[0]):choosenGenalList.remove(i[0]);
+                                  setState(() {
+                                    i[1] = !i[1];
+                                  });
+                                }),
+                            Text(i[0])
+                          ],
+                        )),
                   ),
                 ),
-                
-   ResponsiveGridCol(
-                  xs: 4,
-                  md: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: Row(children: [
-                        Checkbox(value: jaundicw, onChanged: (v){
-
-                          setState(() {
-                            jaundicw=!jaundicw;
-                          });
-                        }),
-                          Text("Jaundice")
-                      ],)
-                      
-                     
-                    ),
-                  ),
-                ),
-                   ResponsiveGridCol(
-                  xs: 4,
-                  md: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: Row(children: [
-                        Checkbox(value: cyan, onChanged: (v){
-
-                          setState(() {
-                            cyan=!cyan;
-                          });
-                        }),
-                          Text("Cynosis")
-                      ],)
-                      
-                     
-                    ),
-                  ),
-                ),
-                   ResponsiveGridCol(
-                  xs: 4,
-                  md: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: Row(children: [
-                        Checkbox(value: odema, onChanged: (v){
-
-                          setState(() {
-                            odema=!odema;
-                          });
-                        }),
-                          Text("Odema")
-                      ],)
-                      
-                     
-                    ),
-                  ),
-                ),
-                   ResponsiveGridCol(
-                  xs: 4,
-                  md: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 100,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.green,
-                      child: Row(children: [
-                        Checkbox(value: espll, onChanged: (v){
-
-                          setState(() {
-                            espll=!espll;
-                          });
-                        }),
-                        Text("Espll")
-                      ],)
-                      
-                     
-                    ),
-                  ),
-                ),
-                
-
-
-
-
+             
                 ResponsiveGridCol(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -435,7 +336,6 @@ class _AddPatientState extends State<AntenatalAddmission> {
                     ),
                   ),
                 ),
-                
                 ResponsiveGridCol(
                   xs: 4,
                   md: 2,
@@ -662,7 +562,9 @@ class _AddPatientState extends State<AntenatalAddmission> {
                   ),
                 ),
               ]),
-              SizedBox(height: 30,),
+              SizedBox(
+                height: 30,
+              ),
               submit()
             ],
           ),
@@ -688,20 +590,33 @@ class _AddPatientState extends State<AntenatalAddmission> {
             ),
           ),
           onPressed: () async {
+            var body = json.encode({
+              'unit': unit.toString(),
+              'complaint': complaintController.text,
+              'history_presenting_illness': historyController.text,
+              'pulse': pulseController.text,
+              'bp': bpController.text,
+              'temp': tempController.text,
+              'gentral_condition': generalController.text,
+              'gentral_condition_list': choosenGenalList.toString(),
+              'cvs_chest_examination': cvsController.text,
+              'fundel_height': fundalController.text,
+              'lie': whichlie,
+              'presentation': persntaController.text,
+              'fhr': fhrController.text,
+              'fm': fmController.text,
+              'vaginal_exam': vaginalController.text,
+              'diagnosis': diaController.text,
+              'immediat_instruction': immediateController.text,
+
+              'dr_id':widget.user.user!['id'],
+              'patient_id':widget.patient['id'],
+              'file_id':widget.file['id'],
+      
+         
+            });
             try {
               await http.post(Uri.parse('${url}anten'), headers: headr, body: {
-                'unit': unit.toString(),
-                'booking': whatIsBooking,
-                'name': complaintController.text,
-                // 'age': ageController.text,
-                // 'tel': telController.text,
-                // 'occup': occupController.text,
-                // 'residance': reseidancenameController.text,
-                // 'husband': husbandController.text,
-                // 'husband_tel': husbandTelController.text,
-                // 'husband_occup': husbandOccupController.text,
-                // 'blood': whatIsBlood.toString(),
-                // 'allerg': allergController.text,
                 'insurance': whichlie.toString(),
               }).then((value) {
                 print('Value error:  ${value.body}');

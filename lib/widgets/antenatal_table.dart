@@ -179,6 +179,7 @@ var controllers=[bp,ga,fl,pres,eng,fh,hb,urine,comment,next_visit];
                             }
                           });
                         } catch (e) {
+                             print(e);
                           setState(() => show = !show);
                         }
                       }

@@ -1,10 +1,12 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/main.dart';
+import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/widgets/title.dart';
+import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -31,7 +33,7 @@ class _MyHomePageState extends State<AddObs> {
   var remain = TextEditingController();
   var grController = TextEditingController();
   var paraController = TextEditingController();
-
+  var commController = TextEditingController();
   var lmpCont = TextEditingController();
   var eddCont = TextEditingController();
   var scanEddCont = TextEditingController();
@@ -42,8 +44,8 @@ class _MyHomePageState extends State<AddObs> {
   var familyHistoryCont = TextEditingController();
   var chestCont = TextEditingController();
   var gAcont = TextEditingController();
-  var comment = TextEditingController();
-  String fineee = '';
+  var commentAndSocialController = TextEditingController();
+  bool show = true;
   List<String> paraInfo = [
     '',
     '',
@@ -72,14 +74,25 @@ class _MyHomePageState extends State<AddObs> {
   ];
   @override
   void initState() {
+    genralList = [
+      ["Hypertention", hype],
+      ["Diabetes", diabe],
+      ["Multiple Pregnancy", multi]
+    ];
+
     super.initState();
   }
 
+  List genralList = [];
+  bool hype = false;
+  bool diabe = false;
+  bool multi = false;
+
   @override
   Widget build(BuildContext context) {
-    fineee = paraInfo.toString().replaceAll('[', ' ');
-    fineee = paraInfo.toString().replaceAll(']', ' ');
-    fineee = paraInfo.toString().replaceAll(',', ' ');
+    if (!show) {
+      return Scaffold(body: waitingWidget(widget.user.user!['unit']));
+    }
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: SizedBox(
@@ -110,15 +123,7 @@ class _MyHomePageState extends State<AddObs> {
                             width: size.width / 4,
                             child: TextField(
                               onChanged: (value) {
-                                if (checkIfInt(value)) {
-                                  // if (int.parse(grController.text) > 0 &&
-                                  //     int.parse(paraController.text) > 0) {
-                                  //   setState(() {
-                                  //     remain = int.parse(grController.text) -
-                                  //         int.parse(paraController.text);
-                                  //   });
-                                  // }
-                                } else {
+                                if (!checkIfInt(value)) {
                                   setState(() {
                                     grController.text = '';
                                   });
@@ -156,12 +161,29 @@ class _MyHomePageState extends State<AddObs> {
                                   });
                                 }
                               },
+
                               // decoration: InputDecoration(
                               //     suffix: Text('+  $remain'),
                               //     label: Text('Para')),
                             )),
                       ],
                     ),
+                  ),
+                ),
+                ResponsiveGridCol(
+                  lg: 12,
+                  child: Container(
+                    height: 100,
+                    alignment: Alignment(0, 0),
+                    // color: Colors.purple,
+                    child: SizedBox(
+                        width: size.width / 1.1,
+                        child: TextField(
+                          maxLines: 5,
+                          controller: commController,
+                          decoration:
+                              InputDecoration(label: const Text(' Comments')),
+                        )),
                   ),
                 ),
               ]),
@@ -186,7 +208,7 @@ class _MyHomePageState extends State<AddObs> {
                             onSubmitted: (v) {
                               DateTime date = DateFormat("yyyy-MM-dd").parse(v);
                               var edd = DateTime(
-                                  date.year, date.month + 9, date.day + 9);
+                                  date.year, date.month + 9, date.day + 7);
                               var dateNow = DateTime.now();
                               var def = edd.difference(dateNow).inDays;
 
@@ -306,6 +328,58 @@ class _MyHomePageState extends State<AddObs> {
                     height: 100,
                     alignment: Alignment(0, 0),
                     // color: Colors.purple,
+                    child: Text(
+                      'Family History',
+                      style: fileTitle(size),
+                    ),
+                  ),
+                ),
+                for (int i = 0; i < genralList.length; i++)
+                  ResponsiveGridCol(
+                    xs: 6,
+                    md: 3,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          height: 100,
+                          alignment: Alignment(0, 0),
+                          // color: Colors.green,
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                  value: genralList[i][1],
+                                  onChanged: (v) {
+                                    setState(() {
+                                      genralList[i][1] = v;
+                                    });
+                                  }),
+                              Text(genralList[i][0])
+                            ],
+                          )),
+                    ),
+                  ),
+                ResponsiveGridCol(
+                  lg: 12,
+                  child: Container(
+                    height: 100,
+                    alignment: Alignment(0, 0),
+                    // color: Colors.purple,
+                    child: SizedBox(
+                        width: size.width / 1.1,
+                        child: TextField(
+                          maxLines: 5,
+                          controller: familyHistoryCont,
+                          decoration:
+                              InputDecoration(label: const Text(' Others')),
+                        )),
+                  ),
+                ),
+                ResponsiveGridCol(
+                  lg: 12,
+                  child: Container(
+                    height: 100,
+                    alignment: Alignment(0, 0),
+                    // color: Colors.purple,
                     child: SizedBox(
                         width: size.width / 1.1,
                         child: TextField(
@@ -326,7 +400,7 @@ class _MyHomePageState extends State<AddObs> {
                         width: size.width / 1.1,
                         child: TextField(
                           maxLines: 5,
-                          controller: comment,
+                          controller: commentAndSocialController,
                           decoration: InputDecoration(
                               label: const Text(' Comments & Special Plans')),
                         )),
@@ -340,44 +414,46 @@ class _MyHomePageState extends State<AddObs> {
                       color: Colors.amber,
                       child: Text('Submit'),
                       onPressed: (() async {
+                          setState(() {
+                        show=!show;
+                      });
                         var body = jsonEncode({
-                          "unit": widget.user.user!['unit'],
-                          "gr":grController.text,
-                          "para": paraController.text,
-                          "one": widget.user.user!['unit'],
-                          "two": widget.user.user!['unit'],
-                          "three": widget.user.user!['unit'],
-                          "four": widget.user.user!['unit'],
-                          "five": widget.user.user!['unit'],
-                          "six": widget.user.user!['unit'],
-                          "seven": widget.user.user!['unit'],
-                          "eight": widget.user.user!['unit'],
-                          "nine": widget.user.user!['unit'],
-                          "ten": 'ten',
+                          "gr": grController.text,
+                          "para": "${paraController.text} + ${remain.text}",
+                          "comment": commController.text,
                           "lmp": lmpCont.text,
                           "edd": eddCont.text,
-                          "scan_edd": "scanEddCont.text",
-                          "weeks":gAcont.text,
+                          "scan_edd": scanEddCont.text,
+                          "weeks": gAcont.text,
                           "past_m_history": pastMedicalCont.text,
-                          "past_s_history":pastSurgicalCont.text,
+                          "past_s_history": pastSurgicalCont.text,
                           "drug_history": drugHistCont.text,
                           "social_history": socialHistorCont.text,
-                          "hypertention": widget.user.user!['unit'],
-                          "diabetes": widget.user.user!['unit'],
-                          "multiple_pregnancy":'mul',
-                          "others": 'oth',
-                          "chest_cvs_exam":chestCont.text,
-                          "diagnosis":'dig',
+                          "hypertention": genralList[0][1].toString(),
+                          "diabetes": genralList[1][1].toString(),
+                          "multiple_pregnancy": genralList[2][1].toString(),
+                          "others": familyHistoryCont.text,
+                          "chest_cvs_exam": chestCont.text,
                           "comments_and_social_plans":
-                             comment.text,
+                              commentAndSocialController.text,
                           "dr_id": widget.user.user!['id'].toString(),
                           "patient_id": widget.patient['id'].toString(),
-                          "file_id":widget.file['id'].toString(),
+                          "file_id": widget.file['id'].toString(),
                         });
-                        makeHttpRequest(url + "obs/add", body, true);
+                     String respons=await   makeHttpRequest(url + "obs/add", body, true,widget.user);
+
+                     if(respons== "Successfully Sent"){
+                      Navigator.of(context).pop();
+                     }else{
+                      errono(respons, respons, context, true, Container(), 3);
+                      setState(() {
+                        show=!show;
+                      });
+                     }
                       })),
                 ),
               )
+           
             ],
           ),
         ),

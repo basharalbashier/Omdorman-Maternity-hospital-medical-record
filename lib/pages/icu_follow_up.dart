@@ -1,14 +1,24 @@
+import 'dart:convert';
+
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
+import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
+import '../main.dart';
+import '../models/error_message.dart';
+import '../models/make_request.dart';
+import '../models/user_hive.dart';
 import '../widgets/accept_or_not_lab_request.dart';
 
 class IcuFollow extends StatefulWidget {
+      final Map file;
+  final Map patient;
+  final User user;
   const IcuFollow({
-    super.key,
+    super.key, required this.file, required this.patient, required this.user,
   });
 
   @override
@@ -16,12 +26,12 @@ class IcuFollow extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<IcuFollow> {
-  var pulsCont=TextEditingController();
-  var bpCont=TextEditingController();
-  var mapCont=TextEditingController();
-  var brifcont=TextEditingController();
+  var pulsCont = TextEditingController();
+  var bpCont = TextEditingController();
+  var mapCont = TextEditingController();
+  var brifcont = TextEditingController();
   var reactiNCont = TextEditingController();
-  var reactEController = TextEditingController();
+  var reactYController = TextEditingController();
   var pupNCont = TextEditingController();
   var pupECont = TextEditingController();
   var yCont = TextEditingController();
@@ -80,16 +90,14 @@ class _MyHomePageState extends State<IcuFollow> {
   var activ3Cont = TextEditingController();
 
   var activ4Cont = TextEditingController();
-  var activ5Cont = TextEditingController();
 
 
-    var postCont = TextEditingController();
+  var postCont = TextEditingController();
   var organisCont = TextEditingController();
   var sensiCont = TextEditingController();
 
   var centeralCont = TextEditingController();
   var catherCont = TextEditingController();
-
 
   var darinCont = TextEditingController();
   var planCoun = TextEditingController();
@@ -111,6 +119,8 @@ class _MyHomePageState extends State<IcuFollow> {
   List renalList = [];
   List gitList = [];
   var sponList = [];
+
+  bool show = true;
   @override
   void initState() {
     setTable = [
@@ -197,7 +207,7 @@ class _MyHomePageState extends State<IcuFollow> {
       activ2Cont,
       activ3Cont,
       activ4Cont,
-      activ5Cont
+
     ];
     super.initState();
   }
@@ -220,6 +230,10 @@ class _MyHomePageState extends State<IcuFollow> {
   var fifteenC = TextEditingController();
   @override
   Widget build(BuildContext context) {
+    if(!show){
+
+      return Scaffold(body: waitingWidget('jd'),);
+    }
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: SizedBox(
@@ -428,7 +442,7 @@ class _MyHomePageState extends State<IcuFollow> {
                       child: TextField(
                         onSubmitted: (v) {},
                         keyboardType: TextInputType.number,
-                        controller: reactEController,
+                        controller: reactYController,
                         decoration: const InputDecoration(label: Text("Y:")),
                       )),
                   SizedBox(
@@ -1206,7 +1220,107 @@ class _MyHomePageState extends State<IcuFollow> {
                       )),
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: MaterialButton(
+                    color: Colors.amber,
+                    child: Text('Submit'),
+                    onPressed: (() async {
+                      setState(() {
+                        show = !show;
+                      });
+                      var body = jsonEncode({
+                        "init_diag": initC.text,
+                        "icu_diag": icuC.text,
+                        "pro_one": activ1Cont.text,
+                        "pro_two": activ2Cont.text,
+                        "pro_three": activ3Cont.text,
+                        "pro_four": activ4Cont.text,
+                        "brif_history": brifcont.text,
+                        "recent_in_24": residC.text,
+                        "gcs": gcsC.text,
+                        "e": eC.text,
+                        "v": vC.text,
+                        "m": mC.text,
+                        "fifteen": fifteenC.text,
+                        "pup_y": yCont.text,
+                        "pup_n": pupNCont.text,
+                        "react_y": reactYController.text,
+                        "react_n": reactiNCont.text,
+                        "sedat_drug": sedController.text,
+                        "analgesia": anal.text,
+                        "paraly": para.text,
+                        "anti": anticon.text,
+                        "sedation": sedaCont.text,
+                        "ct": ctController.text,
+                        "mri": mriController.text,
+                        "pulse": pulsCont.text,
+                        "bp": bpCont.text,
+                        "vassopr": vassController.text,
+                        "inotro": inotropContorller.text,
+                        "ecg_echo": ecgController.text,
+                        "with_o2": sponC.text,
+                        "without_o2": witC.text,
+                        "pulmonary_rr": rrCont.text,
+                        "spo2": spoC.text,
+                        "chest_exam": chestC.text,
+                        "fio2": fioC.text,
+                        "peep": peepC.text,
+                        "map": mapC.text,
+                        "po2": poC.text,
+                        "mode": modeC.text,
+                        "vt": vtC.text,
+                        "rr": rrCont.text,
+                        "pip": pipC.text,
+                        "platea": platC.text,
+                        "resistance": residC.text,
+                        "compliance": compC.text,
+                        "rsbi": rsbC.text,
+                        "nif": nifC.text,
+                        "git": gitC.text,
+                        "us": usC.text,
+                        "fetal_heart": fetalC.text,
+                        "surgical_drains": surC.text,
+                        "postive_culture_site": postCont.text,
+                        "organism": organisCont.text,
+                        "sensitive_to": sensiCont.text,
+                        "central_site": centeralCont.text,
+                        "drains": darinCont.text,
+                        "ett": ettCont.text,
+                        "na": naC.text,
+                        "k": kCont.text,
+                        "ci": ciCount.text,
+                        "bicarb": biCount.text,
+                        "po4": po4Count.text,
+                        "bun": bunCount.text,
+                        "cr": crCount.text,
+                        "avg": avgCount.text,
+                        "intake": intakCount.text,
+                        "output": outCount.text,
+                        "fluid": fluidCount.text,
+                        "stress_ulcer": streesCont.text,
+                        "feeding":feedCont.text,
+                        "dvt": dvtCont.text,
+                        "activity_pt": actiPtCont.text,
+                        "plan_of_management": planCoun.text,
+                        "dr_id": widget.user.user!['id'].toString(),
+                        "patient_id": widget.patient['id'].toString(),
+                        "file_id": widget.file['id'].toString(),
+                      });
+                      String respons =
+                          await makeHttpRequest(url + "icufollow/add", body, true,widget.user);
 
+                      if (respons == "Successfully Sent") {
+                        Navigator.of(context).pop();
+                      } else {
+                        errono(
+                            respons, respons, context, true, Container(), 3);
+                        setState(() {
+                          show = !show;
+                        });
+                      }
+                    })),
+              )
             ],
           ),
         ),

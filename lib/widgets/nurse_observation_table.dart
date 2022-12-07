@@ -36,7 +36,7 @@ List<String> keys = [
   "b_p",
   "urine_output_n",
   "urine_output_d",
-  "level_of_conaciouance",
+  "level_of_conaciouances",
   "o_two",
   "odema_general",
   "odema_ll",
@@ -193,9 +193,6 @@ Future<void> addnurseObserTable(
                         final body = jsonEncode({
                           for (int i = 1; i < keys.length - 1; i++)
                             keys[i]: controllers[i - 1].text,
-
-                          // 'inv': invController.text,
-                          // 'result': resultController.text,
                           "nurse_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),

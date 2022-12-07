@@ -1,15 +1,21 @@
+import 'dart:convert';
+
+import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 import '../constant.dart';
+import '../main.dart';
+import '../models/error_message.dart';
+import '../models/make_request.dart';
+import '../models/user_hive.dart';
 
 class VaginalExam extends StatefulWidget {
-  const VaginalExam({super.key});
+    final Map file;
+  final Map patient;
+  final User user;
+  const VaginalExam({super.key, required this.file, required this.patient, required this.user});
 
   @override
   State<VaginalExam> createState() => _VaginalExamState();
@@ -29,7 +35,7 @@ class _VaginalExamState extends State<VaginalExam> {
   var caput = TextEditingController();
   var mulding = TextEditingController();
   var if_ruptured_time = TextEditingController();
-
+bool show=true;
   var persinting_postions = [
     'R O L',
     'L O L',
@@ -97,6 +103,11 @@ class _VaginalExamState extends State<VaginalExam> {
 
   @override
   Widget build(BuildContext context) {
+
+    if(!show){
+
+      return Scaffold(body: waitingWidget(widget.user.user!['unit']),);
+    }
     size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -135,7 +146,7 @@ class _VaginalExamState extends State<VaginalExam> {
                 child: ResponsiveGridRow(children: [
                   ResponsiveGridCol(
                     xs: 10,
-                    md: 2,
+                    md: 4,
                     child: PopupMenuButton<int>(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -178,7 +189,7 @@ class _VaginalExamState extends State<VaginalExam> {
 
                   ResponsiveGridCol(
                    xs: 10,
-                    md: 2,
+                    md: 4,
                     child: PopupMenuButton<int>(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -218,7 +229,7 @@ class _VaginalExamState extends State<VaginalExam> {
                   //  textFi("Dilatation", dilatation, true),
                   ResponsiveGridCol(
           xs: 10,
-                    md: 2,
+                    md: 4,
                     child: PopupMenuButton<int>(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -261,7 +272,7 @@ class _VaginalExamState extends State<VaginalExam> {
 
                   ResponsiveGridCol(
                  xs: 10,
-                    md: 2,
+                    md: 4,
                     child: PopupMenuButton<int>(
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
@@ -658,6 +669,56 @@ class _VaginalExamState extends State<VaginalExam> {
                 ),
               )
             ])
+          ,
+            Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: MaterialButton(
+                      color: Colors.amber,
+                      child: Text('Submit'),
+                      onPressed: (() async {
+                          setState(() {
+                        show=!show;
+                      });
+                        var body = jsonEncode({
+                          "dil": dilatation.text,
+                          "position_cx": postion.text,
+                          "eff": effacement.text,
+                          "cons": consistency.text,
+                          "position": postion_presting.text,
+                          "station": station.text,
+                          "cap": caput.text,
+                          "moul": mulding.text,
+                          "intact_rup": whatIsintact_or_rupured,
+                          "time": if_ruptured_time.text,
+                          "amount": amount.text,
+                          "mec": meconium.text,
+                          "hb": hb.text,
+                          "blood": whatIsBlood,
+                          "urine": urine.text,
+                          "uss": uss.text,
+                          "ctg": ctg.text,
+                          "comm":
+                              others.text,
+                          "dr_id": widget.user.user!['id'].toString(),
+                          "patient_id": widget.patient['id'].toString(),
+                          "file_id": widget.file['id'].toString(),
+                        });
+                     String respons=await   makeHttpRequest(url + "vagin/add", body, true,widget.user);
+
+                     if(respons== "Successfully Sent"){
+                      Navigator.of(context).pop();
+                     }else{
+                      errono(respons, respons, context, true, Container(), 3);
+                      setState(() {
+                        show=!show;
+                      });
+                     }
+                      })),
+                ),
+              )
+           
+          
           ],
         ),
       ),

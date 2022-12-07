@@ -1,18 +1,32 @@
+import 'dart:convert';
+
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
+import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 import '../constant.dart';
+import '../main.dart';
 import '../models/check_input_isinteger.dart';
+import '../models/error_message.dart';
+import '../models/make_request.dart';
+import '../models/user_hive.dart';
 import '../widgets/accept_or_not_lab_request.dart';
 
 class IcuAddmission extends StatefulWidget {
+  final Map file;
+  final Map patient;
+  final User user;
   final int whichCu;
   const IcuAddmission({
-    super.key, required this.whichCu,
+    super.key,
+    required this.whichCu,
+    required this.file,
+    required this.patient,
+    required this.user,
   });
 
   @override
@@ -20,28 +34,21 @@ class IcuAddmission extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<IcuAddmission> {
-  bool _hasTekenCare = F;
-  var remain = TextEditingController();
-  var grController = TextEditingController();
-  var paraController = TextEditingController();
+  bool _hasTekenCare = false;
+  var indiOfController = TextEditingController();
+  var initialDiaController = TextEditingController();
+  var probOneController = TextEditingController();
 
-  var lmpCont = TextEditingController();
-  var eddCont = TextEditingController();
-  var scanEddCont = TextEditingController();
-  var pastMedicalCont = TextEditingController();
-  var pastSurgicalCont = TextEditingController();
-  var drugHistCont = TextEditingController();
-  var socialHistorCont = TextEditingController();
-  var familyHistoryCont = TextEditingController();
-  var chestCont = TextEditingController();
-  var gAcont = TextEditingController();
-  var comment = TextEditingController();
-  bool dm = F;
-  bool hypert = F;
-  bool cardi = F;
-  bool thy = F;
-  bool others = F;
+  var problemTwoController = TextEditingController();
+  var proThreeController = TextEditingController();
+  var probFourContrller = TextEditingController();
+  var detaiColntroller = TextEditingController();
+  var pmhController = TextEditingController();
+  var modOfDelivery = TextEditingController();
+  var wightController = TextEditingController();
+  var gestatiolaAge = TextEditingController();
 
+  bool show = true;
   @override
   void initState() {
     super.initState();
@@ -49,6 +56,11 @@ class _MyHomePageState extends State<IcuAddmission> {
 
   @override
   Widget build(BuildContext context) {
+    if (!show) {
+      return Scaffold(
+        body: waitingWidget('dd'),
+      );
+    }
     var size = MediaQuery.of(context).size;
     return Scaffold(
       body: SizedBox(
@@ -61,7 +73,7 @@ class _MyHomePageState extends State<IcuAddmission> {
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  '${widget.whichCu==0?"IC":"HD"}U Admission',
+                  '${widget.whichCu == 0 ? "IC" : "HD"}U Admission',
                   style: kLoginTitleStyle(size, Colors.black),
                 ),
               ),
@@ -75,9 +87,25 @@ class _MyHomePageState extends State<IcuAddmission> {
                     child: SizedBox(
                         width: size.width / 1.1,
                         child: TextField(
-                          controller: comment,
+                          controller: gestatiolaAge,
+                          decoration:
+                              InputDecoration(label: Text('Gestational Age')),
+                        )),
+                  ),
+                ),
+                ResponsiveGridCol(
+                  lg: 12,
+                  child: Container(
+                    height: 100,
+                    alignment: Alignment(0, 0),
+                    // color: Colors.purple,
+                    child: SizedBox(
+                        width: size.width / 1.1,
+                        child: TextField(
+                          controller: indiOfController,
                           decoration: InputDecoration(
-                              label:  Text('Indication of ${widget.whichCu==0?"IC":"HD"}U admission')),
+                              label: Text(
+                                  'Indication of ${widget.whichCu == 0 ? "IC" : "HD"}U admission')),
                         )),
                   ),
                 ),
@@ -113,7 +141,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                     child: SizedBox(
                         width: size.width / 1.1,
                         child: TextField(
-                          controller: comment,
+                          controller: initialDiaController,
                           decoration: InputDecoration(
                               label: const Text('Initial diagnosis')),
                         )),
@@ -149,7 +177,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                               child: TextField(
                                 onSubmitted: (v) {},
                                 keyboardType: TextInputType.number,
-                                controller: lmpCont,
+                                controller: probOneController,
                                 decoration:
                                     const InputDecoration(label: Text('1')),
                               )),
@@ -163,7 +191,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                               child: TextField(
                                 onSubmitted: (v) {},
                                 keyboardType: TextInputType.number,
-                                controller: lmpCont,
+                                controller: problemTwoController,
                                 decoration:
                                     const InputDecoration(label: Text('2')),
                               )),
@@ -177,7 +205,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                               child: TextField(
                                 onSubmitted: (v) {},
                                 keyboardType: TextInputType.number,
-                                controller: lmpCont,
+                                controller: proThreeController,
                                 decoration:
                                     const InputDecoration(label: Text('3')),
                               )),
@@ -191,7 +219,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                               child: TextField(
                                 onSubmitted: (v) {},
                                 keyboardType: TextInputType.number,
-                                controller: lmpCont,
+                                controller: probFourContrller,
                                 decoration:
                                     const InputDecoration(label: Text('4')),
                               )),
@@ -201,7 +229,80 @@ class _MyHomePageState extends State<IcuAddmission> {
                   ),
                 ),
               ),
-            
+              ResponsiveGridRow(children: [
+                ResponsiveGridCol(
+                  lg: 12,
+                  child: Container(
+                    height: 100,
+                    alignment: Alignment(0, 0),
+                    // color: Colors.purple,
+                    child: SizedBox(
+                        width: size.width / 1.1,
+                        child: TextField(
+                          maxLines: 5,
+                          controller: gestatiolaAge,
+                          decoration:
+                              InputDecoration(label: Text('Detailed History')),
+                        )),
+                  ),
+                ),
+                ResponsiveGridCol(
+                  lg: 12,
+                  child: Container(
+                    height: 100,
+                    alignment: Alignment(0, 0),
+                    // color: Colors.purple,
+                    child: SizedBox(
+                        width: size.width / 1.1,
+                        child: TextField(
+                          controller: pmhController,
+                          decoration: InputDecoration(label: const Text('PMH')),
+                        )),
+                  ),
+                ),
+              ]),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Center(
+                  child: MaterialButton(
+                      color: Colors.amber,
+                      child: Text('Submit'),
+                      onPressed: (() async {
+                        setState(() {
+                          show = !show;
+                        });
+                        var body = jsonEncode({
+                          "gest": gestatiolaAge.text,
+                          "has_reqular_care": _hasTekenCare.toString(),
+                          "mode_of_deliv": modOfDelivery.text,
+                          "ind_icu_adm": indiOfController.text,
+                          "init_diag": initialDiaController.text,
+                          "prob_one": probOneController.text,
+                          "prob_two": problemTwoController.text,
+                          "prob_three": proThreeController.text,
+                          "prob_four": probFourContrller.text,
+                          "detailed_history": detaiColntroller.text,
+                          "pmh": pmhController.text,
+                          "dr_id": widget.user.user!['id'].toString(),
+                          "patient_id": widget.patient['id'].toString(),
+                          "file_id": widget.file['id'].toString(),
+                          "icu_file_id": widget.file['id'].toString(),
+                        });
+                        String respons = await makeHttpRequest(
+                            url + "icuad/add", body, true, widget.user);
+
+                        if (respons == "Successfully Sent") {
+                          Navigator.of(context).pop();
+                        } else {
+                          errono(
+                              respons, respons, context, true, Container(), 3);
+                          setState(() {
+                            show = !show;
+                          });
+                        }
+                      })),
+                ),
+              )
             ],
           ),
         ),

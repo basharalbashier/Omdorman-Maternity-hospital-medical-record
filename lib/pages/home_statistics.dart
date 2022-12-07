@@ -3,11 +3,13 @@ import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/add_baby_file_widget.dart';
 // import 'package:aldayat_screens/widgets/add_file_button.dart';
 import 'package:aldayat_screens/widgets/title.dart';
+import 'package:aldayat_screens/widgets/waiting_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../main.dart';
 import '../models/error_message.dart';
 import '../models/user_hive.dart';
+import '../widgets/add_file_widget.dart';
 import '../widgets/bar_code.dart';
 import '../widgets/log_out.dart';
 import 'add_patient.dart';
@@ -171,91 +173,99 @@ class _SurgeryHomeState extends State<StatisticsHome>
             SizedBox(
                 width: size.width,
                 height: size.height,
-                child:
-                    TabBarView(controller: _tabController, children: <Widget>[
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: searchPatients.length,
-                      itemBuilder: (context, index) => Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
+                child: searchPatients.isEmpty
+                    ? waitingList()
+                    : TabBarView(controller: _tabController, children: <Widget>[
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: searchPatients.length,
+                            itemBuilder: (context, index) => Column(
                                   children: [
-                                    Column(
-                                      children: [
-                                        GestureDetector(
-                                          onTap: () {
-                                            Navigator.pushAndRemoveUntil(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PatientPage(
-                                                        patient: searchPatients[
-                                                            index],
-                                                        user: widget.user,
-                                                      )),
-                                              (Route<dynamic> route) => true,
-                                            );
-                                          },
-                                          child: Column(
-                                            crossAxisAlignment:
-                                                CrossAxisAlignment.start,
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Column(
                                             children: [
-                                              Text(
-                                                searchPatients[index]['name'],
-                                                style: fileTitle(size),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  Navigator.pushAndRemoveUntil(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            PatientPage(
+                                                              patient:
+                                                                  searchPatients[
+                                                                      index],
+                                                              user: widget.user,
+                                                            )),
+                                                    (Route<dynamic> route) =>
+                                                        true,
+                                                  );
+                                                },
+                                                child: Column(
+                                                  crossAxisAlignment:
+                                                      CrossAxisAlignment.start,
+                                                  children: [
+                                                    Text(
+                                                      searchPatients[index]
+                                                          ['name'],
+                                                      style: fileTitle(size),
+                                                    ),
+                                                    Text(
+                                                        "${searchPatients[index]['age']} years old"),
+                                                  ],
+                                                ),
                                               ),
-                                              Text(
-                                                  "${searchPatients[index]['age']} years old"),
                                             ],
                                           ),
-                                        ),
-                                      ],
+                                          addFile(searchPatients[index],
+                                              context, size),
+                                        ],
+                                      ),
                                     ),
-                                    // addFile(
-                                    //     searchPatients[index], context, size),
+                                    Divider()
                                   ],
-                                ),
-                              ),
-                              Divider()
-                            ],
-                          )
+                                )
 
-                      //
-                      //
-
-                      // trailing: T,
-
-                      ),
-                  ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: babySearch.length,
-                      itemBuilder: (context, index) => ListTile(
-                            leading: Text(babySearch[index]['id'].toString()),
-                            title: GestureDetector(
-                              onTap: () {
-                                // Navigator.pushAndRemoveUntil(
-                                //   context,
-                                //   MaterialPageRoute(
-                                //       builder: (context) => PatientPage(
-                                //             patient: babySearch[index],
-                                //             user: widget.user,
-                                //           )),
-                                //   (Route<dynamic> route) => true,
-                                // );
-                              },
-                              child: Text(
-                                babySearch[index]['name'],
-                              ),
-                            ),
-                            subtitle: Text("+249${babySearch[index]['phone']}"),
+                            //
+                            //
 
                             // trailing: T,
-                          )),
-                ])),
+
+                            ),
+                        searchPatients.isEmpty
+                            ? waitingList()
+                            : ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: babySearch.length,
+                                itemBuilder: (context, index) => ListTile(
+                                      leading: Text(
+                                          babySearch[index]['id'].toString()),
+                                      title: GestureDetector(
+                                        onTap: () {
+                                          // Navigator.pushAndRemoveUntil(
+                                          //   context,
+                                          //   MaterialPageRoute(
+                                          //       builder: (context) => PatientPage(
+                                          //             patient: babySearch[index],
+                                          //             user: widget.user,
+                                          //           )),
+                                          //   (Route<dynamic> route) => true,
+                                          // );
+                                        },
+                                        child: Text(
+                                          babySearch[index]['name'],
+                                        ),
+                                      ),
+                                      subtitle: Text(
+                                          "+249${babySearch[index]['phone']}"),
+
+                                      // trailing: T,
+                                    )),
+                      ])),
 
             // for (var item in patients.reversed)
             // ListTile(
