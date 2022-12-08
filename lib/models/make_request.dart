@@ -15,6 +15,7 @@ Future<String> makeHttpRequest(
             },
             body: body)
         .then((value) {
+          print(value.body);
       if ((value.statusCode == 200 || value.statusCode == 201) ) {
       
         respons = "Successfully Sent";
