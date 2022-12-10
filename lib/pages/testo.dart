@@ -1002,9 +1002,9 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-class LineChartSample4 extends StatelessWidget {
+class Paragram extends StatelessWidget {
   final String title;
-  const LineChartSample4({super.key, required this.title});
+  const Paragram({super.key, required this.title});
 
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
     String text;
