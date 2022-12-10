@@ -1,11 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-TextStyle kLoginTitleStyle(Size size,Color color) => GoogleFonts.ubuntu(
-      fontSize: size.height * 0.060,
-      fontWeight: FontWeight.bold,
-      color: color
-    );
+TextStyle kLoginTitleStyle(Size size, Color color) => GoogleFonts.ubuntu(
+    fontSize: size.height * 0.060, fontWeight: FontWeight.bold, color: color);
 
 TextStyle kLoginSubtitleStyle(Size size) => GoogleFonts.ubuntu(
       fontSize: size.height * 0.020,
@@ -33,8 +30,7 @@ TextStyle fileTitle(Size size) => GoogleFonts.ubuntu(
       fontWeight: FontWeight.bold,
     );
 
-
-    TextStyle healthStyle(
+TextStyle healthStyle(
   Size size,
 ) =>
     GoogleFonts.ubuntu(
@@ -43,21 +39,20 @@ TextStyle fileTitle(Size size) => GoogleFonts.ubuntu(
       color: Colors.white,
     );
 
+TextStyle bloodStyle(Size size) => GoogleFonts.ubuntu(
+    fontSize: size.height * 0.030,
+    fontWeight: FontWeight.bold,
+    color: Colors.red);
 
-    TextStyle bloodStyle(Size size) => GoogleFonts.ubuntu(
-      fontSize: size.height * 0.030,
-      fontWeight: FontWeight.bold,
-      color: Colors.red
-    );
+TextStyle insuranceStyle(Size size) => GoogleFonts.ubuntu(
+    fontSize: size.height * 0.030,
+    fontWeight: FontWeight.bold,
+    color: Colors.indigo);
 
-      TextStyle insuranceStyle(Size size) => GoogleFonts.ubuntu(
-      fontSize: size.height * 0.030,
-      fontWeight: FontWeight.bold,
-      color: Colors.indigo
-    );
+TextStyle confirmStyle(Size size) => GoogleFonts.ubuntu(
+    fontSize: size.height * 0.030,
+    fontWeight: FontWeight.bold,
+    color: Colors.white);
 
-        TextStyle confirmStyle(Size size) => GoogleFonts.ubuntu(
-      fontSize: size.height * 0.030,
-      fontWeight: FontWeight.bold,
-      color: Colors.white
-    );
+
+// TextStyle testStyle(Size size) =>GoogleFonts.sanf

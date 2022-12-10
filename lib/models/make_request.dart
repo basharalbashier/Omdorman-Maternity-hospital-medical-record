@@ -1,4 +1,3 @@
-
 import 'package:http/http.dart' as http;
 import 'user_hive.dart';
 
@@ -15,9 +14,8 @@ Future<String> makeHttpRequest(
             },
             body: body)
         .then((value) {
-          print(value.body);
-      if ((value.statusCode == 200 || value.statusCode == 201) ) {
-      
+      print(value.body);
+      if ((value.statusCode == 200 || value.statusCode == 201)) {
         respons = "Successfully Sent";
       } else {
         respons = "Connection Error";

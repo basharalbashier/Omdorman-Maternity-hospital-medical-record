@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/login.dart';
 import 'package:aldayat_screens/pages/operation_note.dart';
+import 'package:aldayat_screens/pages/testo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -11,7 +12,7 @@ import 'constant.dart';
 import 'models/error_message.dart';
 import 'pages/delivery_note.dart';
 
-String url = 'https://aldayat.loca.lt/api/';
+String url = 'http://localhost:8000/api/';
 var headr = {
   'Content-type': 'application/json',
   'Accept': 'application/json',
@@ -34,40 +35,42 @@ class DayatApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          body: Stack(
-        fit: StackFit.expand,
-        children: [
-          DeliveryPostnatal(patient: {},file: {},user: User({},''),),
-          Positioned(
-            bottom: 0,
-            right: 10,
-            child: GestureDetector(
-              onTap: () async {
-                try {
-                  await launchUrl(
-                      Uri.parse("https://wa.me/+249117630388?text=Dr."));
-                } catch (e) {
-                  errono('+249117630388', '+249117630388', context, true,
-                      Container(), 1);
-                }
-              },
-              child: RichText(
-                text: TextSpan(
-                  text: 'Do you need any help?',
-                  style: kHaveAnAccountStyle(Size(500, 500)),
-                  children: [
-                    TextSpan(
-                      text: " Contact us",
-                      style: kLoginOrSignUpTextStyle(Size(500, 500)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          )
-        ],
-      )),
+      home: Scaffold(body: LoginView()
+
+          //     Stack(
+          //   fit: StackFit.expand,
+          //   children: [
+
+          //     Positioned(
+          //       bottom: 0,
+          //       right: 10,
+          //       child: GestureDetector(
+          //         onTap: () async {
+          //           try {
+          //             await launchUrl(
+          //                 Uri.parse("https://wa.me/+249117630388?text=Dr."));
+          //           } catch (e) {
+          //             errono('+249117630388', '+249117630388', context, true,
+          //                 Container(), 1);
+          //           }
+          //         },
+          //         child: RichText(
+          //           text: TextSpan(
+          //             text: 'Do you need any help?',
+          //             style: kHaveAnAccountStyle(Size(500, 500)),
+          //             children: [
+          //               TextSpan(
+          //                 text: " Contact us",
+          //                 style: kLoginOrSignUpTextStyle(Size(500, 500)),
+          //               ),
+          //             ],
+          //           ),
+          //         ),
+          //       ),
+          //     )
+          //   ],
+          // )
+          ),
     );
   }
 }

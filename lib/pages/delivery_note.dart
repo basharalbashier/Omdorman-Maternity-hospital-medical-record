@@ -28,7 +28,7 @@ class DeliveryPostnatal extends StatefulWidget {
 
 class _OperationNoteState extends State<DeliveryPostnatal> {
   bool placenta = true;
-  bool completeOrIncomplda=false;
+  bool completeOrIncomplda = false;
   bool Lactation = false;
 
   bool ant_d = false;
@@ -83,13 +83,36 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
           child: Column(
         children: [
           TitleD(setUniColor(widget.user.user!['unit']), size),
-
-
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Text(
+              "Delivery and Postnatal",
+              style: fileTitle(size),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Divider(),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ResponsiveGridRow(children: [
-
-            ResponsiveGridCol(
+              ResponsiveGridCol(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: SizedBox(
+                      width: size.width / 1.1,
+                      child: TextFormField(
+                        controller: modOfDelivControler,
+                        decoration: InputDecoration(
+                          label: Text(
+                            "Mode of delivery",
+                          ),
+                        ),
+                      )),
+                ),
+              ),
+              ResponsiveGridCol(
                 child: Container(
                   height: 50,
                   child: Padding(
@@ -114,14 +137,17 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
                                 Text(i == 0 ? 'CCt' : 'MR'),
                               ],
                             ),
-                              for (int i = 0; i < 2; i++)
+                          for (int i = 0; i < 2; i++)
                             Row(
                               children: [
                                 Checkbox(
-                                    value: i == 0 ? completeOrIncomplda : !completeOrIncomplda,
+                                    value: i == 0
+                                        ? completeOrIncomplda
+                                        : !completeOrIncomplda,
                                     onChanged: ((value) {
                                       setState(() {
-                                        completeOrIncomplda = !completeOrIncomplda;
+                                        completeOrIncomplda =
+                                            !completeOrIncomplda;
                                       });
                                     })),
                                 Text(i == 0 ? 'Complete' : 'Incomplete'),
@@ -131,11 +157,6 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
                   ),
                 ),
               ),
-             
-
-
-
-
               for (int i = 0; i < checks.length; i++)
                 ResponsiveGridCol(
                   xs: 6,
@@ -255,7 +276,8 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
                                             Radius.circular(5)),
                                       ),
                                       label: Text(
-                                        'Weight',style: fileTitle(size/1.4),
+                                        'Weight',
+                                        style: fileTitle(size / 1.4),
                                       ),
                                       suffix: Text('KG')),
                                 ),
@@ -266,7 +288,8 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
                                     controller: apgarScorController,
                                     decoration: InputDecoration(
                                       label: Text(
-                                        'Apgar Score',style: fileTitle(size/1.4),
+                                        'Apgar Score',
+                                        style: fileTitle(size / 1.4),
                                       ),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.all(
@@ -311,7 +334,6 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
                   ),
                 ),
               ),
-             
               ResponsiveGridCol(
                 child: Padding(
                   padding: const EdgeInsets.all(8.0),
@@ -353,10 +375,10 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
                     var body = jsonEncode({
                       "mode": modOfDelivControler.text,
                       "placenta": placenta.toString(),
-                      "cct":placenta?"Yes":"No",
-                      "mr": !placenta?"Yes":"No",
-                      "compelete": completeOrIncomplda?"Yes":"No",
-                      "incomplete": !completeOrIncomplda?"Yes":"No",
+                      "cct": placenta ? "Yes" : "No",
+                      "mr": !placenta ? "Yes" : "No",
+                      "compelete": completeOrIncomplda ? "Yes" : "No",
+                      "incomplete": !completeOrIncomplda ? "Yes" : "No",
                       "episi": episi.toString(),
                       "decir": decir.toString(),
                       "lactation": Lactation.toString(),
@@ -373,7 +395,7 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
                       "file_id": widget.file['id'].toString(),
                     });
                     String respons = await makeHttpRequest(
-                        url + "operation/add", body, true, widget.user);
+                        url + "deliv/add", body, true, widget.user);
 
                     if (respons == "Successfully Sent") {
                       Navigator.of(context).pop();

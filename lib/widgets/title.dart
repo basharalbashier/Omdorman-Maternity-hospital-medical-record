@@ -21,9 +21,12 @@ class TitleD extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(size.width * .2),
-                    child: Image.asset('lib/assets/minstery.jpeg')),
+                SizedBox(
+                  width: size.width < 600 ? 100 : null,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(size.width * .5),
+                      child: Image.asset('lib/assets/minstery.jpeg')),
+                ),
                 Column(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
@@ -40,9 +43,12 @@ class TitleD extends StatelessWidget {
                     ),
                   ],
                 ),
-                ClipRRect(
-                    borderRadius: BorderRadius.circular(200.0),
-                    child: Image.asset('lib/assets/download.png'))
+                SizedBox(
+                  width: size.width < 600 ? 100 : null,
+                  child: ClipRRect(
+                      borderRadius: BorderRadius.circular(200.0),
+                      child: Image.asset('lib/assets/download.png')),
+                )
               ],
             ),
           ),
