@@ -36,7 +36,11 @@ class DayatApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(body: NeoUnit()
+      home: Scaffold(
+          body: NeoUnit(
+        file: {},
+        user: User({}, ''),
+      )
           //      Paragram(
           //   title: 'Fetal heart rate',
           // )

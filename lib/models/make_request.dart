@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:http/http.dart' as http;
 import 'user_hive.dart';
 
@@ -10,11 +12,12 @@ Future<String> makeHttpRequest(
             headers: {
               'Content-type': 'application/json',
               'Accept': 'application/json',
-              needToken ? 'Authorization' : 'Bearer ${user.token!}': ''
+              needToken ? 'Authorization' : 'Bearer ${user.token!}':
+                  'Authorization',
             },
             body: body)
         .then((value) {
-      print(value.body);
+      // print(json.decode(value.body));
       if ((value.statusCode == 200 || value.statusCode == 201)) {
         respons = "Successfully Sent";
       } else {
@@ -22,6 +25,7 @@ Future<String> makeHttpRequest(
       }
     });
   } catch (e) {
+    print(e);
     respons = "Connection Error";
   }
   return respons;
