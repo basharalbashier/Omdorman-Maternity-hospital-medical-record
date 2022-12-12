@@ -25,7 +25,6 @@ Future<String> makeHttpRequest(
       }
     });
   } catch (e) {
-    print(e);
     respons = "Connection Error";
   }
   return respons;
