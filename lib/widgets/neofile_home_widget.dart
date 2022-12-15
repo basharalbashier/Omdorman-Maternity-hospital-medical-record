@@ -1,9 +1,5 @@
-
-
-
-
-
-
+import 'package:aldayat_screens/widgets/neo_admission_table.dart';
+import 'package:aldayat_screens/widgets/neo_unit_table.dart';
 import 'package:flutter/material.dart';
 
 import '../constant.dart';
@@ -14,86 +10,36 @@ import 'genterate_qr_for_file.dart';
 import 'matural_assesm_button.dart';
 import 'neo_admissio_button.dart';
 
-Widget homeWidget(context, size, file, User user, List labRequest) {
-  return Column(
-    children: [
-      Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: size.width > 700
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Expanded(
-                      child: Column(
-                        children: [
-                     
-                          Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Column(
-                              children: [
-                                Visibility(
-                                  visible: user.user!['dep'] !=
-                                      'Department of Statistics',
-                                  child: Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
-                                    children: [
-                                      maturalAssessment(context, file, user),
-                                      nauAdmissionButton(context, file, user),
-                                      Material(
-                                        child: Center(
-                                          child: ElevatedButton(
-
-                                              // style:ButtonStyle(backgroundColor:Colors.te ),
-                                              onPressed: () {
-                                                Navigator.pushAndRemoveUntil(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          AddRequestForm(
-                                                            patient: {},
-                                                            file: file,
-                                                            type: "2",
-                                                          )),
-                                                  (Route<dynamic> route) =>
-                                                      true,
-                                                );
-                                              },
-                                              child: SizedBox(
-                                                  height: 30,
-                                                  child: Center(
-                                                    child: Text("Lab Request"),
-                                                  ))),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ),
-                    ),
-                    generatQr({}, file, "2")
-                  ],
-                )
-              : Column(
-                  children: [
-                    Column(
-                      children: [
-                   
-                        Visibility(
-                          visible:
-                              user.user!['dep'] != 'Department of Statistics',
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                maturalAssessment(context, file, user),
-                                nauAdmissionButton(context, file, user),
-                                Material(
+Widget homeWidget(context, size, file, User user, List labRequest,
+    bool isVisible, List unit, List admissioList) {
+  return SingleChildScrollView(
+    child: Column(
+      children: [
+        Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: size.width < 800
+                ? Column(
+                    children: [
+                      Visibility(
+                        visible:
+                            user.user!['dep'] != 'Department of Statistics',
+                        child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: maturalAssessment(context, file, user),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: nauAdmissionButton(
+                                    context, file, user, isVisible),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Material(
                                   child: Center(
                                     child: ElevatedButton(
 
@@ -118,25 +64,81 @@ Widget homeWidget(context, size, file, User user, List labRequest) {
                                             ))),
                                   ),
                                 ),
-                              ],
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  )
+                : Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Visibility(
+                      visible: user.user!['dep'] != 'Department of Statistics',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          maturalAssessment(context, file, user),
+                          nauAdmissionButton(context, file, user, isVisible),
+                          Material(
+                            child: Center(
+                              child: ElevatedButton(
+
+                                  // style:ButtonStyle(backgroundColor:Colors.te ),
+                                  onPressed: () {
+                                    Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => AddRequestForm(
+                                                patient: {},
+                                                file: file,
+                                                type: "2",
+                                              )),
+                                      (Route<dynamic> route) => true,
+                                    );
+                                  },
+                                  child: SizedBox(
+                                      height: 30,
+                                      child: Center(
+                                        child: Text("Lab Request"),
+                                      ))),
                             ),
                           ),
-                        )
-                      ],
+                        ],
+                      ),
                     ),
-                    generatQr({}, file, "2")
-                  ],
-                )),
-      Divider(),
-      Visibility(
-        visible: !labRequest.isEmpty,
-        child: SizedBox(
+                  )),
+        Divider(),
+        Visibility(
+          visible: !labRequest.isEmpty,
+          child: SizedBox(
+              width: size.width,
+              height: size.height,
+              child: LabHistory(
+                source: labRequest,
+              )),
+        ),
+        Visibility(
+          visible: unit.isNotEmpty,
+          child: SizedBox(
             width: size.width,
-            height: size.height / 2,
-            child: LabHistory(
-              source: labRequest,
-            )),
-      )
-    ],
+            height: size.height,
+            child: neoUnitTable(
+              unit,
+            ),
+          ),
+        ),
+        Visibility(
+          visible: admissioList.isNotEmpty,
+          child: SizedBox(
+            width: size.width,
+            height: size.height,
+            child: neoAdmissionTable(
+              admissioList,
+            ),
+          ),
+        )
+      ],
+    ),
   );
 }

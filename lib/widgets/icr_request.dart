@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aldayat_screens/models/error_message.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
@@ -7,7 +8,7 @@ import '../constant.dart';
 import '../main.dart';
 import '../models/user_hive.dart';
 
-Widget iCuRequest(contexte, size, Map file, User user) {
+Widget iCuRequest(contexte, size, Map file, User user, String type) {
   var remarksController = TextEditingController();
 
   var commentController = TextEditingController();
@@ -20,7 +21,6 @@ Widget iCuRequest(contexte, size, Map file, User user) {
         height: 55,
         child: ElevatedButton(
           style: ButtonStyle(
-            // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
             shape: MaterialStateProperty.all(
               RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(15),
@@ -29,17 +29,18 @@ Widget iCuRequest(contexte, size, Map file, User user) {
           ),
           onPressed: () async {
             final body = jsonEncode({
-              'remarks': remarksController.text,
-              'unit': user.user!['unit'].toString(),
+              'remaks': remarksController.text,
+              'comment': commentController.text,
+              // 'type':type,
+              // 'unit': user.user!['unit'].toString(),
               'status': "0",
               "dr_id": user.user!['id'].toString(),
               "patient_id": file['patient_id'].toString(),
               "file_id": file['id'].toString(),
-              'money': "free",
             });
             try {
               await http
-                  .post(Uri.parse('${url}usrequest/add'),
+                  .post(Uri.parse('${url}icureq/add'),
                       headers: {
                         'Content-type': 'application/json',
                         'Accept': 'application/json',
@@ -47,7 +48,17 @@ Widget iCuRequest(contexte, size, Map file, User user) {
                       },
                       body: body)
                   .then((value) {
-                print('Value error:  ${json.decode(value.body)}');
+                if (value.statusCode == 200 || value.statusCode == 201) {
+                  Navigator.of(contexte).pop();
+                  errono(
+                      "Request Sent Successfully",
+                      "Request Sent Successfully",
+                      contexte,
+                      true,
+                      Container(),
+                      3);
+                }
+                // print('Value error:  ${json.decode(value.body)['message']}');
               });
             } catch (e) {
               // print(e);
@@ -67,9 +78,9 @@ Widget iCuRequest(contexte, size, Map file, User user) {
   }
 
   return MaterialButton(
-      color: Colors.pink,
+      color: type == "0" ? Colors.pink : Colors.cyan.shade900,
       child: Text(
-        'ICU Request',
+        '${type == "0" ? "IC" : "HD"}U Request',
         style: TextStyle(color: Colors.white),
       ),
       onPressed: (() async {

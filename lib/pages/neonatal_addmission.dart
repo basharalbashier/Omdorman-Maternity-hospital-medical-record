@@ -11,10 +11,12 @@ import '../models/user_hive.dart';
 import 'package:http/http.dart' as http;
 
 class NeonatalAdmission extends StatefulWidget {
-    final Map file;
+  final Map file;
   final User user;
   const NeonatalAdmission({
-    super.key, required this.file, required this.user,
+    super.key,
+    required this.file,
+    required this.user,
   });
 
   @override
@@ -39,9 +41,9 @@ class _MyHomePageState extends State<NeonatalAdmission> {
   var cns = TextEditingController();
   var other = TextEditingController();
   var admissionDiagnosis = TextEditingController();
- final _formKey = GlobalKey<FormState>();
+  final _formKey = GlobalKey<FormState>();
   var remain = [];
-bool show=true;
+  bool show = true;
   @override
   void initState() {
     remain = [
@@ -58,7 +60,7 @@ bool show=true;
 
   @override
   Widget build(BuildContext context) {
-    if(!show){
+    if (!show) {
       return waitingWidget("5");
     }
     var size = MediaQuery.of(context).size;
@@ -67,7 +69,8 @@ bool show=true;
         height: size.height,
         width: size.width,
         child: SingleChildScrollView(
-          child: Form(key: _formKey,
+          child: Form(
+            key: _formKey,
             child: Column(
               children: [
                 TitleD(Colors.lightBlue, size),
@@ -136,7 +139,6 @@ bool show=true;
                             SizedBox(
                                 width: size.width / 3.2,
                                 child: TextField(
-                           
                                   keyboardType: TextInputType.number,
                                   controller: lenght,
                                   decoration: const InputDecoration(
@@ -168,7 +170,6 @@ bool show=true;
                             SizedBox(
                                 width: size.width / 5,
                                 child: TextField(
-                        
                                   keyboardType: TextInputType.datetime,
                                   controller: dates,
                                   decoration: const InputDecoration(
@@ -187,7 +188,6 @@ bool show=true;
                             SizedBox(
                                 width: size.width / 5,
                                 child: TextField(
-                       
                                   controller: assessment,
                                   decoration: InputDecoration(
                                       hintText: "",
@@ -200,86 +200,80 @@ bool show=true;
                   ),
                 ),
                 ResponsiveGridRow(children: [
-                  for(var i in remain)
-                  ResponsiveGridCol(
-                    lg: 12,
-                    child: Container(
-                      height: 100,
-                      alignment: Alignment(0, 0),
-                      // color: Colors.purple,
-                      child: SizedBox(
-                          width: size.width / 1.1,
-                          child: TextField(
-                            maxLines: 2,
-                            controller: i[1],
-                            decoration: InputDecoration(
-                                label:  Text(i[0])),
-                          )),
-                    ),
-                  ),
-                ]),
-          
-                   MaterialButton(
-                      color: Colors.teal,
-                      onPressed: () async {
-                        // Validate returns true if the form is valid, or false otherwise.
-                        if (_formKey.currentState!.validate()) {
-                          setState(() => show = !show);
-                          final body = jsonEncode({
-                           'name': widget. file['name'].toString(),
-                                 'mr': widget. file['person_in_charg'].toString(),
-                                  'source_of_adm': sourceCont.text,
-                                 'cause_of_adm': causeCont.text,
-                                  'weight': weight.text,
-                                 'lenght': lenght.text,
-                                  'ofc': ofc.text,
-                                     'gestation': gastation.text,
-                                 'dates': dates.text,
-                                  'us': us.text,
-                                 'assesment': assessment.text,
-                                  'general_exam': generalExam.text,
-                             
-                                  'resp': resp.text,
-                                 'cardiov': cardiov.text,
-                                  'cns': cns.text,
-                                     'other': other.text,
-                                 'admis_dia': admissionDiagnosis.text,
-          
-          
-                                "dr_id": widget.user.user!['id'].toString(),
-                                "file_id":widget. file['id'].toString(),
-                                      "mother_id": widget.file['patient_id'].toString(),
-                          });
-                          try {
-                            await http
-                                .post(Uri.parse('${url}neo/add'),
-                                    headers: {
-                                      'Content-type': 'application/json',
-                                      'Accept': 'application/json',
-                                      'Authorization': 'Bearer ${widget.user.token!}'
-                                    },
-                                    body: body)
-                                .then((value) {
-                              if (value.statusCode == 200 ||
-                                  value.statusCode == 201) {
-                                Navigator.of(context).pop();
-                              } else {
-                                print(json.decode(value.body)['message']);
-                                setState(() => show = !show);
-                              }
-                            });
-                          } catch (e) {
-                            setState(() => show = !show);
-                          }
-                        }
-                      },
-                      child: Text(
-                        'Confirm',
-                        style: confirmStyle(size),
+                  for (var i in remain)
+                    ResponsiveGridCol(
+                      lg: 12,
+                      child: Container(
+                        height: 100,
+                        alignment: Alignment(0, 0),
+                        // color: Colors.purple,
+                        child: SizedBox(
+                            width: size.width / 1.1,
+                            child: TextField(
+                              maxLines: 2,
+                              controller: i[1],
+                              decoration: InputDecoration(label: Text(i[0])),
+                            )),
                       ),
                     ),
-                 
-              
+                ]),
+                MaterialButton(
+                  color: Colors.teal,
+                  onPressed: () async {
+                    // Validate returns true if the form is valid, or false otherwise.
+                    if (_formKey.currentState!.validate()) {
+                      setState(() => show = !show);
+                      final body = jsonEncode({
+                        'name': widget.file['name'].toString(),
+                        'mr': widget.file['person_in_charg'].toString(),
+                        'source_of_adm': sourceCont.text,
+                        'cause_of_adm': causeCont.text,
+                        'weight': weight.text,
+                        'lenght': lenght.text,
+                        'ofc': ofc.text,
+                        'gestation': gastation.text,
+                        'dates': dates.text,
+                        'us': us.text,
+                        'assesment': assessment.text,
+                        'general_exam': generalExam.text,
+                        'resp': resp.text,
+                        'cardiov': cardiov.text,
+                        'abdomen': abdom.text,
+                        'cns': cns.text,
+                        'other': other.text,
+                        'admis_dia': admissionDiagnosis.text,
+                        "dr_id": widget.user.user!['id'].toString(),
+                        "file_id": widget.file['id'].toString(),
+                        "mother_id": widget.file['patient_id'].toString(),
+                      });
+                      try {
+                        await http
+                            .post(Uri.parse('${url}neo/add'),
+                                headers: {
+                                  'Content-type': 'application/json',
+                                  'Accept': 'application/json',
+                                  'Authorization':
+                                      'Bearer ${widget.user.token!}'
+                                },
+                                body: body)
+                            .then((value) {
+                          if (value.statusCode == 200 ||
+                              value.statusCode == 201) {
+                            Navigator.of(context).pop();
+                          } else {
+                            setState(() => show = !show);
+                          }
+                        });
+                      } catch (e) {
+                        setState(() => show = !show);
+                      }
+                    }
+                  },
+                  child: Text(
+                    'Confirm',
+                    style: confirmStyle(size),
+                  ),
+                ),
               ],
             ),
           ),

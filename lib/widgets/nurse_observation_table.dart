@@ -25,7 +25,7 @@ List<String> titles = [
   "Urine\nProtein",
   "Skin\nColor",
   "Remarks",
-   "Spacific\nNursing\nCare\nComment",
+  "Spacific\nNursing\nCare\nComment",
   'Dr Name'
 ];
 List<String> keys = [
@@ -45,7 +45,7 @@ List<String> keys = [
   "urine_protein",
   "skin_color",
   "remarks",
-    "comment",
+  "comment",
   'dr_name'
 ];
 Widget nurseObserTable(List data, context, Map file, User user) {
@@ -53,14 +53,17 @@ Widget nurseObserTable(List data, context, Map file, User user) {
 
   return Column(
     children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            addButtonModel("+",
-                (() async => addnurseObserTable(context, file, user, size))),
-          ],
+      Visibility(
+        visible: user.user!['dep'] == 'Department of Obstetrics',
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              addButtonModel("+",
+                  (() async => addnurseObserTable(context, file, user, size))),
+            ],
+          ),
         ),
       ),
       Padding(

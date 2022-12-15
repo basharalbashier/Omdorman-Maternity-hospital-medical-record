@@ -16,47 +16,74 @@ import '../widgets/title.dart';
 
 class PediatricHome extends StatefulWidget {
   final User user;
-  const PediatricHome({super.key,required this.user});
+  const PediatricHome({super.key, required this.user});
 
   @override
   State<PediatricHome> createState() => _SurgeryHomeState();
 }
 
-class _SurgeryHomeState extends State<PediatricHome> {
-    List baby = [];
+class _SurgeryHomeState extends State<PediatricHome>
+    with TickerProviderStateMixin {
+  List baby = [];
   List babySearch = [];
-
-@override
+  Widget bo = Container();
+  @override
   void initState() {
     getBaby();
     super.initState();
   }
 
+  late TabController _tabController;
+  List taps = [];
+  tabViews(Size size) {
+    return TabBarView(
+        physics: ScrollPhysics(parent: NeverScrollableScrollPhysics()),
+        controller: _tabController,
+        children: <Widget>[for (int i = 0; i < taps.length; i++) taps[i]]);
+  }
+
   void _searchChanged(String searchText) {
     if (searchText != null && searchText.isNotEmpty) {
-     
-              setState(() {
-                babySearch = List.from(
-                    baby.where((name) => name['name'].contains(searchText)));
-              });
-  
-    } else {
-   
       setState(() {
+        taps.clear();
+        babySearch =
+            List.from(baby.where((name) => name['name'].contains(searchText)));
+        for (var oneBaby in babySearch) {
+          setState(() {
+            taps.add(BabyFile(
+              file: oneBaby,
+              user: widget.user,
+            ));
+          });
+        }
+      });
+    } else {
+      setState(() {
+        taps.clear();
         babySearch = List.from(baby).reversed.toList();
+
+        for (var oneBaby in babySearch) {
+          setState(() {
+            taps.add(BabyFile(
+              file: oneBaby,
+              user: widget.user,
+            ));
+          });
+        }
       });
     }
   }
 
+  int _selected = 0;
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
+    rebuildAllChildren(context);
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
           children: [
-                 TitleD(Colors.lightBlue, size),
+            TitleD(Colors.lightBlue, size),
             Center(
                 child: Text(
               'Pediatric',
@@ -65,9 +92,8 @@ class _SurgeryHomeState extends State<PediatricHome> {
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Divider(),
-              
             ),
-               Padding(
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -126,53 +152,116 @@ class _SurgeryHomeState extends State<PediatricHome> {
                             // The validator receives the text that the user has entered.
                           ),
                         ),
-                     
-                      ]
-                      ,
+                      ],
                     ),
                   )
-               
                 ],
               ),
             ),
-           Padding(
-             padding: const EdgeInsets.all(8.0),
-             child: Divider(),
-           ),
-               ListView.builder(
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Divider(),
+            ),
+            Row(
+              children: [
+                SizedBox(
+                  width: size.width / 4,
+                  height: size.height,
+                  child: ListView.builder(
                       shrinkWrap: true,
                       itemCount: babySearch.length,
-                      itemBuilder: (context, index) => ListTile(
-                            leading: Text(babySearch[index]['id'].toString()),
-                            title: GestureDetector(
-                              onTap: () {
-                                Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => BabyFile(
-                                            file: babySearch[index],
-                                            user: widget.user,
-                                          )),
-                                  (Route<dynamic> route) => true,
-                                );
-                              },
-                              child: Text(
-                                babySearch[index]['name'],
+                      itemBuilder: (context, index) => GestureDetector(
+                            onTap: () {
+                              setState(() => {
+                                    _selected = index,
+                                    _tabController.index = index,
+                                  });
+                            },
+                            child: Container(
+                              color: index == _selected
+                                  ? Colors.lightBlue.withOpacity(.2)
+                                  : null,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Column(
+                                      children: [
+                                        Text(
+                                          babySearch[index]['name'],
+                                          style: fileTitle(size / 1.7),
+                                        ),
+                                        Text("${babySearch[index]['phone']}",
+                                            style:
+                                                TextStyle(color: Colors.grey)),
+                                      ],
+                                    ),
+                                    Container(
+                                      color: index == _selected
+                                          ? Colors.lightBlue
+                                          : null,
+                                      width: 5,
+                                      height: size.height / 15,
+                                      child: Text(''),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
-                            subtitle: Text("+249${babySearch[index]['phone']}"),
-
-                            // trailing: T,
                           )),
-                
-
-          
+                ),
+                smallFileWidget(size)
+              ],
+            ),
           ],
         ),
       ),
     );
   }
-    getBaby() async {
+
+  smallFileWidget(Size size) {
+    return StatefulBuilder(
+        builder: (context, setState) => SizedBox(
+            width: size.width / 1.35,
+            height: size.height,
+            child: Stack(
+              // fit: StackFit.loose,
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border.all(
+                        width: 10,
+                        color: Colors.lightBlue.withOpacity(.2),
+                      ),
+                      borderRadius: BorderRadius.all(Radius.circular(3))),
+                  child: taps.isNotEmpty ? tabViews(size) : bo,
+                ),
+                Positioned(
+                  right: 0,
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.fullscreen,
+                    ),
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => BabyFile(
+                                  file: babySearch[_tabController.index],
+                                  user: widget.user,
+                                )),
+                        (Route<dynamic> route) => true,
+                      );
+                    },
+                  ),
+                ),
+              ],
+            )));
+  }
+
+  getBaby() async {
     try {
       await http.get(Uri.parse('${url}baby'), headers: {
         'Accept': 'application/json',
@@ -181,7 +270,20 @@ class _SurgeryHomeState extends State<PediatricHome> {
         if (value.statusCode == 200) {
           setState(() {
             baby = json.decode(value.body);
+            // for (int i = 0; i < 100; i++) {
+            //   baby.add(baby[0]);
+            // }
             babySearch = baby.reversed.toList();
+            for (var oneBaby in babySearch) {
+              setState(() {
+                taps.add(BabyFile(
+                  file: oneBaby,
+                  user: widget.user,
+                ));
+              });
+            }
+            _tabController =
+                TabController(length: babySearch.length, vsync: this);
           });
         } else {
           // print('Error : ${value.body}');
@@ -192,4 +294,13 @@ class _SurgeryHomeState extends State<PediatricHome> {
     } catch (e) {}
     // ... Navigate To your Home Page
   }
+}
+
+void rebuildAllChildren(BuildContext context) {
+  void rebuild(Element el) {
+    el.markNeedsBuild();
+    el.visitChildren(rebuild);
+  }
+
+  (context as Element).visitChildren(rebuild);
 }

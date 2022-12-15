@@ -18,8 +18,7 @@ List<String> titles = [
   "Start",
   "DC",
   'Dr Name',
-   'Nurse'
-
+  'Nurse'
 ];
 List<String> keys = [
   "created_at",
@@ -38,14 +37,17 @@ Widget iVFluidTable(List data, context, Map file, User user) {
 
   return Column(
     children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            addButtonModel("+",
-                (() async => iVFluidTableTable(context, file, user, size))),
-          ],
+      Visibility(
+        visible: user.user!['dep'] == 'Department of Obstetrics',
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              addButtonModel("+",
+                  (() async => iVFluidTableTable(context, file, user, size))),
+            ],
+          ),
         ),
       ),
       Padding(

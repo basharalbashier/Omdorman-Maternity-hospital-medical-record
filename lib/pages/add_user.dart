@@ -59,6 +59,80 @@ class _AddPatientState extends State<AddUser> {
     'Department of Pharmacy',
     'Insuranse',
   ];
+
+  void sendData() async {
+    var body = jsonEncode({
+      'unit': replaceArabicNumber(unit.toString()),
+      'name': nameController.text,
+      'password': passWordController.text,
+      'email': emailContrller.text,
+      'phone': replaceArabicNumber(telController.text),
+      'level': whichlevel,
+      'dep': depart,
+    });
+    List o = [];
+    // var body1 = jsonEncode({
+    //   'unit': "1",
+    //   'name': "obs",
+    //   'password': "123456",
+    //   'email': "obs@gmail.com",
+    //   'phone': "4329805742389",
+    //   'level': 'Consultant',
+    //   'dep': 'Department of Obstetrics',
+    // });
+    o.add(
+      jsonEncode({
+        'unit': "1",
+        'name': "ana",
+        'password': "123456",
+        'email': "ana@gmail.com",
+        'phone': "4329805742389",
+        'level': 'Consultant',
+        'dep': 'Department of Anesthesiology',
+      }),
+//  jsonEncode({
+//       'unit': replaceArabicNumber(unit.toString()),
+//       'name': 'sta',
+//       'password': "123456",
+//       'email': "sta@gmail.com",
+//       'phone': "4329805742389",
+//       'level': 'Statistics Officer',
+//       'dep': 'Department of Statistics',
+//     });
+
+// jsonEncode({
+//       'unit': replaceArabicNumber(unit.toString()),
+//       'name': 'sta',
+//       'password': "123456",
+//       'email': "sta@gmail.com",
+//       'phone': "4329805742389",
+//       'level': 'Statistics Officer',
+//       'dep': 'Department of Statistics',
+//     });
+    );
+
+    for (var i in o) {
+      try {
+        await http
+            .post(Uri.parse('${url}user/donat'), headers: headr, body: i)
+            .then((value) {
+          print('Value error:  ${value.body}');
+        });
+      } catch (e) {
+        print(e);
+      }
+    }
+//Validate returns true if the form is valid, or false otherwise.
+
+    // ... Navigate To your Home Page
+  }
+
+  @override
+  void initState() {
+    sendData();
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -206,7 +280,7 @@ class _AddPatientState extends State<AddUser> {
                   ResponsiveGridCol(
                     lg: 12,
                     child: Container(
-                      height: size.height / 6,
+                      height: size.height / 5,
                       alignment: Alignment(0, 0),
                       // color: Colors.purple,
                       child: Column(
@@ -360,28 +434,7 @@ class _AddPatientState extends State<AddUser> {
           ),
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
-              var body = jsonEncode({
-                'unit': replaceArabicNumber(unit.toString()),
-                'name': nameController.text,
-                'password': passWordController.text,
-                'email': emailContrller.text,
-                'phone': replaceArabicNumber(telController.text),
-                'level': whichlevel,
-                'dep': depart,
-              });
-              try {
-                await http
-                    .post(Uri.parse('${url}user/donat'),
-                        headers: headr, body: body)
-                    .then((value) {
-                  print('Value error:  ${value.body}');
-                });
-              } catch (e) {
-                print(e);
-              }
-//Validate returns true if the form is valid, or false otherwise.
-
-              // ... Navigate To your Home Page
+              sendData();
             }
           },
           child: Text(

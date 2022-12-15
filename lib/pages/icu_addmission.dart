@@ -17,15 +17,13 @@ import '../models/user_hive.dart';
 import '../widgets/accept_or_not_lab_request.dart';
 
 class IcuAddmission extends StatefulWidget {
-  final Map file;
-  final Map patient;
+  final Map request;
   final User user;
   final int whichCu;
   const IcuAddmission({
     super.key,
     required this.whichCu,
-    required this.file,
-    required this.patient,
+    required this.request,
     required this.user,
   });
 
@@ -284,9 +282,9 @@ class _MyHomePageState extends State<IcuAddmission> {
                           "detailed_history": detaiColntroller.text,
                           "pmh": pmhController.text,
                           "dr_id": widget.user.user!['id'].toString(),
-                          "patient_id": widget.patient['id'].toString(),
-                          "file_id": widget.file['id'].toString(),
-                          "icu_file_id": widget.file['id'].toString(),
+                          "patient_id": widget.request['patient_id'].toString(),
+                          "file_id": widget.request['file_id'].toString(),
+                          "icu_file_id": widget.request['id'].toString(),
                         });
                         String respons = await makeHttpRequest(
                             url + "icuad/add", body, true, widget.user);

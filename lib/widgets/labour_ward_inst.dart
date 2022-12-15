@@ -7,32 +7,27 @@ import 'package:responsive_grid/responsive_grid.dart';
 import '../main.dart';
 import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
-  List<String> titles = [
-    "Date & Time",
 
-    "Instructions",
-    'Dr Name'
-  ];
-  List<String> keys = [
-
-    "created_at",
-    "instructions",
-    'dr_name'
-  ];
+List<String> titles = ["Date & Time", "Instructions", 'Dr Name'];
+List<String> keys = ["created_at", "instructions", 'dr_name'];
 Widget labourWardInstTable(List data, context, Map file, User user) {
-
   Size size = Size(500, 500);
 
   return Column(
     children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            addButtonModel("+",
-                (() async =>  addanteAdmFollowUpTable(context, file, user, size))),
-          ],
+      Visibility(
+        visible: user.user!['dep'] == 'Department of Obstetrics',
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              addButtonModel(
+                  "+",
+                  (() async =>
+                      addanteAdmFollowUpTable(context, file, user, size))),
+            ],
+          ),
         ),
       ),
       Padding(
@@ -73,7 +68,9 @@ Widget labourWardInstTable(List data, context, Map file, User user) {
                         height: 32,
                         child: Center(
                             child: Text(
-                        i==0?'${row[keys[i]].toString().substring(0, 10)}\n${row[keys[i]].toString().substring(11, 19)}':  row[keys[i]] ?? '',
+                          i == 0
+                              ? '${row[keys[i]].toString().substring(0, 10)}\n${row[keys[i]].toString().substring(11, 19)}'
+                              : row[keys[i]] ?? '',
                           textAlign: TextAlign.center,
                         )),
                       ),
@@ -96,15 +93,15 @@ Future<void> addanteAdmFollowUpTable(
 ) async {
   var bp = TextEditingController();
   var ga = TextEditingController();
-    var fl = TextEditingController();
+  var fl = TextEditingController();
   var pres = TextEditingController();
-    var eng = TextEditingController();
+  var eng = TextEditingController();
   var fh = TextEditingController();
-    var hb = TextEditingController();
+  var hb = TextEditingController();
   var urine = TextEditingController();
-    var comment = TextEditingController();
+  var comment = TextEditingController();
   var next_visit = TextEditingController();
-var controllers=[bp,ga,fl,pres,eng,fh,hb,urine,comment,next_visit];
+  var controllers = [bp, ga, fl, pres, eng, fh, hb, urine, comment, next_visit];
   final _formKey = GlobalKey<FormState>();
   bool show = true;
   return await showDialog<void>(
@@ -131,22 +128,20 @@ var controllers=[bp,ga,fl,pres,eng,fh,hb,urine,comment,next_visit];
                   MaterialButton(
                     color: Colors.teal,
                     onPressed: () async {
-                      
-                        
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {
                         setState(() => show = !show);
                         final body = jsonEncode({
-                          for(int i=1;i<keys.length-1;i++)
-                          keys[i]:controllers[i-1].text,
-                        
+                          for (int i = 1; i < keys.length - 1; i++)
+                            keys[i]: controllers[i - 1].text,
+
                           // 'inv': invController.text,
                           // 'result': resultController.text,
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                         });
-                
+
                         try {
                           await http
                               .post(Uri.parse('${url}lwi/add'),
@@ -203,34 +198,33 @@ var controllers=[bp,ga,fl,pres,eng,fh,hb,urine,comment,next_visit];
                                   key: _formKey,
                                   child: Column(
                                     children: [
-                                      for(int i=0;i<keys.length-2;i++)
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
-                                          alignment: Alignment(0, 0),
-                                          // color: Colors.green,
-                                          child: TextFormField(
-                                            maxLines: 5,
-                                            style: kTextFormFieldStyle(),
-                                            controller: controllers[i],
-                                            decoration:  InputDecoration(
-                                              // prefixIcon: Icon(Icons.person),
-                                              label: Text(titles[i+1]),
-                                              border: OutlineInputBorder(
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(15)),
+                                      for (int i = 0; i < keys.length - 2; i++)
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Container(
+                                            alignment: Alignment(0, 0),
+                                            // color: Colors.green,
+                                            child: TextFormField(
+                                              maxLines: 5,
+                                              style: kTextFormFieldStyle(),
+                                              controller: controllers[i],
+                                              decoration: InputDecoration(
+                                                // prefixIcon: Icon(Icons.person),
+                                                label: Text(titles[i + 1]),
+                                                border: OutlineInputBorder(
+                                                  borderRadius:
+                                                      BorderRadius.all(
+                                                          Radius.circular(15)),
+                                                ),
                                               ),
+                                              validator: ((v) {
+                                                if (v!.length < 5) {
+                                                  return "Is this a ${titles[i + 1]}?";
+                                                }
+                                              }),
                                             ),
-                                            validator: ((v) {
-                                              if (v!.length < 5) {
-                                                return "Is this a ${titles[i+1]}?";
-                                              }
-                                            }),
                                           ),
                                         ),
-                                      ),
-                                      
-                                 
                                     ],
                                   ),
                                 ),

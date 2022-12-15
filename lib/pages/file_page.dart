@@ -1,22 +1,18 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
-import 'package:aldayat_screens/pages/lab_request_form.dart';
-import 'package:aldayat_screens/widgets/antenatal_table.dart';
-import 'package:aldayat_screens/widgets/anticoagulation_chart_table.dart';
 import 'package:aldayat_screens/widgets/genterate_qr_for_file.dart';
 import 'package:aldayat_screens/widgets/gyn_adm_button.dart';
-import 'package:aldayat_screens/widgets/gyne_comment_table.dart';
-import 'package:aldayat_screens/widgets/gyne_perciption_table.dart';
-import 'package:aldayat_screens/widgets/gyne_post_operative_follow_up_table.dart';
 import 'package:aldayat_screens/widgets/icr_request.dart';
+<<<<<<< HEAD
 import 'package:aldayat_screens/widgets/iv_fluid_table.dart';
 import 'package:aldayat_screens/widgets/labour_ward_inst.dart';
 import 'package:aldayat_screens/widgets/nurse_observation_table.dart';
+=======
+import 'package:aldayat_screens/widgets/move_to_lab_button.dart';
+>>>>>>> ae38106 (14/Dec)
 import 'package:aldayat_screens/widgets/obs_adm_button.dart';
-import 'package:aldayat_screens/widgets/obs_treatment_table.dart';
 import 'package:aldayat_screens/widgets/private_info_for_static.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -25,8 +21,25 @@ import '../constant.dart';
 import '../models/user_hive.dart';
 import '../widgets/add_baby_file_widget.dart';
 import '../widgets/ant_adm_folow.dart';
+<<<<<<< HEAD
+=======
+import '../widgets/antenatal_table.dart';
+import '../widgets/anticoagulation_chart_table.dart';
+import '../widgets/delivery_note.dart';
+>>>>>>> ae38106 (14/Dec)
 import '../widgets/gyn_inve_table.dart';
+import '../widgets/gyne_comment_table.dart';
+import '../widgets/gyne_perciption_table.dart';
+import '../widgets/gyne_post_operative_follow_up_table.dart';
+import '../widgets/iv_fluid_table.dart';
+import '../widgets/labour_ward_inst.dart';
+import '../widgets/nurse_observation_table.dart';
 import '../widgets/obs_discharg_drugs_table.dart';
+<<<<<<< HEAD
+=======
+import '../widgets/obs_treatment_table.dart';
+import '../widgets/operation_note.dart';
+>>>>>>> ae38106 (14/Dec)
 import '../widgets/show_gyn_adm.dart';
 import '../widgets/show_obs_history.dart';
 import '../widgets/u_s_request.dart';
@@ -106,26 +119,28 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   TabController? _tabController;
   @override
   void initState() {
-    widget.type == "0"
-        ? taps = [
-            "Home",
-            "Antenatal Follow Up",
-            "Antenatal Admission Follow Up",
-            "Labour Ward Instructions",
-            "Nurse Observations",
-            "Treatment",
-            "IV Fluids",
-            "Anticoagulation Chart",
-            "Discharge Drugs",
-          ]
-        : taps = [
-            "Home",
-            "Investigation",
-            "Comments",
-            "Perciption",
-            "Post-Operative",
-          ];
-    // getLabRequest();
+    widget.user.user!['dep'] != 'Department of Statistics'
+        ? widget.type == "0"
+            ? taps = [
+                "Home",
+                "Antenatal Follow Up",
+                "Antenatal Admission Follow Up",
+                "Labour Ward Instructions",
+                "Nurse Observations",
+                "Treatment",
+                "IV Fluids",
+                "Anticoagulation Chart",
+                "Discharge Drugs",
+              ]
+            : taps = [
+                "Home",
+                "Investigation",
+                "Comments",
+                "Perciption",
+                "Post-Operative",
+              ]
+        : null;
+    getLabRequest();
     _tabController = TabController(length: taps.length, vsync: this);
     super.initState();
   }
@@ -192,15 +207,38 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
         child: SingleChildScrollView(
             child: Column(
           children: [
+<<<<<<< HEAD
             SizedBox(
               height: size.height / 3,
+=======
+            Visibility(
+              visible: widget.user.user!['dep'] == 'Department of Obstetrics',
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: deliveryNoteButton(
+                        context, widget.patient, widget.file, widget.user),
+                  ),
+                  operationButtonButton(
+                      context, widget.patient, widget.file, widget.user),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: vaginalFindingButton(
+                        context, widget.patient, widget.file, widget.user),
+                  ),
+                ],
+              ),
+>>>>>>> ae38106 (14/Dec)
             ),
             for (int i = 0; i < taps.length; i++) drawer(i, size)
           ],
         )),
       ),
       floatingActionButton: Visibility(
-        visible: size.width < 700,
+        visible: size.width < 700 &&
+            widget.user.user!['dep'] != 'Department of Statistics',
         child: FloatingActionButton(
           backgroundColor: setUniColor(widget.user.user!['unit'] ?? ''),
           child: Icon(Icons.menu),
@@ -338,12 +376,13 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 obsHistory.isNotEmpty
                     ? "Obstetrical History"
                     : gynAdmList.isNotEmpty
-                        ? "Gynaecolo"
+                        ? ""
                         : '',
                 style: fileTitle(size),
               )),
           Visibility(
-              visible: obsHistory.isNotEmpty || gynAdmList.isNotEmpty,
+              visible: (obsHistory.isNotEmpty || gynAdmList.isNotEmpty) &&
+                  widget.user.user!['dep'] != 'Department of Statistics',
               child: obsHistory.isNotEmpty
                   ? obsHistoryTable(size, obsHistory)
                   : gynAdmissionTable(size, gynAdmList)),
@@ -542,20 +581,36 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: size.width > 750
+<<<<<<< HEAD
             ? Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
+=======
+            //
+            ? largScreen(size)
+            : smallScreen(size));
+  }
+
+  Widget largScreen(size) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Column(
+          children: [
+            SizedBox(
+              height: 200,
+              width: 200,
+              child: ClipRRect(
+                  borderRadius: BorderRadius.circular(200),
+                  child: Image.asset('lib/assets/avatar.jpg')),
+            ),
+          ],
+        ),
+        Expanded(
+          child: Column(
+            children: [
+              Row(
+>>>>>>> ae38106 (14/Dec)
                 children: [
-                  Column(
-                    children: [
-                      SizedBox(
-                        height: 200,
-                        width: 200,
-                        child: ClipRRect(
-                            borderRadius: BorderRadius.circular(200),
-                            child: Image.asset('lib/assets/avatar.jpg')),
-                      ),
-                    ],
-                  ),
                   Expanded(
                     child: Column(
                       children: [
@@ -607,6 +662,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                             ),
                           ],
                         ),
+<<<<<<< HEAD
                         Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Divider(),
@@ -739,10 +795,68 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                                   ),
                                 ],
                               ),
+=======
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible:
+                        widget.user.user!['dep'] == 'Department of Obstetrics',
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: deliveryNoteButton(context, widget.patient,
+                              widget.file, widget.user),
+                        ),
+                        operationButtonButton(
+                            context, widget.patient, widget.file, widget.user),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: vaginalFindingButton(context, widget.patient,
+                              widget.file, widget.user),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Divider(),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    Visibility(
+                        visible: widget.user.user!['dep'] ==
+                            'Department of Statistics',
+                        child: addBabyFileWidget(widget.user, context,
+                            widget.patient['id'], widget.file['id'])),
+                    Visibility(
+                      visible: widget.user.user!['dep'] ==
+                          'Department of Obstetrics',
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          uSRequest(context, size, widget.file, widget.user,
+                              widget.type),
+                          labButton(context, widget.patient, widget.file,
+                              widget.type),
+                          Column(
+                            children: [
+                              iCuRequest(
+                                  context, size, widget.file, widget.user, "0"),
+                              iCuRequest(
+                                  context, size, widget.file, widget.user, "1"),
+>>>>>>> ae38106 (14/Dec)
                             ],
                           ),
                         ],
                       ),
+<<<<<<< HEAD
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Divider(),
@@ -790,13 +904,137 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                               iCuRequest(
                                   context, size, widget.file, widget.user),
                             ],
+=======
+                    ),
+                  ],
+                ),
+              )
+            ],
+          ),
+        ),
+        generatQr(widget.patient, widget.file, widget.type)
+      ],
+    );
+  }
+
+  Widget smallScreen(size) {
+    return Column(
+      children: [
+        Column(
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Column(
+                  children: [
+                    SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(200),
+                          child: Image.asset('lib/assets/avatar.jpg')),
+                    ),
+                  ],
+                ),
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Text("Mother"),
+                          SizedBox(
+                            width: 10,
+>>>>>>> ae38106 (14/Dec)
                           ),
-                        ),
-                      )
+                          Text(
+                            widget.patient['name'],
+                            style: fileTitle(size),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text("Age: "),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            widget.patient['age'].toString(),
+                            style: fileTitle(size),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text("File Id: "),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            widget.file['id'].toString(),
+                            style: fileTitle(size),
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Text("Type: "),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            widget.type == "0" ? "OBS" : "Gynae",
+                            style: fileTitle(size),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
+<<<<<<< HEAD
                   generatQr(widget.patient, widget.file, widget.type)
                 ],
               ));
+=======
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Divider(),
+            ),
+            Visibility(
+                visible: widget.user.user!['dep'] == 'Department of Statistics',
+                child: addBabyFileWidget(widget.user, context,
+                    widget.patient['id'], widget.file['id'])),
+            Visibility(
+              visible: widget.user.user!['dep'] == 'Department of Obstetrics',
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    uSRequest(
+                        context, size, widget.file, widget.user, widget.type),
+                    labButton(
+                        context, widget.patient, widget.file, widget.type),
+                    Column(
+                      children: [
+                        iCuRequest(
+                            context, size, widget.file, widget.user, "0"),
+                        iCuRequest(
+                            context, size, widget.file, widget.user, "1"),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            )
+          ],
+        ),
+        generatQr(widget.patient, widget.file, widget.type)
+      ],
+    );
+>>>>>>> ae38106 (14/Dec)
   }
 }

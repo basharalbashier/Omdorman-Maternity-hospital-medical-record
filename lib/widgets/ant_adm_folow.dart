@@ -15,16 +15,19 @@ Widget anteAdmFollowUpTable(List data, context, Map file, User user) {
 
   return Column(
     children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            addButtonModel(
-                "+",
-                (() async =>
-                    addanteAdmFollowUpTable(context, file, user, size))),
-          ],
+      Visibility(
+        visible: user.user!['dep'] == 'Department of Obstetrics',
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              addButtonModel(
+                  "+",
+                  (() async =>
+                      addanteAdmFollowUpTable(context, file, user, size))),
+            ],
+          ),
         ),
       ),
       Padding(
@@ -131,7 +134,6 @@ Future<void> addanteAdmFollowUpTable(
                         final body = jsonEncode({
                           for (int i = 1; i < keys.length - 1; i++)
                             keys[i]: controllers[i - 1].text,
-
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),

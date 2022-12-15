@@ -20,14 +20,17 @@ Widget obsTeatmentTable(List data, context, Map file, User user) {
 
   return Column(
     children: [
-      Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            addButtonModel("+",
-                (() async => anteFollowUpTabled(context, file, user, size))),
-          ],
+      Visibility(
+        visible: user.user!['dep'] == 'Department of Obstetrics',
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              addButtonModel("+",
+                  (() async => anteFollowUpTabled(context, file, user, size))),
+            ],
+          ),
         ),
       ),
       Padding(
@@ -68,8 +71,7 @@ Widget obsTeatmentTable(List data, context, Map file, User user) {
                         height: 32,
                         child: Center(
                             child: Text(
-
-                             row[keys[i]] ?? '',
+                          row[keys[i]] ?? '',
                           textAlign: TextAlign.center,
                         )),
                       ),
@@ -93,7 +95,6 @@ Future<void> anteFollowUpTabled(
   var bp = TextEditingController();
   var ga = TextEditingController();
   var fl = TextEditingController();
- 
 
   var controllers = [bp, ga, fl];
   final _formKey = GlobalKey<FormState>();
@@ -191,9 +192,7 @@ Future<void> anteFollowUpTabled(
                                   key: _formKey,
                                   child: Column(
                                     children: [
-                                      for (int i = 0;
-                                          i < keys.length-1;
-                                          i++)
+                                      for (int i = 0; i < keys.length - 1; i++)
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
                                           child: Container(
