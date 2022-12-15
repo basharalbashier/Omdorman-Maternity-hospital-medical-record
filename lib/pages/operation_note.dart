@@ -179,7 +179,7 @@ if(!show){
                         ],
                       ),
                       TextFormField(
-                        maxLines: 8,
+                        maxLines: 3,
                         controller: procedureController,
                       ),
                     ],

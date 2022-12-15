@@ -9,7 +9,9 @@ import '../constant.dart';
 import '../main.dart';
 import '../models/error_message.dart';
 import '../models/make_request.dart';
+import '../models/setUnitColor.dart';
 import '../models/user_hive.dart';
+import 'title.dart';
 
 class VaginalExam extends StatefulWidget {
     final Map file;
@@ -114,6 +116,7 @@ bool show=true;
       body: SingleChildScrollView(
         child: Column(
           children: [
+                TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(

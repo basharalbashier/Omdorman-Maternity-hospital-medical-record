@@ -5,13 +5,7 @@ import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/genterate_qr_for_file.dart';
 import 'package:aldayat_screens/widgets/gyn_adm_button.dart';
 import 'package:aldayat_screens/widgets/icr_request.dart';
-<<<<<<< HEAD
-import 'package:aldayat_screens/widgets/iv_fluid_table.dart';
-import 'package:aldayat_screens/widgets/labour_ward_inst.dart';
-import 'package:aldayat_screens/widgets/nurse_observation_table.dart';
-=======
 import 'package:aldayat_screens/widgets/move_to_lab_button.dart';
->>>>>>> ae38106 (14/Dec)
 import 'package:aldayat_screens/widgets/obs_adm_button.dart';
 import 'package:aldayat_screens/widgets/private_info_for_static.dart';
 import 'package:aldayat_screens/widgets/title.dart';
@@ -21,12 +15,9 @@ import '../constant.dart';
 import '../models/user_hive.dart';
 import '../widgets/add_baby_file_widget.dart';
 import '../widgets/ant_adm_folow.dart';
-<<<<<<< HEAD
-=======
 import '../widgets/antenatal_table.dart';
 import '../widgets/anticoagulation_chart_table.dart';
 import '../widgets/delivery_note.dart';
->>>>>>> ae38106 (14/Dec)
 import '../widgets/gyn_inve_table.dart';
 import '../widgets/gyne_comment_table.dart';
 import '../widgets/gyne_perciption_table.dart';
@@ -35,15 +26,13 @@ import '../widgets/iv_fluid_table.dart';
 import '../widgets/labour_ward_inst.dart';
 import '../widgets/nurse_observation_table.dart';
 import '../widgets/obs_discharg_drugs_table.dart';
-<<<<<<< HEAD
-=======
 import '../widgets/obs_treatment_table.dart';
 import '../widgets/operation_note.dart';
->>>>>>> ae38106 (14/Dec)
 import '../widgets/show_gyn_adm.dart';
 import '../widgets/show_obs_history.dart';
 import '../widgets/u_s_request.dart';
 import 'lab_history.dart';
+import 'vaginal_exam_button.dart';
 
 class FilePage extends StatefulWidget {
   final Map file;
@@ -207,10 +196,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
         child: SingleChildScrollView(
             child: Column(
           children: [
-<<<<<<< HEAD
-            SizedBox(
-              height: size.height / 3,
-=======
             Visibility(
               visible: widget.user.user!['dep'] == 'Department of Obstetrics',
               child: Column(
@@ -230,7 +215,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                   ),
                 ],
               ),
->>>>>>> ae38106 (14/Dec)
             ),
             for (int i = 0; i < taps.length; i++) drawer(i, size)
           ],
@@ -581,10 +565,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
     return Padding(
         padding: const EdgeInsets.all(8.0),
         child: size.width > 750
-<<<<<<< HEAD
-            ? Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-=======
             //
             ? largScreen(size)
             : smallScreen(size));
@@ -609,7 +589,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
           child: Column(
             children: [
               Row(
->>>>>>> ae38106 (14/Dec)
                 children: [
                   Expanded(
                     child: Column(
@@ -662,140 +641,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                             ),
                           ],
                         ),
-<<<<<<< HEAD
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Divider(),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Column(
-                            children: [
-                              Visibility(
-                                  visible: widget.user.user!['dep'] ==
-                                      'Department of Statistics',
-                                  child: addBabyFileWidget(widget.user, context,
-                                      widget.patient['id'], widget.file['id'])),
-                              Visibility(
-                                visible: widget.user.user!['dep'] !=
-                                    'Department of Statistics',
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    uSRequest(context, size, widget.file,
-                                        widget.user, widget.type),
-                                    Material(
-                                      child: Center(
-                                        child: ElevatedButton(
-
-                                            // style:ButtonStyle(backgroundColor:Colors.te ),
-                                            onPressed: () {
-                                              Navigator.pushAndRemoveUntil(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        AddRequestForm(
-                                                          patient:
-                                                              widget.patient,
-                                                          file: widget.file,
-                                                          type: widget.type,
-                                                        )),
-                                                (Route<dynamic> route) => true,
-                                              );
-                                            },
-                                            child: SizedBox(
-                                                height: 30,
-                                                child: Center(
-                                                  child: Text("Lab Request"),
-                                                ))),
-                                      ),
-                                    ),
-                                    iCuRequest(context, size, widget.file,
-                                        widget.user),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                  generatQr(widget.patient, widget.file, widget.type)
-                ],
-              )
-            : Column(
-                children: [
-                  Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Column(
-                            children: [
-                              SizedBox(
-                                height: 200,
-                                width: 200,
-                                child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(200),
-                                    child:
-                                        Image.asset('lib/assets/avatar.jpg')),
-                              ),
-                            ],
-                          ),
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Row(
-                                children: [
-                                  Text("Mother"),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    widget.patient['name'],
-                                    style: fileTitle(size),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Age: "),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    widget.patient['age'].toString(),
-                                    style: fileTitle(size),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("File Id: "),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    widget.file['id'].toString(),
-                                    style: fileTitle(size),
-                                  ),
-                                ],
-                              ),
-                              Row(
-                                children: [
-                                  Text("Type: "),
-                                  SizedBox(
-                                    width: 10,
-                                  ),
-                                  Text(
-                                    widget.type == "0" ? "OBS" : "Gynae",
-                                    style: fileTitle(size),
-                                  ),
-                                ],
-                              ),
-=======
                       ],
                     ),
                   ),
@@ -851,60 +696,10 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                                   context, size, widget.file, widget.user, "0"),
                               iCuRequest(
                                   context, size, widget.file, widget.user, "1"),
->>>>>>> ae38106 (14/Dec)
                             ],
                           ),
                         ],
                       ),
-<<<<<<< HEAD
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Divider(),
-                      ),
-                      Visibility(
-                          visible: widget.user.user!['dep'] ==
-                              'Department of Statistics',
-                          child: addBabyFileWidget(widget.user, context,
-                              widget.patient['id'], widget.file['id'])),
-                      Visibility(
-                        visible: widget.user.user!['dep'] !=
-                            'Department of Statistics',
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              uSRequest(context, size, widget.file, widget.user,
-                                  widget.type),
-                              Material(
-                                child: Center(
-                                  child: ElevatedButton(
-
-                                      // style:ButtonStyle(backgroundColor:Colors.te ),
-                                      onPressed: () {
-                                        Navigator.pushAndRemoveUntil(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  AddRequestForm(
-                                                    patient: widget.patient,
-                                                    file: widget.file,
-                                                    type: widget.type,
-                                                  )),
-                                          (Route<dynamic> route) => true,
-                                        );
-                                      },
-                                      child: SizedBox(
-                                          height: 30,
-                                          child: Center(
-                                            child: Text("Lab Request"),
-                                          ))),
-                                ),
-                              ),
-                              iCuRequest(
-                                  context, size, widget.file, widget.user),
-                            ],
-=======
                     ),
                   ],
                 ),
@@ -945,7 +740,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                           Text("Mother"),
                           SizedBox(
                             width: 10,
->>>>>>> ae38106 (14/Dec)
                           ),
                           Text(
                             widget.patient['name'],
@@ -991,11 +785,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                       ),
                     ],
                   ),
-<<<<<<< HEAD
-                  generatQr(widget.patient, widget.file, widget.type)
-                ],
-              ));
-=======
                 ),
               ],
             ),
@@ -1035,6 +824,5 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
         generatQr(widget.patient, widget.file, widget.type)
       ],
     );
->>>>>>> ae38106 (14/Dec)
   }
 }

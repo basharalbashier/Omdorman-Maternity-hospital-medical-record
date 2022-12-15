@@ -1,11 +1,8 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
-<<<<<<< HEAD
-=======
 import 'package:aldayat_screens/pages/add_user.dart';
 import 'package:aldayat_screens/pages/baby_file_page.dart';
 import 'package:aldayat_screens/pages/file_page.dart';
->>>>>>> ae38106 (14/Dec)
 import 'package:aldayat_screens/pages/login.dart';
 import 'package:aldayat_screens/pages/operation_note.dart';
 import 'package:aldayat_screens/pages/testo.dart';
@@ -43,50 +40,6 @@ class DayatApp extends StatelessWidget {
     return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-<<<<<<< HEAD
-          body: NeoUnit(
-        file: {},
-        user: User({}, ''),
-      )
-          //      Paragram(
-          //   title: 'Fetal heart rate',
-          // )
-
-          //     Stack(
-          //   fit: StackFit.expand,
-          //   children: [
-
-          //     Positioned(
-          //       bottom: 0,
-          //       right: 10,
-          //       child: GestureDetector(
-          //         onTap: () async {
-          //           try {
-          //             await launchUrl(
-          //                 Uri.parse("https://wa.me/+249117630388?text=Dr."));
-          //           } catch (e) {
-          //             errono('+249117630388', '+249117630388', context, true,
-          //                 Container(), 1);
-          //           }
-          //         },
-          //         child: RichText(
-          //           text: TextSpan(
-          //             text: 'Do you need any help?',
-          //             style: kHaveAnAccountStyle(Size(500, 500)),
-          //             children: [
-          //               TextSpan(
-          //                 text: " Contact us",
-          //                 style: kLoginOrSignUpTextStyle(Size(500, 500)),
-          //               ),
-          //             ],
-          //           ),
-          //         ),
-          //       ),
-          //     )
-          //   ],
-          // )
-          ),
-=======
           body: Stack(
         fit: StackFit.expand,
         children: [
@@ -124,7 +77,6 @@ class DayatApp extends StatelessWidget {
           )
         ],
       )),
->>>>>>> ae38106 (14/Dec)
     );
   }
 }

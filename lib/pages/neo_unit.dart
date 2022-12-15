@@ -11,8 +11,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../widgets/waiting_widget.dart';
-<<<<<<< HEAD
-=======
 
 List keysOf = [
   "name_of_mother",
@@ -184,7 +182,6 @@ List<String> titles = [
   "Comment",
   "Comment",
 ];
->>>>>>> ae38106 (14/Dec)
 
 class NeoUnit extends StatefulWidget {
   final Map file;
@@ -299,94 +296,6 @@ class _NeoUnitState extends State<NeoUnit> {
     super.initState();
   }
 
-<<<<<<< HEAD
-  List keysOf = [
-    "name_of_mother",
-    "sex",
-    "baby_no",
-    "address",
-    "birthdate",
-    "birthtime",
-    "obs_unit",
-    "dis_date",
-    "summary",
-    "resuscitation",
-    "birth_weight",
-    "admitted_to_scn",
-    "follow_u",
-    "discharg_weight",
-    "feeding_on_dis",
-    "prev_operation",
-    "medical_prob",
-    "husband_occup",
-    "medical_status_at_deliv",
-    "age",
-    "bg",
-    "antibod",
-    "edd",
-    "certain",
-    "weeks_preg",
-    "obataric_history",
-    "gravida",
-    "para",
-    "illness_during",
-    "durgs_during",
-    "type_of_deliv",
-    "fetal_distress",
-    "delivery_by",
-    "cord_round",
-    "indication_cs",
-    "resp_first",
-    "regulat_or_cry",
-    "color",
-    "tone",
-    "vitamin_k_given",
-    "res_necess",
-    "spontaneous",
-    "movement_when_stimulated",
-    "pale",
-    "limb",
-    "apgar",
-    "heart",
-    "respiration",
-    "tone_2",
-    "responsiveness",
-    "color_2",
-    "total",
-    "exam_by",
-    "general",
-    "skull",
-    "skin",
-    "limbs",
-    "abdomen",
-    "genital",
-    "auns",
-    "spontan",
-    "muscle_tone",
-    "rooting",
-    "sucking",
-    "traction",
-    "grasp",
-    "automatic",
-    "moro",
-    "trans",
-    "recived",
-    "condition_on_arriv",
-    "temp",
-    "colour",
-    "respir",
-    "examined_at",
-    "hours_by",
-    "hips",
-    "gestational_assess",
-    "nutri",
-    "another_heart",
-    "head_cir",
-    "feeding",
-    "comment",
-  ];
-=======
->>>>>>> ae38106 (14/Dec)
   bool show = true;
   @override
   Widget build(BuildContext context) {
@@ -429,53 +338,7 @@ class _NeoUnitState extends State<NeoUnit> {
                               border: OutlineInputBorder(),
                               label: Text(titles[i])),
                         ),
-<<<<<<< HEAD
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              ResponsiveGridCol(
-                  child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: TextField(
-                  controller: controllers[10],
-                  decoration: InputDecoration(
-                      border: OutlineInputBorder(), label: Text(titles[10])),
-                ),
-              )),
-              ResponsiveGridCol(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Row(
-                    children: [
-                      Text(
-                        'Admitted  to S.C.N   ${admit ? "Yes" : "No"}',
-                        // style: kLoginTitleStyle(size/2, Colors.black),
-                      ),
-                      Checkbox(
-                          value: admit,
-                          onChanged: (onChanged) =>
-                              setState(() => admit = !admit)),
-                      Flexible(
-                        child: Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: TextField(
-                            controller: controllers[11],
-                            decoration: InputDecoration(
-                                border: OutlineInputBorder(),
-                                label: Text(titles[11])),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-              for (int i = 12; i < 14; i++)
-=======
                       )),
->>>>>>> ae38106 (14/Dec)
                 ResponsiveGridCol(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -651,22 +514,6 @@ class _NeoUnitState extends State<NeoUnit> {
                             label: Text(titles[29])),
                       ),
                     )),
-<<<<<<< HEAD
-            ]),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Divider(),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Attended ${isAttended ? "Yes" : "No"}'.toUpperCase(),
-                  style: kLoginTitleStyle(size / 2, Colors.black),
-=======
                 ResponsiveGridCol(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -695,7 +542,6 @@ class _NeoUnitState extends State<NeoUnit> {
                       ],
                     ),
                   ),
->>>>>>> ae38106 (14/Dec)
                 ),
                 ResponsiveGridCol(
                   child: Padding(
@@ -741,13 +587,6 @@ class _NeoUnitState extends State<NeoUnit> {
                       )),
               ]),
             ),
-<<<<<<< HEAD
-          ),
-          Visibility(
-            visible: isAttended,
-            child: Padding(
-              padding: EdgeInsets.all(size.width / 20),
-=======
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Divider(),
@@ -890,7 +729,6 @@ class _NeoUnitState extends State<NeoUnit> {
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
->>>>>>> ae38106 (14/Dec)
               child: Table(
                 border: TableBorder.all(width: 2, color: Colors.blueGrey),
                 columnWidths: const <int, TableColumnWidth>{
@@ -944,26 +782,6 @@ class _NeoUnitState extends State<NeoUnit> {
                 ],
               ),
             ),
-<<<<<<< HEAD
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Divider(),
-          ),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Table(
-              border: TableBorder.all(width: 2, color: Colors.blueGrey),
-              columnWidths: const <int, TableColumnWidth>{
-                // 0: IntrinsicColumnWidth(),
-                // 1: FlexColumnWidth(),
-                // 2: IntrinsicColumnWidth(),
-              },
-              children: <TableRow>[
-                TableRow(
-                  children: <Widget>[
-                    Padding(
-=======
             ResponsiveGridRow(children: [
               for (int i = 66; i < controllers.length - 2; i++)
                 ResponsiveGridCol(
@@ -986,7 +804,6 @@ class _NeoUnitState extends State<NeoUnit> {
                                     ? null
                                     : 3,
                     child: Padding(
->>>>>>> ae38106 (14/Dec)
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
                         maxLines: controllers.length - 3 == i ? 3 : null,
@@ -1066,114 +883,11 @@ class _NeoUnitState extends State<NeoUnit> {
                       ),
                     ),
                   ),
-<<<<<<< HEAD
-              ],
-            ),
-          ),
-          ResponsiveGridRow(children: [
-            for (int i = 66; i < controllers.length - 2; i++)
-              ResponsiveGridCol(
-                  xs: (i == 68)
-                      ? 12
-                      : (i == 66)
-                          ? 12
-                          : (i == controllers.length - 3)
-                              ? 12
-                              : (i == controllers.length - 4)
-                                  ? 12
-                                  : 6,
-                  md: (i == controllers.length - 3)
-                      ? null
-                      : (i == controllers.length - 4)
-                          ? null
-                          : (i == 68)
-                              ? null
-                              : (i == 66)
-                                  ? null
-                                  : 3,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: TextField(
-                      maxLines: controllers.length - 3 == i ? 3 : null,
-                      controller: controllers[i],
-                      decoration: InputDecoration(
-                          border: OutlineInputBorder(), label: Text(titles[i])),
-                    ),
-                  )),
-          ]),
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: MaterialButton(
-                    color: Colors.teal,
-                    onPressed: () async {
-                      setState(() {
-                        show = !show;
-                      });
-                      List<String> controllersText = [];
-                      for (int i = 0; i < controllers.length; i++) {
-                        controllersText.add(controllers[i].text);
-                      }
-                      var example = controllersText;
-                      var body = json.encode({
-                        for (int i = 0; i < 11; i++) keysOf[i]: example[i],
-                        'admitted_to_scn': admit ? "Yes" : 'No',
-                        for (int i = 12; i < 15; i++) keysOf[i]: titles[i],
-                        for (int i = 12; i < 23; i++) keysOf[i]: example[i - 1],
-                        'certain': certain
-                            ? "Yes | ${example[22]}"
-                            : 'No | ${example[22]}',
-                        for (int i = 24; i < 31; i++) keysOf[i]: example[i - 1],
-                        'fetal_distress': fetall_distrces
-                            ? "Yes | ${example[30]}"
-                            : 'No | ${example[30]}',
-                        for (int i = 32; i < 33; i++) keysOf[i]: example[i],
-                        'cord_round': cord_round
-                            ? "Yes | ${example[31]}"
-                            : 'No | ${example[31]}',
-                        for (int i = 34; i < 39; i++) keysOf[i]: example[i - 1],
-                        'vitamin_k_given': vitaminK ? "Yes " : 'No ',
-                        'res_necess': resu_necess ? "Yes " : 'No ',
-                        for (int i = 41; i < 43; i++) keysOf[i]: example[i - 3],
-                        for (int i = 43; i < 51; i++) keysOf[i]: example[i - 3],
-                        for (int i = 51; i < 83; i++) keysOf[i]: example[i - 2],
-                        'dr_id': widget.user.user!['id'],
-                        'mother_id': widget.file['mother_id'],
-                        'file_id': widget.file['id']
-                      });
-
-                      // print(body);
-                      String respons = await makeHttpRequest(
-                          url + "neounit/add", body, true, User({}, 'token'));
-
-                      if (respons == "Successfully Sent") {
-                        Navigator.of(context).pop();
-                      } else {
-                        errono(respons, respons, context, true, Container(), 3);
-                        setState(() {
-                          show = !show;
-                        });
-                      }
-                    },
-                    child: Text(
-                      'Send',
-                      style: fileTitle(size),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          )
-        ],
-=======
                 ],
               ),
             )
           ],
         ),
->>>>>>> ae38106 (14/Dec)
       ),
     );
   }

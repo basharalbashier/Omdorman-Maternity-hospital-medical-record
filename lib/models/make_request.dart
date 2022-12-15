@@ -17,11 +17,7 @@ Future<String> makeHttpRequest(
             },
             body: body)
         .then((value) {
-<<<<<<< HEAD
-      // print(json.decode(value.body));
-=======
       print(json.decode(value.body));
->>>>>>> ae38106 (14/Dec)
       if ((value.statusCode == 200 || value.statusCode == 201)) {
         respons = "Successfully Sent";
       } else {
