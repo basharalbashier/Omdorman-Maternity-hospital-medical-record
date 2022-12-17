@@ -48,6 +48,9 @@ dependencies:
   flutter_native_splash: ^2.2.16
   shimmer: ^2.0.0
   fl_chart: ^0.55.2
+  just_audio: ^0.9.30
+  audioplayers: ^1.1.1
+  network_info_plus: ^3.0.1
 
 dev_dependencies:
   flutter_test:

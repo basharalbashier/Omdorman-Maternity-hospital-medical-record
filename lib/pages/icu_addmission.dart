@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/models/setUnitColor.dart';
+import 'package:aldayat_screens/pages/login.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
@@ -238,7 +239,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                         width: size.width / 1.1,
                         child: TextField(
                           maxLines: 5,
-                          controller: gestatiolaAge,
+                          controller: detaiColntroller,
                           decoration:
                               InputDecoration(label: Text('Detailed History')),
                         )),
@@ -284,13 +285,19 @@ class _MyHomePageState extends State<IcuAddmission> {
                           "dr_id": widget.user.user!['id'].toString(),
                           "patient_id": widget.request['patient_id'].toString(),
                           "file_id": widget.request['file_id'].toString(),
-                          "icu_file_id": widget.request['id'].toString(),
+                          "icu_file_id": widget.whichCu,
+
                         });
                         String respons = await makeHttpRequest(
-                            url + "icuad/add", body, true, widget.user);
+                            url + "icuad/add/${widget.request['id']}", body, true, widget.user);
 
                         if (respons == "Successfully Sent") {
-                          Navigator.of(context).pop();
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => LoginView()),
+                            (Route<dynamic> route) => false,
+                          );
                         } else {
                           errono(
                               respons, respons, context, true, Container(), 3);

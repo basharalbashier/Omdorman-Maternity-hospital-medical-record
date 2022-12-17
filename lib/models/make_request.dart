@@ -12,8 +12,7 @@ Future<String> makeHttpRequest(
             headers: {
               'Content-type': 'application/json',
               'Accept': 'application/json',
-              needToken ? 'Authorization' : 'Bearer ${user.token!}':
-                  'Authorization',
+              'Authorization': 'Bearer ${user.token!}'
             },
             body: body)
         .then((value) {

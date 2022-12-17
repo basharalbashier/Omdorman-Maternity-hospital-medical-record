@@ -16,7 +16,7 @@ import 'models/error_message.dart';
 import 'pages/delivery_note.dart';
 import 'pages/neo_unit.dart';
 
-String url = 'http://localhost:8000/api/';
+String url = 'http://192.168.43.166/app/api/';
 var headr = {
   'Content-type': 'application/json',
   'Accept': 'application/json',

@@ -78,7 +78,7 @@ class _SurgeryHomeState extends State<PediatricHome>
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-    rebuildAllChildren(context);
+
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(
@@ -284,6 +284,7 @@ class _SurgeryHomeState extends State<PediatricHome>
             }
             _tabController =
                 TabController(length: babySearch.length, vsync: this);
+         
           });
         } else {
           // print('Error : ${value.body}');
@@ -296,11 +297,3 @@ class _SurgeryHomeState extends State<PediatricHome>
   }
 }
 
-void rebuildAllChildren(BuildContext context) {
-  void rebuild(Element el) {
-    el.markNeedsBuild();
-    el.visitChildren(rebuild);
-  }
-
-  (context as Element).visitChildren(rebuild);
-}

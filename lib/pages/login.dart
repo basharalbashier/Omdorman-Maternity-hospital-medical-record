@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:html';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/route_manager.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
@@ -7,10 +8,12 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
+import 'package:network_info_plus/network_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../constant.dart';
 import '../controller/simpleUIController.dart';
 import '../main.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -25,8 +28,27 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
+  Future<String> getIP() async {
+  try {
+  var ip=  await NetworkInfo();
+  print(ip);
+    const url = 'https://api.ipify.org';
+    var response = await http.get(Uri.parse(url));
+    if (response.statusCode == 200) { 
+      print(response.body);
+      return response.body;
+    } else {
+      print(response.body);
+      return '';
+    }
+  } catch (exception) {
+    print(exception);
+    return '';
+  }
+}
   @override
   void initState() {
+getIP();
     getinfo(context).then((value) => value.token != ''
         ? {
            
@@ -142,7 +164,7 @@ class _LoginViewState extends State<LoginView> {
               Padding(
                 padding: const EdgeInsets.only(right: 8.0, top: 8, left: 30),
                 child: SizedBox(
-                    width: size.height * .2,
+                    width: size.height * .17,
                     child: Image.asset('lib/assets/download.png')),
               ),
               Padding(

@@ -26,7 +26,7 @@ Widget obsHistoryTable(size, obsHistory) {
   return Table(
       border: TableBorder.all(width: .1, color: Colors.grey),
       columnWidths: <int, TableColumnWidth>{
-        0: IntrinsicColumnWidth(),
+        0: FlexColumnWidth(3),
         1: FlexColumnWidth(),
 
         // 1: FlexColumnWidth(),

@@ -28,6 +28,7 @@ import '../widgets/nurse_observation_table.dart';
 import '../widgets/obs_discharg_drugs_table.dart';
 import '../widgets/obs_treatment_table.dart';
 import '../widgets/operation_note.dart';
+import '../widgets/root_to_anea_follow_up_button.dart';
 import '../widgets/show_gyn_adm.dart';
 import '../widgets/show_obs_history.dart';
 import '../widgets/u_s_request.dart';
@@ -105,7 +106,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   List iVfluidsList = [];
 
   bool showAddObsButton = false;
-  TabController? _tabController;
+ late TabController _tabController;
   @override
   void initState() {
     widget.user.user!['dep'] != 'Department of Statistics'
@@ -130,7 +131,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
               ]
         : null;
     getLabRequest();
-    _tabController = TabController(length: taps.length, vsync: this);
+    _tabController=TabController(length: taps.length,vsync: this);
     super.initState();
   }
 
@@ -154,12 +155,12 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   Widget drawer(int i, Size size) {
     return Container(
       height: size.height / 15,
-      color: _tabController!.index == i
+      color: _tabController.index == i
           ? setUniColor(widget.user.user!['unit'] ?? '').withOpacity(.2)
           : null,
       child: GestureDetector(
         onTap: () => setState(
-            () => {_tabController!.index = i, Navigator.of(context).pop()}),
+            () => {_tabController.index = i, Navigator.of(context).pop()}),
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -168,10 +169,10 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
               Text(
                 taps[i],
                 style:
-                    _tabController!.index == i ? fileTitle(size / 1.5) : null,
+                    _tabController.index == i ? fileTitle(size / 1.5) : null,
               ),
               Container(
-                color: _tabController!.index == i
+                color: _tabController.index == i
                     ? setUniColor(widget.user.user!['unit'] ?? '')
                     : null,
                 width: 5,
@@ -187,6 +188,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
 
   @override
   Widget build(BuildContext context) {
+   
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
@@ -216,7 +218,8 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 ],
               ),
             ),
-            for (int i = 0; i < taps.length; i++) drawer(i, size)
+            for (int i = 0; i < _tabController.length; i++) drawer(i, size)
+         
           ],
         )),
       ),
@@ -232,159 +235,73 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
       body: SizedBox(
         height: size.height,
         width: size.width,
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
-              SizedBox(
-                height: 10,
-              ),
-              heading(size),
-              Divider(),
-              widget.user.user!['dep'] != 'Department of Statistics'
-                  ? size.width > 700
-                      ? obsFileTabs(size)
-                      : Center(
-                          child: Text(taps[_tabController!.index]),
-                        )
-                  : Container(),
-              SizedBox(
-                  width: size.width,
-                  height: size.height,
-                  child: TabBarView(
-                      physics:
-                          ScrollPhysics(parent: NeverScrollableScrollPhysics()),
-                      controller: _tabController,
-                      children: <Widget>[
-                        widget.type == "0"
-                            ? TabBarView(
-                                physics: ScrollPhysics(
-                                    parent: NeverScrollableScrollPhysics()),
-                                controller: _tabController,
-                                children: <Widget>[
-                                    homeWidget(size),
-                                    anteFollowUpTable(
-                                        antfollowupList.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    anteAdmFollowUpTable(
-                                        antAdmissionFollowupList.reversed
-                                            .toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    labourWardInstTable(
-                                        labourWardInst.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    nurseObserTable(
-                                        nurseObserList.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    obsTeatmentTable(
-                                        treatmentList.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    iVFluidTable(iVfluidsList.reversed.toList(),
-                                        context, widget.file, widget.user),
-                                    anticoagulationChartTable(
-                                        antiList.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    obaDischargDrugsTable(
-                                        disChargList.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                  ])
-                            //compleat gyn tabbars
-                            : TabBarView(
-                                physics: ScrollPhysics(
-                                    parent: NeverScrollableScrollPhysics()),
-                                controller: _tabController,
-                                children: <Widget>[
-                                    homeWidget(size),
-                                    gyneInvTable(
-                                        gynInvestigation.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    gyneCommentTable(
-                                        gynCommentList.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    gynePerciptionTable(
-                                        gynPerciptionList.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                    gynePostOpratFollowSheet(
-                                        gynPostOpreative.reversed.toList(),
-                                        context,
-                                        widget.file,
-                                        widget.user),
-                                  ]),
-                      ]))
-            ],
-          ),
+        child: ListView(
+          children: [
+            TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
+            SizedBox(
+              height: 10,
+            ),
+            heading(size),
+            Divider(),
+            widget.user.user!['dep'] != 'Department of Statistics'
+                ? size.width > 700
+                    ? obsFileTabs(size)
+                    : Center(
+                        child: Text(taps[_tabController.index]),
+                      )
+                : Container(),
+           tabBars(size)
+          ],
         ),
       ),
     );
   }
 
   Widget homeWidget(size) {
-    return SingleChildScrollView(
-      child: Column(
-        children: [
-          Visibility(
-            visible: showAddObsButton &&
+    return ListView(scrollDirection: Axis.horizontal,
+      children: [
+        Visibility(
+          visible: showAddObsButton &&
+              widget.user.user!['dep'] != 'Department of Statistics',
+          child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: widget.type == "0"
+                  ? obsAdmissionButton(
+                      context, widget.patient, widget.file, widget.user)
+                  : gynAdmissionButton(
+                      context, widget.patient, widget.file, widget.user)),
+        ),
+        Visibility(
+            visible: widget.user.user!['dep'] != 'Department of Statistics' &&
+                (gynAdmList.isNotEmpty || obsHistory.isNotEmpty),
+            child: Text(
+              obsHistory.isNotEmpty
+                  ? "Obstetrical History"
+                  : gynAdmList.isNotEmpty
+                      ? ""
+                      : '',
+              style: fileTitle(size),
+            )),
+        Visibility(
+            visible: (obsHistory.isNotEmpty || gynAdmList.isNotEmpty) &&
                 widget.user.user!['dep'] != 'Department of Statistics',
-            child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: widget.type == "0"
-                    ? obsAdmissionButton(
-                        context, widget.patient, widget.file, widget.user)
-                    : gynAdmissionButton(
-                        context, widget.patient, widget.file, widget.user)),
-          ),
-          Visibility(
-              visible: widget.user.user!['dep'] != 'Department of Statistics' &&
-                  (gynAdmList.isNotEmpty || obsHistory.isNotEmpty),
-              child: Text(
-                obsHistory.isNotEmpty
-                    ? "Obstetrical History"
-                    : gynAdmList.isNotEmpty
-                        ? ""
-                        : '',
-                style: fileTitle(size),
+            child: obsHistory.isNotEmpty
+                ? obsHistoryTable(size, obsHistory)
+                : Visibility(visible:widget.type=="1",child: gynAdmissionTable(size, gynAdmList))),
+        Visibility(
+          visible: labRequest.isNotEmpty,
+          child: SizedBox(
+              width: size.width,
+              height: size.height / 2,
+              child: LabHistory(
+                source: labRequest,
               )),
-          Visibility(
-              visible: (obsHistory.isNotEmpty || gynAdmList.isNotEmpty) &&
-                  widget.user.user!['dep'] != 'Department of Statistics',
-              child: obsHistory.isNotEmpty
-                  ? obsHistoryTable(size, obsHistory)
-                  : gynAdmissionTable(size, gynAdmList)),
-          Visibility(
-            visible: labRequest.isNotEmpty,
-            child: SizedBox(
-                width: size.width,
-                height: size.height / 2,
-                child: LabHistory(
-                  source: labRequest,
-                )),
-          ),
-          Visibility(
-              visible: widget.user.user!['dep'] == 'Department of Statistics',
-              child: privateInfo(
-                  widget.file, widget.patient, size, context, widget.user)),
-        ],
-      ),
+        ),
+        Visibility(
+            visible: widget.user.user!['dep'] == 'Department of Statistics',
+            child: privateInfo(
+                widget.file, widget.patient, size, context, widget.user)),
+      ],
     );
   }
 
@@ -453,53 +370,53 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   }
 
   checkThefuckers() async {
-    if (antfollowupList.isEmpty && _tabController!.index == 1) {
+    if (antfollowupList.isEmpty && _tabController.index == 1) {
       widget.type == '0'
           ? await getIt('antfollowup')
               .then((value) => setState(() => antfollowupList = value))
           : await getIt('gyninv')
               .then((value) => setState(() => gynInvestigation = value));
     }
-    if (antAdmissionFollowupList.isEmpty && _tabController!.index == 2) {
+    if (antAdmissionFollowupList.isEmpty && _tabController.index == 2) {
       widget.type == '0'
           ? await getIt('antenaddmission')
               .then((value) => setState(() => antAdmissionFollowupList = value))
           : await getIt('gyncomment')
               .then((value) => setState(() => gynCommentList = value));
     }
-    if (labourWardInst.isEmpty && _tabController!.index == 3) {
+    if (labourWardInst.isEmpty && _tabController.index == 3) {
       widget.type == '0'
           ? await getIt('lwi')
               .then((value) => setState(() => labourWardInst = value))
           : await getIt('gyndrug')
               .then((value) => setState(() => gynPerciptionList = value));
     }
-    if (nurseObserList.isEmpty && _tabController!.index == 4) {
+    if (nurseObserList.isEmpty && _tabController.index == 4) {
       widget.type == '0'
           ? await getIt('nurseobserv')
               .then((value) => setState(() => nurseObserList = value))
           : await getIt('gynpost')
               .then((value) => setState(() => gynPostOpreative = value));
     }
-    if (treatmentList.isEmpty && _tabController!.index == 5) {
+    if (treatmentList.isEmpty && _tabController.index == 5) {
       widget.type == '0'
           ? await getIt('treat')
               .then((value) => setState(() => treatmentList = value))
           : null;
     }
-    if (iVfluidsList.isEmpty && _tabController!.index == 6) {
+    if (iVfluidsList.isEmpty && _tabController.index == 6) {
       widget.type == '0'
           ? await getIt('ivf')
               .then((value) => setState(() => iVfluidsList = value))
           : null;
     }
-    if (antiList.isEmpty && _tabController!.index == 7) {
+    if (antiList.isEmpty && _tabController.index == 7) {
       widget.type == '0'
           ? await getIt('antico')
               .then((value) => setState(() => antiList = value))
           : null;
     }
-    if (disChargList.isEmpty && _tabController!.index == 7) {
+    if (disChargList.isEmpty && _tabController.index == 7) {
       widget.type == '0'
           ? await getIt('disgdrug')
               .then((value) => setState(() => disChargList = value))
@@ -517,7 +434,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
         indicatorColor: setUniColor(widget.user.user!['unit']),
         unselectedLabelColor: Colors.blueGrey.shade100,
         labelColor: Colors.blueGrey.shade900,
-        controller: _tabController,
+        controller:this. _tabController,
         tabs: <Widget>[
           for (var i in taps)
             Tab(
@@ -729,6 +646,8 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                           borderRadius: BorderRadius.circular(200),
                           child: Image.asset('lib/assets/avatar.jpg')),
                     ),
+                  
+                    anaesthia_and_refreshFollowUp(context,widget. patient, widget. file, widget. user)
                   ],
                 ),
                 Expanded(
@@ -824,5 +743,86 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
         generatQr(widget.patient, widget.file, widget.type)
       ],
     );
+  }
+  
+  tabBars(Size size) {
+
+    return  SizedBox(
+                  width: size.width,
+                  height: size.height,
+                  child: widget.type == "0"
+                      ? TabBarView(
+                          physics: ScrollPhysics(
+                              parent: NeverScrollableScrollPhysics()),
+                          controller: _tabController,
+                          children: <Widget>[
+                              homeWidget(size),
+                              anteFollowUpTable(
+                                  antfollowupList.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              anteAdmFollowUpTable(
+                                  antAdmissionFollowupList.reversed
+                                      .toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              labourWardInstTable(
+                                  labourWardInst.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              nurseObserTable(
+                                  nurseObserList.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              obsTeatmentTable(
+                                  treatmentList.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              iVFluidTable(iVfluidsList.reversed.toList(),
+                                  context, widget.file, widget.user),
+                              anticoagulationChartTable(
+                                  antiList.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              obaDischargDrugsTable(
+                                  disChargList.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                            ])
+                      //compleat gyn tabbars
+                      : TabBarView(
+                          physics: ScrollPhysics(
+                              parent: NeverScrollableScrollPhysics()),
+                          controller: _tabController,
+                          children: <Widget>[
+                              homeWidget(size),
+                              gyneInvTable(
+                                  gynInvestigation.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              gyneCommentTable(
+                                  gynCommentList.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              gynePerciptionTable(
+                                  gynPerciptionList.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                              gynePostOpratFollowSheet(
+                                  gynPostOpreative.reversed.toList(),
+                                  context,
+                                  widget.file,
+                                  widget.user),
+                            ]));
   }
 }

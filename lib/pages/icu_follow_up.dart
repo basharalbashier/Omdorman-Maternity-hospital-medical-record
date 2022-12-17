@@ -14,11 +14,14 @@ import '../models/user_hive.dart';
 import '../widgets/accept_or_not_lab_request.dart';
 
 class IcuFollow extends StatefulWidget {
-      final Map file;
+  final Map file;
   final Map patient;
   final User user;
   const IcuFollow({
-    super.key, required this.file, required this.patient, required this.user,
+    super.key,
+    required this.file,
+    required this.patient,
+    required this.user,
   });
 
   @override
@@ -91,7 +94,6 @@ class _MyHomePageState extends State<IcuFollow> {
 
   var activ4Cont = TextEditingController();
 
-
   var postCont = TextEditingController();
   var organisCont = TextEditingController();
   var sensiCont = TextEditingController();
@@ -123,6 +125,7 @@ class _MyHomePageState extends State<IcuFollow> {
   bool show = true;
   @override
   void initState() {
+
     setTable = [
       ["Sedative drugs", sedController],
       ["Analgesia", anal],
@@ -156,7 +159,7 @@ class _MyHomePageState extends State<IcuFollow> {
       ["Resistance", residC],
       ["Compliance", compC],
     ];
-
+//
     warnList = [
       ["RSBI", rsbC],
       ["NIF", nifC],
@@ -167,6 +170,7 @@ class _MyHomePageState extends State<IcuFollow> {
       ["DVT prophylaxis", dvtCont],
       ["Activity/PT/OT", actiPtCont],
     ];
+    //
     renalList = [
       ["Na", naC],
       ["K", kCont],
@@ -181,6 +185,7 @@ class _MyHomePageState extends State<IcuFollow> {
       ["24 hour output", outCount],
       ["Fluid Balance", fluidCount],
     ];
+    //
     nervList = [
       ['GCS', gcsC],
       ['E:', eC],
@@ -188,6 +193,8 @@ class _MyHomePageState extends State<IcuFollow> {
       ["M:", mC],
       ['=/15', fifteenC]
     ];
+    //
+    
     gitList = [
       ['Git : aBdominal exam', gitC],
       ['Obst.examination: ', obsC],
@@ -195,7 +202,7 @@ class _MyHomePageState extends State<IcuFollow> {
       ['Fetal heart sounds/CTG', fetalC],
       ['Surgical drains:', surC]
     ];
-
+//
     sponList = [
       ['Spont breathing with O2:', sponC],
       ['Without O2:', witC],
@@ -207,7 +214,6 @@ class _MyHomePageState extends State<IcuFollow> {
       activ2Cont,
       activ3Cont,
       activ4Cont,
-
     ];
     super.initState();
   }
@@ -230,9 +236,10 @@ class _MyHomePageState extends State<IcuFollow> {
   var fifteenC = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    if(!show){
-
-      return Scaffold(body: waitingWidget('jd'),);
+    if (!show) {
+      return Scaffold(
+        body: waitingWidget('jd'),
+      );
     }
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -1299,7 +1306,7 @@ class _MyHomePageState extends State<IcuFollow> {
                         "output": outCount.text,
                         "fluid": fluidCount.text,
                         "stress_ulcer": streesCont.text,
-                        "feeding":feedCont.text,
+                        "feeding": feedCont.text,
                         "dvt": dvtCont.text,
                         "activity_pt": actiPtCont.text,
                         "plan_of_management": planCoun.text,
@@ -1307,14 +1314,13 @@ class _MyHomePageState extends State<IcuFollow> {
                         "patient_id": widget.patient['id'].toString(),
                         "file_id": widget.file['id'].toString(),
                       });
-                      String respons =
-                          await makeHttpRequest(url + "icufollow/add", body, true,widget.user);
+                      String respons = await makeHttpRequest(
+                          url + "icufollow/add", body, true, widget.user);
 
                       if (respons == "Successfully Sent") {
                         Navigator.of(context).pop();
                       } else {
-                        errono(
-                            respons, respons, context, true, Container(), 3);
+                        errono(respons, respons, context, true, Container(), 3);
                         setState(() {
                           show = !show;
                         });

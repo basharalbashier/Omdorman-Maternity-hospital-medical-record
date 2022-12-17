@@ -214,7 +214,7 @@ class _ShowRequestInfoState extends State<ShowRequestInfo> {
             }
           },
           child: Text(
-            'Confirm',
+           isAccepted ?'Confirm':"Reject",
             style: confirmStyle(size),
           ),
         ),
