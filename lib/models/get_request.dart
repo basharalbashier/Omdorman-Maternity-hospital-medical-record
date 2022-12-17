@@ -6,14 +6,17 @@ import 'package:flutter/cupertino.dart';
 import '../main.dart';
 import 'error_message.dart';
 
-Future<List> getIt(String privateUrl, User user, String token,
-    BuildContext context, String fileId) async {
+Future<List> getIt(
+    String privateUrl, User user, BuildContext context, String fileId) async {
   List list = [];
 
   try {
     await http.get(
       Uri.parse('${url}$privateUrl/f/$fileId'),
-      headers: {'Accept': 'application/json', 'Authorization': 'Bearer $token'},
+      headers: {
+        'Accept': 'application/json',
+        'Authorization': 'Bearer ${user.token}'
+      },
     ).then((value) {
       if (value.statusCode == 200) {
         list = json.decode(value.body);

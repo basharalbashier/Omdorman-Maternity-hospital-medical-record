@@ -1,25 +1,22 @@
 import 'dart:convert';
-
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
 import '../main.dart';
 import '../models/error_message.dart';
 import '../models/make_request.dart';
 import '../models/user_hive.dart';
-import '../widgets/accept_or_not_lab_request.dart';
 
 class IcuFollow extends StatefulWidget {
-  final Map file;
+  final Map admission;
   final Map patient;
   final User user;
   const IcuFollow({
     super.key,
-    required this.file,
+    required this.admission,
     required this.patient,
     required this.user,
   });
@@ -125,7 +122,6 @@ class _MyHomePageState extends State<IcuFollow> {
   bool show = true;
   @override
   void initState() {
-
     setTable = [
       ["Sedative drugs", sedController],
       ["Analgesia", anal],
@@ -194,7 +190,7 @@ class _MyHomePageState extends State<IcuFollow> {
       ['=/15', fifteenC]
     ];
     //
-    
+
     gitList = [
       ['Git : aBdominal exam', gitC],
       ['Obst.examination: ', obsC],
@@ -249,11 +245,11 @@ class _MyHomePageState extends State<IcuFollow> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TitleD(setUniColor('unit'), size),
+              TitleD(Colors.deepOrangeAccent, size),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
-                  'Follow Up',
+                  '${widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU"} Follow Up',
                   style: kLoginTitleStyle(size, Colors.black),
                 ),
               ),
@@ -285,7 +281,8 @@ class _MyHomePageState extends State<IcuFollow> {
                           maxLines: 3,
                           controller: icuC,
                           decoration: InputDecoration(
-                              label: const Text('ICU diagnosis')),
+                              label: Text(
+                                  '${widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU"} diagnosis')),
                         )),
                   ),
                 ),
@@ -1312,7 +1309,7 @@ class _MyHomePageState extends State<IcuFollow> {
                         "plan_of_management": planCoun.text,
                         "dr_id": widget.user.user!['id'].toString(),
                         "patient_id": widget.patient['id'].toString(),
-                        "file_id": widget.file['id'].toString(),
+                        "file_id": widget.admission['file_id'].toString(),
                       });
                       String respons = await makeHttpRequest(
                           url + "icufollow/add", body, true, widget.user);

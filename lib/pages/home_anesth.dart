@@ -34,7 +34,7 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
   List icuPatientSearch = [];
   List hduPatientsList = [];
   List hduPatientSearch = [];
-  List taps = ['ICU', 'HDI', "All Patients"];
+  List taps = ['ICU', 'HDU', "All Patients"];
   int patientIndex = 0;
   int icuPatientIndex = 0;
   int hduPatientIndex = 0;
@@ -258,7 +258,6 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
             }
             icuPatientSearch = icuPatientsList.reversed.toList();
             hduPatientSearch = hduPatientsList.reversed.toList();
-            print(hduPatientSearch);
           });
         } else {
           errono("${json.decode(value.body)}", "${json.decode(value.body)}",
@@ -395,8 +394,9 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
                           showName(icuPatientSearch[index]['patient_id']),
                           style: fileTitle(size / 1.3),
                         ),
-                        subtitle:
-                            Text("${icuPatientSearch[index]['created_at']}".substring(0,10)),
+                        subtitle: Text(
+                            "${icuPatientSearch[index]['created_at']}"
+                                .substring(0, 10)),
                         trailing: IconButton(
                             icon: Icon(
                                 icuPatientIndex == icuPatientSearch[index]['id']
@@ -422,15 +422,13 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
                           width: size.width / 1.01,
                           height: size.height,
                           child: IcuFile(
-                            admission:icuPatientSearch[index] ,
-                       
+                            admission: icuPatientSearch[index],
                             user: widget.user,
                             patient: patients
                                 .where((element) =>
                                     element['id'].toString() ==
                                     icuPatientSearch[index]['patient_id'])
-                                .toList()[0]
-                               ,
+                                .toList()[0],
                           ),
                         ))
                   ],
@@ -466,8 +464,9 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
                           showName(hduPatientSearch[index]['patient_id']),
                           style: fileTitle(size / 1.3),
                         ),
-                        subtitle:
-                            Text("${hduPatientSearch[index]['age']} years old"),
+                        subtitle: Text(
+                            "${icuPatientSearch[index]['created_at']}"
+                                .substring(0, 10)),
                         trailing: IconButton(
                             icon: Icon(
                                 hduPatientIndex == hduPatientSearch[index]['id']
@@ -490,16 +489,15 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
                         visible:
                             hduPatientIndex == hduPatientsList[index]['id'],
                         child: SizedBox(
-                          width: size.width / 1.5,
+                          width: size.width / 1.01,
                           height: size.height,
                           child: IcuFile(
-                              admission:hduPatientsList[index] ,
-                         
+                            admission: hduPatientsList[index],
                             user: widget.user,
                             patient: patients
                                 .where((element) =>
                                     element['id'].toString() ==
-                                    icuPatientSearch[index]['patient_id'])
+                                    hduPatientSearch[index]['patient_id'])
                                 .toList()[0],
                           ),
                         ))

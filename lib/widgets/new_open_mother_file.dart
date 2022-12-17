@@ -15,10 +15,9 @@ Widget naoOpenMotherFileButton(
       color: Colors.purple,
       onPressed: () async {
         if (babyFile['file_id'] != "0") {
-          var file = await getIt(
-              'file', user, user.token!, context, babyFile['file_id']);
-          var patient = await getIt(
-              'patient', user, user.token!, context, babyFile['patient_id']);
+          var file = await getIt('file', user, context, babyFile['file_id']);
+          var patient =
+              await getIt('patient', user, context, babyFile['patient_id']);
 
           Navigator.pushAndRemoveUntil(
             context,

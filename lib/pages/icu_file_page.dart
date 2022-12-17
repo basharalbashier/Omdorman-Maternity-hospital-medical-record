@@ -1,3 +1,4 @@
+import 'package:aldayat_screens/models/get_request.dart';
 import 'package:aldayat_screens/widgets/icu_follow_up_table.dart';
 import 'package:aldayat_screens/widgets/icu_nurse_note.dart';
 import 'package:flutter/material.dart';
@@ -48,7 +49,7 @@ class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
 
     return SingleChildScrollView(
       child: Column(
-        children: [heading(size),tapsWidget(size),tabView(size)],
+        children: [heading(size), tapsWidget(size), tabView(size)],
       ),
     );
   }
@@ -286,7 +287,7 @@ class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
   TabBar tapsWidget(size) {
     return TabBar(
         onTap: (value) {
-          // checkThefuckers();
+          getFollowUps();
 
           setState(() {});
         },
@@ -313,10 +314,26 @@ class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
             physics: ScrollPhysics(parent: NeverScrollableScrollPhysics()),
             controller: _tabController,
             children: <Widget>[
-              icuFollowUpTable([], context, widget.patient ,widget.admission,widget. user),
-              icuNurseNoteTable([], context, widget.admission, widget.user)
+              icuFollowUpTable(followUpList, context, widget.patient,
+                  widget.admission, widget.user),
+              icuNurseNoteTable(
+                  nurseNote, context, widget.admission, widget.user)
             ])
         //compleat gyn tabbars
         );
+  }
+
+  List nurseNote = [];
+  List followUpList = [];
+  getNurse() async {
+    await getIt(
+            "icunurse", widget.user, context, widget.admission['id'].toString())
+        .then((value) => setState(() => nurseNote = value));
+  }
+
+  getFollowUps() async {
+    await getIt("icufollow", widget.user, context,
+            widget.admission['id'].toString())
+        .then((value) => setState(() => {followUpList = value, getNurse()}));
   }
 }

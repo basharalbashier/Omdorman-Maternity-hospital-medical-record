@@ -1,18 +1,92 @@
-import 'package:aldayat_screens/constant.dart';
 import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:aldayat_screens/widgets/waiting_widget.dart';
-import 'package:flutter/material.dart';
-import 'package:responsive_grid/responsive_grid.dart';
-import 'package:http/http.dart' as http;
-import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
-
 import '../models/add_for_table_model.dart';
 import '../pages/icu_follow_up.dart';
 
-Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
+Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
+  List<String> tKeys = [
+    "init_diag",
+    "icu_diag",
+    "pro_one",
+    "pro_two",
+    "pro_three",
+    "pro_four",
+    "brif_history",
+    "recent_in_24",
+    "gcs",
+    "e",
+    "v",
+    "m",
+    "fifteen",
+    "pup_y",
+    "pup_n",
+    "react_y",
+    "react_n",
+    "sedat_drug",
+    "analgesia",
+    "paraly",
+    "anti",
+    "sedation",
+    "ct",
+    "mri",
+    "pulse",
+    "bp",
+    "vassopr",
+    "inotro",
+    "ecg_echo",
+    "with_o2",
+    "without_o2",
+    "pulmonary_rr",
+    "spo2",
+    "chest_exam",
+    "fio2",
+    "peep",
+    "map",
+    "po2",
+    "mode",
+    "vt",
+    "rr",
+    "pip",
+    "platea",
+    "resistance",
+    "compliance",
+    "rsbi",
+    "nif",
+    "git",
+    "us",
+    "fetal_heart",
+    "surgical_drains",
+    "postive_culture_site",
+    "organism",
+    "sensitive_to",
+    "central_site",
+    "catheter_days",
+    "drains",
+    "ett",
+    "na",
+    "k",
+    "ci",
+    "bicarb",
+    "po4",
+    "bun",
+    "cr",
+    "avg",
+    "intake",
+    "output",
+    "fluid",
+    "stress_ulcer",
+    "feeding",
+    "dvt",
+    "activity_pt",
+    "plan_of_management",
+    "dr_id",
+    "patient_id",
+    "file_id",
+    "created_at",
+    "updated_at",
+    "patient_id",
+    "file_id",
+  ];
   List<String> titles = [
     'Initial diagnosis',
     'ICU diagnosis',
@@ -22,9 +96,12 @@ Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
     "Problem",
     'Brief History:',
     'Recent Event in 24 hours:',
-    'Nervous system:',
-    'PUPILS: EQUAl: Y',
+    'Nervous system: GCS',
     'E:',
+    "V:",
+    "M:",
+    '=/15',
+    'PUPILS: EQUAl: Y',
     "N:",
     "REACTIVE: Y:",
     "N:",
@@ -35,8 +112,7 @@ Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
     "Sedation Score",
     "CT",
     "MRI",
-    'Cardiovascular system:',
-    'PULSE:',
+    'Cardiovascular system: PULSE:',
     'BP:',
     'MAP:',
     "Vassopressor",
@@ -90,11 +166,6 @@ Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
     "24 hour intake",
     "24 hour output",
     "Fluid Balance",
-    'GCS',
-    'E:',
-    "V:",
-    "M:",
-    '=/15',
     'Git : aBdominal exam',
     'Obst.examination: ',
     'U/S',
@@ -106,7 +177,8 @@ Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
     'RR:',
     'SPO2:'
   ];
-
+  print(titles.length);
+  print(tKeys.length);
   Size size = Size(500, 500);
   return ListView(
     scrollDirection: Axis.horizontal,
@@ -118,8 +190,10 @@ Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
             Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                addButtonModel("+",
-                    (() async => addToIcuFollowup(context,patient ,file, user, size))),
+                addButtonModel(
+                    "+",
+                    (() async => addToIcuFollowup(
+                        context, patient, admission, user, size))),
               ],
             ),
           ],
@@ -153,100 +227,27 @@ Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
                     ),
                 ],
               ),
-              // for (var i in data)
-              //   TableRow(
-              //     children: <Widget>[
-              //       Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Container(
-              //           height: 32,
-              //           child: Center(
-              //               child: Column(
-              //             children: [
-              //               Text(i['created_at'].toString().substring(11, 19)),
-              //               Text(i['created_at'].toString().substring(0, 11)),
-              //             ],
-              //           )),
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Container(
-              //           // height: 32,
-              //           child: Center(child: Text(i['note'])),
-              //         ),
-              //       ),
-              //       Padding(
-              //         padding: const EdgeInsets.all(8.0),
-              //         child: Container(
-              //           height: 32,
-              //           child: Center(child: Text(i['nurse_id'])),
-              //         ),
-              //       ),
-              //     ],
-              //   ),
+              for (Map i in data)
+                TableRow(
+                  children: <Widget>[
+                    for (int valueIndex = 0;
+                        valueIndex < titles.length;
+                        valueIndex++)
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Container(
+                          height: 32,
+                          child: Center(
+                              child: Text(
+                            // i.keys.toList()
 
-              // TableRow(
-              //   children: <Widget>[
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Container(
-              //         height: 32,
-              //         child: Text("POSTURE"),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // TableRow(
-              //   children: <Widget>[
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Container(
-              //         height: 32,
-              //         child: Text(
-              //           "SQUARE WINDOW\n(Wrist)",
-              //           textAlign: TextAlign.center,
-              //         ),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // TableRow(
-              //   children: <Widget>[
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Container(
-              //         height: 32,
-              //         child: Text("ARM RECOIL"),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // TableRow(
-              //   children: <Widget>[
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Container(
-              //         height: 32,
-              //         child: Text("POPLITEAL ANGLE"),
-              //       ),
-              //     ),
-              //   ],
-              // ),
-              // TableRow(
-              //   children: <Widget>[],
-              // ),
-              // TableRow(
-              //   children: <Widget>[
-              //     Padding(
-              //       padding: const EdgeInsets.all(8.0),
-              //       child: Container(
-              //         height: 32,
-              //         child: Text("HEEL TO EAR"),
-              //       ),
-              //     ),
-              //   ],
-              // ),
+                            tKeys[valueIndex].toString(),
+                            // style: fileTitle(size),
+                          )),
+                        ),
+                      ),
+                  ],
+                ),
             ],
           ),
         ),
@@ -258,18 +259,18 @@ Widget icuFollowUpTable(List data, context,Map patient,Map file, user) {
 Future<void> addToIcuFollowup(
   contexte,
   Map patient,
-  Map file,
+  Map admission,
   User user,
   size,
 ) async {
-     Navigator.pushAndRemoveUntil(
-      contexte,
-      MaterialPageRoute(
-          builder: (context) => IcuFollow(
-            file: file,
-            patient: patient,
-                user: user,
-              )),
-      (Route<dynamic> route) => false,
-    );
+  Navigator.pushAndRemoveUntil(
+    contexte,
+    MaterialPageRoute(
+        builder: (context) => IcuFollow(
+              admission: admission,
+              patient: patient,
+              user: user,
+            )),
+    (Route<dynamic> route) => true,
+  );
 }

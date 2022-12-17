@@ -208,7 +208,7 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
     if (widget.user.user!['dep'] != 'Department of Statistics') {
       if (_tabController.index == 0) {
         neoUnitList.isEmpty
-            ? await getIt('neounit', widget.user, widget.user.token!, context,
+            ? await getIt('neounit', widget.user, context,
                     widget.file['id'].toString())
                 .then((value) => setState(() => {
                       neoUnitList = value,
@@ -216,8 +216,8 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
                     }))
             : null;
         neoAdmList.isEmpty
-            ? await getIt('neo', widget.user, widget.user.token!, context,
-                    widget.file['id'].toString())
+            ? await getIt(
+                    'neo', widget.user, context, widget.file['id'].toString())
                 .then((value) => setState(() => {
                       neoAdmList = value,
                       neoAdmList.isEmpty ? hasNeoAdmi = false : null
@@ -225,38 +225,38 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
             : null;
       }
       if (doctorList.isEmpty && _tabController.index == 1) {
-        await getIt('neodoctor', widget.user, widget.user.token!, context,
-                widget.file['id'].toString())
+        await getIt(
+                'neodoctor', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => doctorList = value));
       }
       if (feedList.isEmpty && _tabController.index == 2) {
-        await getIt('neofeed', widget.user, widget.user.token!, context,
-                widget.file['id'].toString())
+        await getIt(
+                'neofeed', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => feedList = value));
       }
       if (problemList.isEmpty && _tabController.index == 3) {
-        await getIt('neoprob', widget.user, widget.user.token!, context,
-                widget.file['id'].toString())
+        await getIt(
+                'neoprob', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => problemList = value));
       }
       if (progressList.isEmpty && _tabController.index == 4) {
-        await getIt('neoprog', widget.user, widget.user.token!, context,
-                widget.file['id'].toString())
+        await getIt(
+                'neoprog', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => progressList = value));
       }
       if (nurseList.isEmpty && _tabController.index == 5) {
-        await getIt('neonurse', widget.user, widget.user.token!, context,
-                widget.file['id'].toString())
+        await getIt(
+                'neonurse', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => nurseList = value));
       }
       if (invList.isEmpty && _tabController.index == 6) {
-        await getIt('neoinv', widget.user, widget.user.token!, context,
-                widget.file['id'].toString())
+        await getIt(
+                'neoinv', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => invList = value));
       }
       if (opserList.isEmpty && _tabController.index == 7) {
-        await getIt('neoops', widget.user, widget.user.token!, context,
-                widget.file['id'].toString())
+        await getIt(
+                'neoops', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => opserList = value));
       }
     }
