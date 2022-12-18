@@ -1,10 +1,14 @@
+import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:responsive_grid/responsive_grid.dart';
+import '../constant.dart';
 import '../models/user_hive.dart';
 import '../models/add_for_table_model.dart';
 import '../pages/icu_follow_up.dart';
 
 Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
   List<String> tKeys = [
+    "created_at",
     "init_diag",
     "icu_diag",
     "pro_one",
@@ -46,6 +50,7 @@ Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
     "mode",
     "vt",
     "rr",
+    "o2",
     "pip",
     "platea",
     "resistance",
@@ -54,6 +59,7 @@ Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
     "nif",
     "git",
     "us",
+    "obs",
     "fetal_heart",
     "surgical_drains",
     "postive_culture_site",
@@ -65,6 +71,7 @@ Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
     "ett",
     "na",
     "k",
+    "mg",
     "ci",
     "bicarb",
     "po4",
@@ -79,15 +86,14 @@ Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
     "dvt",
     "activity_pt",
     "plan_of_management",
-    "dr_id",
-    "patient_id",
-    "file_id",
-    "created_at",
-    "updated_at",
-    "patient_id",
-    "file_id",
+    // "dr_id",
+    // "patient_id",
+    // "file_id",
+    // "created_at",
+    // "updated_at",
   ];
   List<String> titles = [
+    'Date',
     'Initial diagnosis',
     'ICU diagnosis',
     "Problem",
@@ -114,49 +120,44 @@ Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
     "MRI",
     'Cardiovascular system: PULSE:',
     'BP:',
-    'MAP:',
     "Vassopressor",
     "inotropes",
     "ecg/echo",
+    'Spont breathing with O2:',
+    'Without O2:',
+    'Pulmonary: RR:',
+    'SPO2:',
     'Chest Examination:',
-    'On mv:',
-    'Oxygenation',
-    'Ventilation',
-    'Dynamics',
-    'Weaning Parameters',
-    'Infectious Diseases',
-    'Fever Pattern:',
-    'Positive culture site:'
-        'Organism:',
+    "On mv: Oxygen FIO2",
+    "On mv: Oxygen PEEP",
+    'On mv: Oxygen MAP',
+    "On mv: Oxygen PO2",
+    "On mv: Ventilation Mode",
+    "On mv: Ventilation VT",
+    "On mv: Ventilation RR",
+    "On mv: Ventilation O2 sat%",
+
+    "On mv: Dynamics PIP",
+    "On mv: Dynamics Plateau",
+    "On mv: Dynamics Resistance",
+    "On mv: Dynamics Compliance",
+    "On mv: Weaning Parameters RSBI",
+    "On mv: Weaning Parameters NIF",
+    'Git : aBdominal exam',
+    'U/S',
+    'Obst.examination: ',
+    'Fetal heart sounds/CTG',
+    'Surgical drains:',
+    'Infectious Diseases Fever Pattern: Positive culture site:',
+    'Organism:',
     'Sensitive to:',
     'Central line\nSITE and days:',
     'catheter days:',
     'drains:',
     'ETT',
-    'Renal Electrolytes, Fluid Metabolic:'
-        'Health Maintenance',
-    'Plan of management:'
-        "FIO2",
-    "PEEP",
-    "MAP",
-    "PO2"
-        "Mode",
-    "VT",
-    "RR",
-    "O2 sat%",
-    "PIP",
-    "Plateau",
-    "Resistance",
-    "Compliance",
-    "RSBI"
-        "NIF",
-    "Stress ulcer bleeding prophylaxis",
-    "Feeding",
-    "DVT prophylaxis"
-        "Activity/PT/OT",
     "Na",
     "K",
-    "Mg",
+    'MG',
     "CI",
     "Bicarb",
     "PO4",
@@ -166,30 +167,42 @@ Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
     "24 hour intake",
     "24 hour output",
     "Fluid Balance",
-    'Git : aBdominal exam',
-    'Obst.examination: ',
-    'U/S',
-    'Fetal heart sounds/CTG'
-        'Surgical drains:',
-    'Pulmonary:',
-    'Spont breathing with O2:',
-    'Without O2:',
-    'RR:',
-    'SPO2:'
+
+    "Stress ulcer bleeding prophylaxis",
+    "Feeding",
+    "DVT prophylaxis",
+    "Activity/PT/OT",
+    'Plan of management:',
+
+    // '',
+
+    // '',
+
+    // 'Renal Electrolytes, Fluid Metabolic:'
+    //     'Health Maintenance',
+
+    // ',
+    // "O2 sat%",
+    //  "Mg",
   ];
   print(titles.length);
   print(tKeys.length);
   Size size = Size(500, 500);
   return ListView(
-    scrollDirection: Axis.horizontal,
+    // scrollDirection: Axis.,
+    shrinkWrap: true,
     children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
           children: [
             Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                addButtonModel(
+                    "See Admission",
+                    (() async =>
+                        seeAdmission(context, patient, admission, user, size))),
                 addButtonModel(
                     "+",
                     (() async => addToIcuFollowup(
@@ -201,55 +214,63 @@ Widget icuFollowUpTable(List data, context, Map patient, Map admission, user) {
       ),
       SizedBox(
         width: size.width * 20,
-        child: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Table(
-            border: TableBorder.all(width: 2, color: Colors.grey),
-            columnWidths: const <int, TableColumnWidth>{
-              // 0: IntrinsicColumnWidth(),
-              // 1: FlexColumnWidth(),
-              // 2: IntrinsicColumnWidth(),
-            },
-            children: <TableRow>[
-              TableRow(
-                children: <Widget>[
-                  for (var i in titles)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 32,
-                        child: Center(
-                            child: Text(
-                          i,
-                          // style: fileTitle(size),
-                        )),
-                      ),
-                    ),
-                ],
-              ),
-              for (Map i in data)
-                TableRow(
-                  children: <Widget>[
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Table(
+                border: TableBorder.all(width: 2, color: Colors.grey),
+                columnWidths: const <int, TableColumnWidth>{
+                  0: IntrinsicColumnWidth(),
+                  1: FlexColumnWidth(),
+                  // 2: IntrinsicColumnWidth(),
+                },
+                children: <TableRow>[
+                  // for(int conu=0;conu<30;conu++)
+                  // TableRow(
+                  //   children: <Widget>[
+                  //     for (var i in titles)
+
+                  //   ],
+                  // ),
+                  for (Map followUp in data)
                     for (int valueIndex = 0;
                         valueIndex < titles.length;
                         valueIndex++)
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Container(
-                          height: 32,
-                          child: Center(
-                              child: Text(
-                            // i.keys.toList()
+                      TableRow(
+                        children: <Widget>[
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 32,
+                              child: Center(
+                                  child: Text(
+                                titles[valueIndex],
+                                style: fileTitle(size),
+                              )),
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Container(
+                              height: 32,
+                              child: Center(
+                                  child: Text(
+                                // i.keys.toList()
 
-                            tKeys[valueIndex].toString(),
-                            // style: fileTitle(size),
-                          )),
-                        ),
+                                valueIndex == 0
+                                    ? '${followUp[tKeys[valueIndex]].toString().substring(0, 10)} \n ${followUp[tKeys[valueIndex]].toString().substring(11, 19)}'
+                                    : followUp[tKeys[valueIndex]].toString(),
+                                // style: fileTitle(size),
+                              )),
+                            ),
+                          ),
+                        ],
                       ),
-                  ],
-                ),
-            ],
-          ),
+                ],
+              ),
+            ),
+          ],
         ),
       ),
     ],
@@ -272,5 +293,105 @@ Future<void> addToIcuFollowup(
               user: user,
             )),
     (Route<dynamic> route) => true,
+  );
+}
+
+Future<void> seeAdmission(
+  contexte,
+  Map patient,
+  Map admission,
+  User user,
+  size,
+) async {
+  var head = [
+    'Gestational Age',
+    'Regular antenatal care ',
+    '',
+    'Indication of ${admission['icu_file_id'] == '0' ? "IC" : "HD"}U admission',
+    'Initial diagnosis',
+    '',
+    'Active Problem:',
+    'Active Problem:',
+    'Active Problem:',
+    'Active Problem:',
+    'Detailed History',
+        'PMH'
+  ];
+  bool show = true;
+  return await showDialog<void>(
+    context: contexte,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            return SizedBox(
+              width: size.width,
+              child: !show
+                  ? waitingWidget("3")
+                  : SingleChildScrollView(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                                '${admission['icu_file_id'] == '0' ? "IC" : "HD"}U Admission'),
+                            SizedBox(
+                              height: size.height / 8,
+                            ),
+                            ResponsiveGridRow(children: [
+                              ResponsiveGridCol(
+                                child: Column(
+                                  children: [
+                                    for (int i = 0;
+                                        i < head.length;
+                                        i++)
+                                      Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(head[i]
+                                              .toString()),
+                                          // Text(admission.keys
+                                          //     .toList()[i]
+                                          //     .toString()),
+                                          Text(admission.values
+                                              .toList()[i+1]==null?'':admission.values
+                                              .toList()[i+1]
+                                              .toString()=='true'?"Yes":admission.values
+                                              .toList()[i+1]
+                                              .toString()=="false"?"No":admission.values
+                                              .toList()[i+1]
+                                              .toString()),
+                                        ],
+                                      )
+                                  ],
+                                ),
+                              ),
+                            ]),
+                            SizedBox(
+                              height: size.height / 8,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                MaterialButton(
+                                  color: Colors.pink,
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: confirmStyle(size),
+                                  ),
+                                ),
+                              ],
+                            )
+                          ]),
+                    ),
+            );
+          },
+        ),
+      );
+    },
   );
 }
