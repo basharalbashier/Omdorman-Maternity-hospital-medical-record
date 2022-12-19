@@ -7,183 +7,12 @@ import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
 import '../main.dart';
 import '../models/error_message.dart';
+import '../widgets/ana_add_rescu_record_button.dart';
 import '../widgets/title.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 import '../widgets/waiting_widget.dart';
-
-List keysOf = [
-  "name_of_mother",
-  "sex",
-  "baby_no",
-  "address",
-  "birthdate",
-  "birthtime",
-  "obs_unit",
-  "dis_date",
-  "summary",
-  "resuscitation",
-  "birth_weight",
-  "admitted_to_scn",
-  "follow_u",
-  "discharg_weight",
-  "feeding_on_dis",
-  "prev_operation",
-  "medical_prob",
-  "husband_occup",
-  "medical_status_at_deliv",
-  "age",
-  "bg",
-  "antibod",
-  "edd",
-  "certain",
-  "weeks_preg",
-  "obataric_history",
-  "gravida",
-  "para",
-  "illness_during",
-  "durgs_during",
-  "type_of_deliv",
-  "fetal_distress",
-  "delivery_by",
-  "cord_round",
-  "indication_cs",
-  "resp_first",
-  "regulat_or_cry",
-  "color",
-  "tone",
-  "vitamin_k_given",
-  "res_necess",
-  "spontaneous",
-  "movement_when_stimulated",
-  "pale",
-  "limb",
-  "apgar",
-  "heart",
-  "respiration",
-  "tone_2",
-  "responsiveness",
-  "color_2",
-  "total",
-  "exam_by",
-  "general",
-  "skull",
-  "skin",
-  "limbs",
-  "abdomen",
-  "genital",
-  "auns",
-  "spontan",
-  "muscle_tone",
-  "rooting",
-  "sucking",
-  "traction",
-  "grasp",
-  "automatic",
-  "moro",
-  "trans",
-  "recived",
-  "condition_on_arriv",
-  "temp",
-  "colour",
-  "respir",
-  "examined_at",
-  "hours_by",
-  "hips",
-  "gestational_assess",
-  "nutri",
-  "another_heart",
-  "head_cir",
-  "feeding",
-  "comment",
-];
-
-List<String> titles = [
-  "Name of Mother",
-  "Sex",
-  "Baby No.",
-  "Address",
-  "Birth Date",
-  "Birth Time",
-  "Obstotrical Unit",
-  "Discharge Date",
-  "Summary",
-  "Comment",
-  "Birth Weight",
-  "Follow UJ",
-  "Dicharge Weight",
-  "Feeding On Discharg",
-  "Previod Occupation",
-  "Medical Problem",
-  "Husband Occupation",
-  "Medical Status at Delivery",
-  "Age",
-  "Blood Group",
-  "Antibodies",
-  "EDD",
-  "Comment",
-  "Weeks Pregnant",
-  "Obataric History",
-  "Gravida",
-  "Para",
-  "Illnes during this pregnancy (Including details an of admissions to hospital)",
-  "Drugs during this pregnancy",
-  "Type of delivery and Complications",
-  "Specify",
-  "Describe",
-  "Delivery By",
-  "Indication C.S",
-  "First Breath or Gasp",
-  "Regular Respirations or Cry",
-  "Color",
-  "Tone",
-  "Spontaneous Movements",
-  "Movement When Stimulated",
-  "Pale",
-  "Limb",
-  "Apgar Score at",
-  "Heart",
-  "Respitation",
-  "Tone",
-  "Responsiveness",
-  "Color",
-  "",
-  "Total",
-  "Examined at Minutes by",
-  "General",
-  "Skull",
-  "Skin",
-  "Limbs & Spine",
-  "Abdomen",
-  "Genitalis",
-  "Auns",
-  "A- Spontaneous Movements",
-  "B- Muscle Tone",
-  "C - Rooting Reflex",
-  "D - Sucking Reflex",
-  "E- Traction Response",
-  "F - Grasp Reflex",
-  "G - Automatic Walking",
-  "H - Moro Reflex",
-  "Transferred to Post - Natal Ward / Special Care Nursy at",
-  "Received By ",
-  "Condition on Arrival ",
-  "Tempreture",
-  "Color",
-  "Respirations",
-  "Examined at",
-  "Hours by",
-  "Hips",
-  "Gestational Assessment",
-  "Nutrition",
-  "Heart",
-  "Head Circumference",
-  "Feeding: Mother Wishes to Breast Feed/ Bottle Feed",
-  "Comment",
-  "Comment",
-  "Comment",
-];
 
 class AnaesthiaAndRefreshFollowUp extends StatefulWidget {
   final Map patient;
@@ -200,21 +29,68 @@ class AnaesthiaAndRefreshFollowUp extends StatefulWidget {
 }
 
 class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
-  bool resu = false;
-  bool admit = false;
-  bool certain = false;
-  bool fetall_distrces = false;
-  bool cord_round = false;
-  bool vitaminK = false;
-  bool resu_necess = false;
+  List<String> keys = [
+    "head",
+    'assistant',
+    'first_year',
+    'second_year',
+    // 'room',
+    // 'type',
+    // 'type_of_surg',
+    'past_ill',
+    'curent_drugs',
+    'allerg',
+    'hemo',
+    'urin',
+    'bg',
+    'urin_bolina',
+    'blood_pruser',
+    'puls',
+    'first_aid',
+    'note',
+    'benth',
+    'iscolen',
+    'trobeen',
+    'baflyon',
+    'ox_nitroz',
+    'air_tube',
+    'hand_tube',
+    'ear_tube',
+    'halw',
+    'normal_breath',
+    'not_normal_breath',
+    'cpr',
+    'machinaical_breath',
+    'without_soda',
+    'bro_atro',
+    'other_info',
+    'hard_visils',
+    'hard_sleep',
+    'hard_to_satel',
+    'another',
+    'investigations',
+    'another_medicin',
+    'respn',
+    'know',
+    'can_protect',
+    'back_normal',
+    'painless',
+    'vomit',
+    'time_of_accedent',
+    'blood_drop',
+    'breath_drop',
+    'coma',
+    'contin_paralisied',
+    'allerg',
+    'breath_vomit',
+    'heart_attack'
+  ];
   List<String> titles = [
     "أخصائي التخدير",
     "مساعد التخدير ",
     "طالب الصف الثاني",
     "طالب الصف الأول",
-    "1- الأمراض السابقة",
-    "2",
-    "3",
+    " الأمراض السابقة",
     "العقاقير التي يتعاطاها المريض حالياً",
     "أي حساسية للعقاقير",
     "الهيموقلبين",
@@ -225,13 +101,13 @@ class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
     "النبض",
     "3",
     "1",
-    "2",
-    "3",
+    // "2",
+    // "3",
     "بنتوثال",
     "أسكولين",
     "أتروبين",
     "بافليون",
-    "نايتروز",
+    "أكسجين/نايتروز",
     "أكسجين",
     "هالوثن",
     "تنفس طبيعي",
@@ -255,57 +131,36 @@ class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
     "موضعي",
     "إنتقالية",
     "عاجلة",
-    "Limp",
-    "Apgar Score at",
-    "Heart",
-    "Respitation",
-    "Tone",
-    "Responsiveness",
-    "Color",
-    "",
-    "Total",
-    "Examined at Minutes by",
-    "General",
-    "Skull",
-    "Skin",
-    "Limbs & Spine",
-    "Abdomen",
-    "Genitalis",
-    "Auns",
-    "A- Spontaneous Movements",
-    "B- Muscle Tone",
-    "C - Rooting Reflex",
-    "D - Sucking Reflex",
-    "E- Traction Response",
-    "F - Grasp Reflex",
-    "G - Automatic Walking",
-    "H - Moro Reflex",
-    "Transferred to Post - Natal Ward / Special Care Nursy at",
-    "Received By ",
-    "Condition on Arrival ",
-    "Tempreture",
-    "Color",
-    "Respirations",
-    "Examined at",
-    "Hours by",
-    "Hips",
-    "Gestational Assessment",
-    "Nutrition",
-    "Heart",
-    "Head Circumference",
-    "Feeding: Mother Wishes to Breast Feed/ Bottle Feed",
-    "Comment",
-    "Comment",
-    "Comment",
+    "يستجيب للمخاطبة",
+    "يعرف الزمان والمكان",
+    "إستعادة مقدرته على حماية الحنجرة",
+    "عاد الى الطبيعي والنبض /الضغط/التنفس",
+    "خال من الألم",
+    "تقيأ ، إستنشق ،أفياءه، يشعر بالألم،إستجاب للمخاطبة، قلق",
+    "في حالة مضاعفات التخدير والجراحة:أكتب وبإختصار وقت وسبب الحدوث",
+    "هبوط الدورة الدموية",
+    "هبوط التنفس",
+    "عدم رجوع الوعي",
+    "شلل مستمر ",
+    "حساسية لدم غير مطابق",
+    "إستنشاق الإقياء",
+    "سكته قلبية",
   ];
-
+  var bloodDrop = ["قفل ممر الهوا", "هبوط مركزي", "ثقل عضلات"];
   List<TextEditingController> controllers = [];
+  List<bool> bools = [];
   bool isAttended = true;
   @override
   void initState() {
     for (var i in titles) {
       controllers.add(TextEditingController());
+      bools.add(false);
     }
+    for(int i =0;i<keys.length;i++){
+      print("${titles[i]}===== ${keys[i]}");
+    }
+print(titles.length);
+print(keys.length);
     super.initState();
   }
 
@@ -342,7 +197,7 @@ class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
               child: Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.deepOrangeAccent)),
-                  child: secondPartWidget(size)),
+                  child: firstPartWidget(size)),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -360,41 +215,41 @@ class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
                           controllersText.add(controllers[i].text);
                         }
                         var example = controllersText;
-                        var body = json.encode({
-                          for (int i = 0; i < 11; i++) keysOf[i]: example[i],
-                          'admitted_to_scn': admit ? "Yes" : 'No',
-                          for (int i = 12; i < 15; i++) keysOf[i]: titles[i],
-                          for (int i = 12; i < 23; i++)
-                            keysOf[i]: example[i - 1],
-                          'certain': certain
-                              ? "Yes | ${example[22]}"
-                              : 'No | ${example[22]}',
-                          for (int i = 24; i < 31; i++)
-                            keysOf[i]: example[i - 1],
-                          'fetal_distress': fetall_distrces
-                              ? "Yes | ${example[30]}"
-                              : 'No | ${example[30]}',
-                          for (int i = 32; i < 33; i++) keysOf[i]: example[i],
-                          'cord_round': cord_round
-                              ? "Yes | ${example[31]}"
-                              : 'No | ${example[31]}',
-                          for (int i = 34; i < 39; i++)
-                            keysOf[i]: example[i - 1],
-                          'vitamin_k_given': vitaminK ? "Yes " : 'No ',
-                          'res_necess': resu_necess ? "Yes " : 'No ',
-                          for (int i = 41; i < 43; i++)
-                            keysOf[i]: example[i - 3],
-                          for (int i = 43; i < 51; i++)
-                            keysOf[i]: example[i - 3],
-                          for (int i = 51; i < 83; i++)
-                            keysOf[i]: example[i - 2],
-                          'dr_id': widget.user.user!['id'],
-                          'mother_id': widget.file['patient_id'],
-                          'file_id': widget.file['id']
-                        });
+                        // var body = json.encode({
+                        //   for (int i = 0; i < 11; i++) keysOf[i]: example[i],
+                        //   'admitted_to_scn': admit ? "Yes" : 'No',
+                        //   for (int i = 12; i < 15; i++) keysOf[i]: titles[i],
+                        //   for (int i = 12; i < 23; i++)
+                        //     keysOf[i]: example[i - 1],
+                        //   'certain': certain
+                        //       ? "Yes | ${example[22]}"
+                        //       : 'No | ${example[22]}',
+                        //   for (int i = 24; i < 31; i++)
+                        //     keysOf[i]: example[i - 1],
+                        //   'fetal_distress': fetall_distrces
+                        //       ? "Yes | ${example[30]}"
+                        //       : 'No | ${example[30]}',
+                        //   for (int i = 32; i < 33; i++) keysOf[i]: example[i],
+                        //   'cord_round': cord_round
+                        //       ? "Yes | ${example[31]}"
+                        //       : 'No | ${example[31]}',
+                        //   for (int i = 34; i < 39; i++)
+                        //     keysOf[i]: example[i - 1],
+                        //   'vitamin_k_given': vitaminK ? "Yes " : 'No ',
+                        //   'res_necess': resu_necess ? "Yes " : 'No ',
+                        //   for (int i = 41; i < 43; i++)
+                        //     keysOf[i]: example[i - 3],
+                        //   for (int i = 43; i < 51; i++)
+                        //     keysOf[i]: example[i - 3],
+                        //   for (int i = 51; i < 83; i++)
+                        //     keysOf[i]: example[i - 2],
+                        //   'dr_id': widget.user.user!['id'],
+                        //   'mother_id': widget.file['patient_id'],
+                        //   'file_id': widget.file['id']
+                        // });
 
                         String respons = await makeHttpRequest(
-                            url + "neounit/add", body, true, User({}, 'token'));
+                            url + "kjvi/add", {}, true, User({}, 'token'));
 
                         if (respons == "Successfully Sent") {
                           Navigator.of(context).pop();
@@ -565,10 +420,10 @@ class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
       child: ResponsiveGridRow(children: [
         ResponsiveGridCol(
             child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: addAnaethSignButton(
-                  context, widget.patient, widget.file, widget.user, size),
-            )),
+          padding: const EdgeInsets.all(8.0),
+          child: addAnaethSignButton(
+              context, widget.patient, widget.file, widget.user, size),
+        )),
         ResponsiveGridCol(
             child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -664,44 +519,63 @@ class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
             ],
           ),
         )),
-        for (int i = 19; i < 31; i++)
-          ResponsiveGridCol(
-              xs: 2,
-              md: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text(titles[i]),
-                    Checkbox(
-                        value: "Yes" == controllers[i].text,
-                        onChanged: ((value) => {
-                              setState(() => value!
-                                  ? controllers[i].text = 'Yes'
-                                  : controllers[i].text = 'No')
-                            }))
-                  ],
-                ),
-              )),
-        for (int i = 31; i < 35; i++)
-          ResponsiveGridCol(
-              xs: 2,
-              md: 1,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Text(titles[i]),
-                    Checkbox(
-                        value: "Yes" == controllers[i].text,
-                        onChanged: ((value) => {
-                              setState(() => value!
-                                  ? controllers[i].text = 'Yes'
-                                  : controllers[i].text = 'No')
-                            }))
-                  ],
-                ),
-              )),
+        ResponsiveGridCol(
+            child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Expanded(
+                      child: Column(
+                        children: [
+                          for (int i = 31; i < 41; i++)
+                            i < 35
+                                ? Row(
+                                    children: [
+                                      Checkbox(
+                                          value: "Yes" == controllers[i].text,
+                                          onChanged: ((value) => {
+                                                setState(() => value!
+                                                    ? controllers[i].text =
+                                                        'Yes'
+                                                    : controllers[i].text =
+                                                        'No')
+                                              })),
+                                      Text(titles[i]),
+                                    ],
+                                  )
+                                : Container()
+                        ],
+                      ),
+                    ),
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      for (int i = 19; i < 31; i++)
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: "Yes" == controllers[i].text,
+                                onChanged: ((value) => {
+                                      setState(() => value!
+                                          ? controllers[i].text = 'Yes'
+                                          : controllers[i].text = 'No')
+                                    })),
+                            Text(titles[i]),
+                          ],
+                        )
+                    ],
+                  )
+                ],
+              ),
+            )
+          ],
+        )),
         for (int i = 35; i < 36; i++)
           ResponsiveGridCol(
             child: Padding(
@@ -766,6 +640,125 @@ class _NeoUnitState extends State<AnaesthiaAndRefreshFollowUp> {
               ),
             ),
           ),
+      ]),
+    );
+  }
+
+  Widget lastPart(Size size) {
+    return SizedBox(
+      width: size.width,
+      child: ResponsiveGridRow(children: [
+        ResponsiveGridCol(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: addAnaethRescuationRecordButton(
+              context, widget.patient, widget.file, widget.user, size),
+        )),
+        ResponsiveGridCol(
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              Text(
+                'الحالة العامة بعد إنتهاء الإنعاش',
+                style: kLoginTitleStyle(size / 2, Colors.black),
+              )
+            ],
+          ),
+        )),
+        for (int i = 47; i < 52; i++)
+          ResponsiveGridCol(
+              // xs: 6,
+              // md: 3,
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Checkbox(
+                    value: bools[i],
+                    onChanged: ((value) =>
+                        {setState(() => bools[i] = !bools[i])})),
+                Text(
+                  titles[i],
+                ),
+              ],
+            ),
+          )),
+        for (int i = 52; i < 55; i++)
+          ResponsiveGridCol(
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: TextField(
+                textAlign: TextAlign.end,
+                controller: controllers[i],
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(), label: Text(titles[i])),
+              ),
+            ),
+          ),
+        ResponsiveGridCol(
+            // xs: 6,
+            // md: 3,
+            child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Visibility(
+                  visible: bools[55],
+                  child: Column(
+                    children: [
+                      for (var i in bloodDrop)
+                        Row(
+                          children: [
+                            Checkbox(
+                                value: controllers[55].text == i,
+                                onChanged: ((value) => {
+                                      setState(() => controllers[55].text = i)
+                                    })),
+                            Text(
+                              i,
+                            )
+                          ],
+                        )
+                    ],
+                  )),
+              Checkbox(
+                  value: bools[55],
+                  onChanged: ((value) =>
+                      {setState(() => bools[55] = !bools[55])})),
+              Text(
+                titles[55],
+              ),
+            ],
+          ),
+        )),
+        for (int i = 56; i < titles.length; i++)
+          ResponsiveGridCol(
+              // xs: 6,
+              // md: 3,
+              child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: controllers[i],
+                  ),
+                ),
+                Checkbox(
+                    value: bools[i],
+                    onChanged: ((value) =>
+                        {setState(() => bools[i] = !bools[i])})),
+                Text(
+                  titles[i],
+                ),
+              ],
+            ),
+          )),
       ]),
     );
   }

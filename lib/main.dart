@@ -13,6 +13,7 @@ import 'package:hive/hive.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'constant.dart';
 import 'models/error_message.dart';
+import 'pages/anea_and_refresh_follow_up.dart';
 import 'pages/delivery_note.dart';
 import 'pages/neo_unit.dart';
 
@@ -34,7 +35,7 @@ void main() {
 
 class DayatApp extends StatelessWidget {
   DayatApp({Key? key}) : super(key: key);
-
+//Unauthenticated.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -43,7 +44,7 @@ class DayatApp extends StatelessWidget {
           body: Stack(
         fit: StackFit.expand,
         children: [
-          LoginView(),
+          AnaesthiaAndRefreshFollowUp(file: {},patient: {},user: User({},''),),
           // Home(
           //   file: {'id': 123, "dr_id": 2, 'patient_id': 1},
           //   user: User({"id": 1, "unit": "1", 'dep': 'hhh'}, ''),
