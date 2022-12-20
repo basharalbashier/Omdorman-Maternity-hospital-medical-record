@@ -4,6 +4,8 @@ import 'package:aldayat_screens/constant.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../models/add_for_table_model.dart';
+import '../models/error_message.dart';
+import '../models/make_request.dart';
 import '../models/user_hive.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -32,7 +34,15 @@ MaterialButton addAnaethSignButton(
 
 Future<void> addAnaethSign(
     contexte, Map patient, Map file, User user, size) async {
-  List<String> titlesForVital = ['Temp', "Pulse", "BP", "/"];
+  List<String> titlesForVital = [
+    'Temp',
+    "Pulse",
+    "BP",
+    "/",
+    'Breath',
+    'other',
+    'Comment'
+  ];
   List<TextEditingController> contForVital = [];
   for (var i in titlesForVital) {
     contForVital.add(TextEditingController());
@@ -67,32 +77,36 @@ Future<void> addAnaethSign(
                       if (_formKey.currentState!.validate()) {
                         setState(() => show = !show);
                         final body = jsonEncode({
-                          // 'order': orderController.text,
-                          //   'progress': orderController.text,
+                          'temp': contForVital[0].text,
+                          'puls': contForVital[1].text,
+                          'bp':
+                              " ${contForVital[2].text} /${contForVital[3].text}",
+                          'breath': contForVital[4].text,
+                          'other': contForVital[5].text,
+                          'comment': contForVital[6].text,
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
-                          "mother_id": file['patient_id'].toString(),
+                          "patient_id": file['patient_id'].toString(),
                         });
-                        try {
-                          await http
-                              .post(Uri.parse('${url}neodoctor/add'),
-                                  headers: {
-                                    'Content-type': 'application/json',
-                                    'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
-                                  },
-                                  body: body)
-                              .then((value) {
-                            if (value.statusCode == 200 ||
-                                value.statusCode == 201) {
-                              Navigator.of(context).pop();
-                            } else {
-                              print(value.body);
-                              setState(() => show = !show);
-                            }
+                        // String root =
+                        //     "${isFirst ? 'beforana' : isSecond ? 'whileana' : 'afterana'}";
+                        String respons = await makeHttpRequest(
+                            url + "icuvital/add",
+                            body,
+                            true,
+                            User({}, 'token'));
+
+                        if (respons == "Successfully Sent") {
+                          Navigator.of(context).pop();
+                          errono("Successfully Sent", "Successfully Sent",
+                              context, true, Container(), 3);
+                        } else {
+                          errono(
+                              respons, respons, context, true, Container(), 3);
+
+                          setState(() {
+                            show = !show;
                           });
-                        } catch (e) {
-                          setState(() => show = !show);
                         }
                       }
                     },
@@ -216,6 +230,80 @@ Future<void> addAnaethSign(
                                                 ),
                                               ),
                                           ],
+                                        ),
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            for (int i = 4; i < 6; i++)
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: SizedBox(
+                                                  width: size.width / 4.2,
+                                                  child: Container(
+                                                    alignment: Alignment(0, 0),
+                                                    // color: Colors.green,
+                                                    child: TextFormField(
+                                                      style:
+                                                          kTextFormFieldStyle(),
+                                                      controller:
+                                                          contForVital[i],
+                                                      decoration:
+                                                          InputDecoration(
+                                                        // prefixIcon: Icon(Icons.person),
+                                                        label: Text(
+                                                            titlesForVital[i]),
+                                                        border:
+                                                            OutlineInputBorder(
+                                                          borderRadius:
+                                                              BorderRadius.all(
+                                                                  Radius
+                                                                      .circular(
+                                                                          15)),
+                                                        ),
+                                                      ),
+                                                      validator: ((v) {
+                                                        if (v!.length < 0) {
+                                                          return "Is this an ${titlesForVital[i]}?";
+                                                        }
+                                                      }),
+                                                    ),
+                                                  ),
+                                                ),
+                                              ),
+                                          ],
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: SizedBox(
+                                            width: size.width / 4.2,
+                                            child: Container(
+                                              alignment: Alignment(0, 0),
+                                              // color: Colors.green,
+                                              child: TextFormField(
+                                                maxLines: 3,
+                                                style: kTextFormFieldStyle(),
+                                                controller: contForVital[6],
+                                                decoration: InputDecoration(
+                                                  // prefixIcon: Icon(Icons.person),
+                                                  label:
+                                                      Text(titlesForVital[6]),
+                                                  border: OutlineInputBorder(
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                15)),
+                                                  ),
+                                                ),
+                                                validator: ((v) {
+                                                  if (v!.length < 0) {
+                                                    return "Is this an ${titlesForVital[6]}?";
+                                                  }
+                                                }),
+                                              ),
+                                            ),
+                                          ),
                                         ),
                                       ],
                                     ),

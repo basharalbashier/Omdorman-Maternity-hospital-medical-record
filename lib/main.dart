@@ -1,11 +1,5 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
-import 'package:aldayat_screens/pages/add_user.dart';
-import 'package:aldayat_screens/pages/baby_file_page.dart';
-import 'package:aldayat_screens/pages/file_page.dart';
-import 'package:aldayat_screens/pages/login.dart';
-import 'package:aldayat_screens/pages/operation_note.dart';
-import 'package:aldayat_screens/pages/testo.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -14,10 +8,8 @@ import 'package:url_launcher/url_launcher.dart';
 import 'constant.dart';
 import 'models/error_message.dart';
 import 'pages/anea_and_refresh_follow_up.dart';
-import 'pages/delivery_note.dart';
-import 'pages/neo_unit.dart';
 
-String url = 'http://192.168.43.166/app/api/';
+String url = 'http://192.168.0.110/app/api/';
 var headr = {
   'Content-type': 'application/json',
   'Accept': 'application/json',
@@ -44,7 +36,11 @@ class DayatApp extends StatelessWidget {
           body: Stack(
         fit: StackFit.expand,
         children: [
-          AnaesthiaAndRefreshFollowUp(file: {},patient: {},user: User({},''),),
+          AnaesthiaAndRefreshFollowUp(
+            file: {},
+            patient: {},
+            user: User({}, ''),
+          ),
           // Home(
           //   file: {'id': 123, "dr_id": 2, 'patient_id': 1},
           //   user: User({"id": 1, "unit": "1", 'dep': 'hhh'}, ''),
