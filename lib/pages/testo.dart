@@ -1,3 +1,4 @@
+import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/container.dart';
@@ -29,8 +30,7 @@ class _ParagramState extends State<Paragram> {
   );
   List<FlSpot> drawLine = [];
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    String time =
-        widget.data[value.toInt()]['created_at'].toString().substring(11, 16);
+    String time = amOrPm(widget.data[value.toInt()]['created_at']);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,

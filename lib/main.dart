@@ -9,7 +9,7 @@ import 'constant.dart';
 import 'models/error_message.dart';
 import 'pages/anea_and_refresh_follow_up.dart';
 
-String url = 'http://192.168.0.110/app/api/';
+String url = 'http://192.168.0.105/app/api/';
 var headr = {
   'Content-type': 'application/json',
   'Accept': 'application/json',
