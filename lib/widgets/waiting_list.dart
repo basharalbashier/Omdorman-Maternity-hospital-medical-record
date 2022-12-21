@@ -12,10 +12,13 @@ SingleChildScrollView waitingList() {
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                CircleAvatar(
-              radius: 20,
-                  backgroundColor: Colors.white,
-                  child: Icon(Icons.person,color: Colors.black,),
+                Padding(
+                  padding: const EdgeInsets.all(2.0),
+                  child: Icon(
+                    Icons.person,
+                    color: Colors.white,
+                    size: 30,
+                  ),
                 ),
                 const Padding(
                   padding: EdgeInsets.symmetric(horizontal: 8.0),
@@ -27,10 +30,19 @@ SingleChildScrollView waitingList() {
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 2.0),
                       ),
-                      Container(
-                        width: double.infinity,
-                        height: 8.0,
-                        color: Colors.white,
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Container(
+                            width: 100,
+                            height: 8.0,
+                            color: Colors.white,
+                          ),
+                          Icon(
+                            Icons.arrow_drop_down,
+                            color: Colors.white,
+                          )
+                        ],
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 2.0),

@@ -51,12 +51,11 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    getIP();
+    // getIP();
     getinfo(context).then((value) => value.token != ''
         ? {routeManager(value.user!['dep'], context, value)}
         : setState(() {
             show = true;
-            print(value.user);
           }));
 
     super.initState();
@@ -87,15 +86,14 @@ class _LoginViewState extends State<LoginView> {
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: PrivateScaffold(LayoutBuilder(
-          builder: (context, constraints) {
-            if (constraints.maxWidth > 600) {
-              return _buildLargeScreen(size, simpleUIController);
-            } else {
-              return _buildSmallScreen(size, simpleUIController);
-            }
-          },
-        ),context),
-      
+        builder: (context, constraints) {
+          if (constraints.maxWidth > 600) {
+            return _buildLargeScreen(size, simpleUIController);
+          } else {
+            return _buildSmallScreen(size, simpleUIController);
+          }
+        },
+      ), context),
     );
   }
 
@@ -330,11 +328,12 @@ class _LoginViewState extends State<LoginView> {
     });
     // if (_formKey.currentState!.validate()) {
     final msg = jsonEncode({
-      "email": "${emailController.text}",
-      "password": "${passwordController.text}",
+      "email": emailController.text,
+      "password": passwordController.text,
     });
     var tryLogin =
-        await makeHttpRequest('${url}user/login', msg, true, User({}, ""));
+        await makeHttpRequest(url + 'user/login', msg, true, User({}, ""));
+
     if (tryLogin[1] == "Successfully sent") {
       List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
       stor(info).then((value) {
@@ -348,7 +347,5 @@ class _LoginViewState extends State<LoginView> {
         show = true;
       });
     }
-
-
   }
 }

@@ -8,9 +8,16 @@ class SimpleUIController extends GetxController {
     isObscure.value = !isObscure.value;
   }
 
-  RxList users = [{"id":70,"name":"omer",},{}].obs;
+  RxList users = [
+    {
+      "id": 70,
+      "name": "omer",
+    },
+    {}
+  ].obs;
 
   getUsers(user, context) async {
-    await getIt('', user, context, '').then((value) => users = value.obs);
+    await getIt('user', user, context, '0')
+        .then((value) => {users = value.obs});
   }
 }

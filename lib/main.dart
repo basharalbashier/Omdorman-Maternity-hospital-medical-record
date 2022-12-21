@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
+import 'package:aldayat_screens/pages/login.dart';
 import 'package:aldayat_screens/widgets/waiting_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -39,7 +40,7 @@ class DayatApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(waitingList(), context));
+        home: PrivateScaffold(LoginView(), context));
   }
 }
 

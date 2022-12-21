@@ -80,7 +80,7 @@ Future<void> addAnaethSign(
                           'temp': contForVital[0].text,
                           'puls': contForVital[1].text,
                           'bp':
-                              " ${contForVital[2].text} /${contForVital[3].text}",
+                              " ${contForVital[2].text}/${contForVital[3].text}",
                           'breath': contForVital[4].text,
                           'other': contForVital[5].text,
                           'comment': contForVital[6].text,

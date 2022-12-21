@@ -1,53 +1,49 @@
-List<Map<String, dynamic>> replacLabKey(source) {
-  List<Map<String, dynamic>> temps = [];
+String replacLabKey(String key) {
+  print(key);
+  String temps = '';
+  var hl = {
+    "id": 'id',
+    'Urine general': 'urine',
+    'Stool general': 'stoolG',
+    'B F F M': 'bffm',
+    'E S R': 'esr',
+    'Stool for reducing substance': 'stoolF',
+    'Viral Screening': 'viral',
+    'B.G': 'bG',
+    'C B C': 'cbc',
+    'Sickling test': 'sick',
+    'Retics Count': 'retic',
+    'Platelet Count': 'plate',
+    'Coagulation': 'coag',
+    'PT + INR': 'pt',
+    'PTT': 'ptt',
+    'F B G ': 'fbg',
+    '2 H B B': 'hbb',
+    'R B G': 'rbg',
+    'HbAIC': 'hbAIC',
+    'C R P': 'crp',
+    'Ca': 'ca',
+    'L F T': 'lft',
+    'R F T': 'rft',
+    'Thyroid profile': 'thy',
+    'Fertility profile': 'fer',
+    'Ca 125': 'ca125',
+    'Urine culture + sensitivity': 'urinC',
+    'Stool culture + sensitivity': 'stoolCul',
+    'Blood culture + sensitivity': 'bloodCul',
+    'Fluid culture + sensitivity': 'fluidCul',
+    'Wond swab': 'wond',
+    'High vaginal swab': 'hiVag',
+    'Histopathology': 'histo',
+    "Cytology": 'cyto',
+    'Status': 'status',
+    // "Seen at": data['seen_at']==null?"In Progress..":data['seen_at'],
+    // 'Sent':
+    //     "${data['created_at'].substring(11, 16)}\n${data['created_at'].substring(0, 10)}",
+  };
+  ;
 
-  for (var data in source) {
-    temps.add({
-      "id": data['id'],
-      'Urine general': data['urine'] != 'false' ? data['urine'] : '-',
-      'Stool general': data['stoolG'] != 'false' ? data['stoolG'] : '-',
-      'B F F M': data['bffm'] != 'false' ? data['bffm'] : '-',
-      'E S R': data['esr'] != 'false' ? data['esr'] : '-',
-      'Stool for reducing substance':
-          data['stoolF'] != 'false' ? data['stoolF'] : '-',
-      'Viral Screening': data['viral'] != 'false' ? data['viral'] : '-',
-      'B.G': data['bG'] != 'false' ? data['bG'] : '-',
-      'C B C': data['cbc'] != 'false' ? data['cbc'] : '-',
-      'Sickling test': data['sick'] != 'false' ? data['sick'] : '-',
-      'Retics Count': data['retic'] != 'false' ? data['retic'] : '-',
-      'Platelet Count': data['plate'] != 'false' ? data['plate'] : '-',
-      'Coagulation': data['coag'] != 'false' ? data['coag'] : '-',
-      'PT + INR': data['pt'] != 'false' ? data['pt'] : '-',
-      'PTT': data['ptt'] != 'false' ? data['ptt'] : '-',
-      'F B G ': data['fbg'] != 'false' ? data['fbg'] : '-',
-      '2 H B B': data['hbb'] != 'false' ? data['hbb'] : '-',
-      'R B G': data['rbg'] != 'false' ? data['rbg'] : '-',
-      'HbAIC': data['hbAIC'] != 'false' ? data['hbAIC'] : '-',
-      'C R P': data['crp'] != 'false' ? data['crp'] : '-',
-      'Ca': data['ca'] != 'false' ? data['ca'] : '-',
-      'L F T': data['lft'] != 'false' ? data['lft'] : '-',
-      'R F T': data['rft'] != 'false' ? data['rft'] : '-',
-      'Thyroid profile': data['thy'] != 'false' ? data['thy'] : '-',
-      'Fertility profile': data['fer'] != 'false' ? data['fer'] : '-',
-      'Ca 125': data['ca125'] != 'false' ? data['ca125'] : '-',
-      'Urine culture + sensitivity':
-          data['urinC'] != 'false' ? data['urinC'] : '-',
-      'Stool culture + sensitivity':
-          data['stoolCul'] != 'false' ? data['stoolCul'] : '-',
-      'Blood culture + sensitivity':
-          data['bloodCul'] != 'false' ? data['bloodCul'] : '-',
-      'Fluid culture + sensitivity':
-          data['fluidCul'] != 'false' ? data['fluidCul'] : '-',
-      'Wond swab': data['wond'] != 'false' ? data['wond'] : '-',
-      'High vaginal swab': data['hiVag'] != 'false' ? data['hiVag'] : '-',
-      'Histopathology': data['histo'] != 'false' ? data['histo'] : '-',
-      "Cytology": data['cyto'] != 'false' ? data['cyto'] : '-',
-      'Status': data['status'],
-      // "Seen at": data['seen_at']==null?"In Progress..":data['seen_at'],
-      'Sent':
-          "${data['created_at'].substring(11, 16)}\n${data['created_at'].substring(0, 10)}",
-    });
-  }
+  var keySt = hl.entries.where((element) => element.value == key);
 
-  return temps;
+  return '${keySt.first.key}';
 }
