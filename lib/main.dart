@@ -1,20 +1,14 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
+import 'package:aldayat_screens/widgets/waiting_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'constant.dart';
-import 'models/error_message.dart';
 import 'pages/anea_and_refresh_follow_up.dart';
+import 'widgets/contact_me.dart';
 
-String url = 'http://192.168.0.105/app/api/';
-var headr = {
-  'Content-type': 'application/json',
-  'Accept': 'application/json',
-  //  'Authorization': '<Your token>'
-};
 //🐒💁👌🎍😍🦊👨
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -22,59 +16,30 @@ void main() {
   Hive.registerAdapter(UserAdapter());
   FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
-  runApp(DayatApp());
+  runApp(
+    DayatApp(),
+  );
 }
 
 class DayatApp extends StatelessWidget {
   DayatApp({Key? key}) : super(key: key);
 //Unauthenticated.
+
+  AnaesthiaAndRefreshFollowUp v = AnaesthiaAndRefreshFollowUp(
+    file: {},
+    patient: {},
+    user: User({}, ''),
+  );
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-          body: Stack(
-        fit: StackFit.expand,
-        children: [
-          AnaesthiaAndRefreshFollowUp(
-            file: {},
-            patient: {},
-            user: User({}, ''),
+        theme: ThemeData(
+          textTheme: GoogleFonts.notoKufiArabicTextTheme(
+            Theme.of(context).textTheme,
           ),
-          // Home(
-          //   file: {'id': 123, "dr_id": 2, 'patient_id': 1},
-          //   user: User({"id": 1, "unit": "1", 'dep': 'hhh'}, ''),
-          // ),
-          Positioned(
-            bottom: 0,
-            right: 10,
-            child: GestureDetector(
-              onTap: () async {
-                try {
-                  await launchUrl(
-                      Uri.parse("https://wa.me/+249117630388?text=Dr."));
-                } catch (e) {
-                  errono('+249117630388', '+249117630388', context, true,
-                      Container(), 2);
-                }
-              },
-              child: RichText(
-                text: TextSpan(
-                  text: 'Do you need any help?',
-                  style: kHaveAnAccountStyle(Size(500, 500)),
-                  children: [
-                    TextSpan(
-                      text: " Contact us",
-                      style: kLoginOrSignUpTextStyle(Size(500, 500)),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          )
-        ],
-      )),
-    );
+        ),
+        debugShowCheckedModeBanner: false,
+        home: PrivateScaffold(waitingList(), context));
   }
 }
 

@@ -9,13 +9,19 @@ import 'package:flutter/src/widgets/framework.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
+import '../models/error_message.dart';
+import '../models/make_request.dart';
 import '../models/user_hive.dart';
 
 class AntenatalAddmission extends StatefulWidget {
   final User user;
   final Map patient;
   final Map file;
-  const AntenatalAddmission({super.key, required this.user, required this.patient, required this.file});
+  const AntenatalAddmission(
+      {super.key,
+      required this.user,
+      required this.patient,
+      required this.file});
 
   @override
   State<AntenatalAddmission> createState() => _AddPatientState();
@@ -45,19 +51,26 @@ class _AddPatientState extends State<AntenatalAddmission> {
   bool cyan = false;
   bool odema = false;
   bool espll = false;
-@override
+  @override
   void initState() {
-    genralList=[["Pale",pale],["Jaundice",jaundice],["Cynosis",cyan],["Odema",odema],['Espll',espll]];
+    genralList = [
+      ["Pale", pale],
+      ["Jaundice", jaundice],
+      ["Cynosis", cyan],
+      ["Odema", odema],
+      ['Espll', espll]
+    ];
     super.initState();
   }
+
   var lie = ['Longitudinal', 'Transeverse', 'Oblique'];
 
   var whichlie = '';
 
-List<List> genralList=[];
+  List<List> genralList = [];
 
-List<String> choosenGenalList=[];
- 
+  List<String> choosenGenalList = [];
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
@@ -156,7 +169,7 @@ List<String> choosenGenalList=[];
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Pulse';
-                          } 
+                          }
                           return null;
                         },
                       ),
@@ -187,7 +200,7 @@ List<String> choosenGenalList=[];
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Bp';
-                          } 
+                          }
                           return null;
                         },
                       ),
@@ -252,32 +265,33 @@ List<String> choosenGenalList=[];
                     ),
                   ),
                 ),
-                for(var i in genralList)
-                ResponsiveGridCol(
-                  xs: 4,
-                  md: 2,
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                        height: 100,
-                        alignment: Alignment(0, 0),
-                        // color: Colors.green,
-                        child: Row(
-                          children: [
-                            Checkbox(
-                                value: i[1],
-                                onChanged: (v) {
-                                  v!?choosenGenalList.add(i[0]):choosenGenalList.remove(i[0]);
-                                  setState(() {
-                                    i[1] = !i[1];
-                                  });
-                                }),
-                            Text(i[0])
-                          ],
-                        )),
+                for (var i in genralList)
+                  ResponsiveGridCol(
+                    xs: 4,
+                    md: 2,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Container(
+                          height: 100,
+                          alignment: Alignment(0, 0),
+                          // color: Colors.green,
+                          child: Row(
+                            children: [
+                              Checkbox(
+                                  value: i[1],
+                                  onChanged: (v) {
+                                    v!
+                                        ? choosenGenalList.add(i[0])
+                                        : choosenGenalList.remove(i[0]);
+                                    setState(() {
+                                      i[1] = !i[1];
+                                    });
+                                  }),
+                              Text(i[0])
+                            ],
+                          )),
+                    ),
                   ),
-                ),
-             
                 ResponsiveGridCol(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
@@ -608,26 +622,19 @@ List<String> choosenGenalList=[];
               'vaginal_exam': vaginalController.text,
               'diagnosis': diaController.text,
               'immediat_instruction': immediateController.text,
-
-              'dr_id':widget.user.user!['id'],
-              'patient_id':widget.patient['id'],
-              'file_id':widget.file['id'],
-      
-         
+              'dr_id': widget.user.user!['id'],
+              'patient_id': widget.patient['id'],
+              'file_id': widget.file['id'],
             });
-            try {
-              await http.post(Uri.parse('${url}anten'), headers: headr, body: {
-                'insurance': whichlie.toString(),
-              }).then((value) {
-                print('Value error:  ${value.body}');
+            var tryLogin =
+                await makeHttpRequest('${url}anten', body, true, widget.user);
+            if (tryLogin[1] == "Successfully sent") {
+            } else {
+              errono(tryLogin[1], tryLogin[1], context, true, Container(), 5);
+              setState(() {
+                // show = true;
               });
-            } catch (e) {
-              print(e);
             }
-            // Validate returns true if the form is valid, or false otherwise.
-            // if (_formKey.currentState!.validate()) {
-            //   // ... Navigate To your Home Page
-            // }
           },
           child: const Text('Confirm'),
         ),

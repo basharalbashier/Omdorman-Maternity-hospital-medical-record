@@ -11,11 +11,15 @@ import 'package:aldayat_screens/pages/home_statistics.dart';
 import 'package:aldayat_screens/pages/home_surgery.dart';
 import 'package:aldayat_screens/pages/home_us.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import '../controller/simpleUIController.dart';
 import '../pages/home_nutrition.dart';
 import '../pages/home_obs.dart';
 import 'user_hive.dart';
 
 routeManager(String level, context, User user) {
+      SimpleUIController simpleUIController = Get.find<SimpleUIController>();
+        simpleUIController.getUsers(user,context);
   if (level == 'Department of Pediatrics') {
     Navigator.pushAndRemoveUntil(
       context,

@@ -114,7 +114,7 @@ class _AddPatientState extends State<AddUser> {
     for (var i in o) {
       try {
         await http
-            .post(Uri.parse('${url}user/donat'), headers: headr, body: i)
+            .post(Uri.parse('${url}user/donat'), body: i)
             .then((value) {
           print('Value error:  ${value.body}');
         });

@@ -2,8 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:flutter/cupertino.dart';
-
-import '../main.dart';
+import '../constant.dart';
 import 'error_message.dart';
 
 Future<List> getIt(

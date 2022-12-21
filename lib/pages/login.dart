@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:html';
 import 'package:aldayat_screens/models/error_message.dart';
+import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/route_manager.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/home_obs.dart';
+import 'package:aldayat_screens/widgets/contact_me.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
@@ -29,31 +31,29 @@ class _LoginViewState extends State<LoginView> {
 
   final _formKey = GlobalKey<FormState>();
   Future<String> getIP() async {
-  try {
-  var ip=  await NetworkInfo();
-  print(ip);
-    const url = 'https://api.ipify.org';
-    var response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) { 
-      print(response.body);
-      return response.body;
-    } else {
-      print(response.body);
+    try {
+      var ip = await NetworkInfo();
+      print(ip);
+      const url = 'https://api.ipify.org';
+      var response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        print(response.body);
+        return response.body;
+      } else {
+        print(response.body);
+        return '';
+      }
+    } catch (exception) {
+      print(exception);
       return '';
     }
-  } catch (exception) {
-    print(exception);
-    return '';
   }
-}
+
   @override
   void initState() {
-getIP();
+    getIP();
     getinfo(context).then((value) => value.token != ''
-        ? {
-           
-          routeManager(value.user!['dep'], context,value)
-          }
+        ? {routeManager(value.user!['dep'], context, value)}
         : setState(() {
             show = true;
             print(value.user);
@@ -86,10 +86,7 @@ getIP();
     }
     return GestureDetector(
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomInset: false,
-        body: LayoutBuilder(
+      child: PrivateScaffold(LayoutBuilder(
           builder: (context, constraints) {
             if (constraints.maxWidth > 600) {
               return _buildLargeScreen(size, simpleUIController);
@@ -97,8 +94,8 @@ getIP();
               return _buildSmallScreen(size, simpleUIController);
             }
           },
-        ),
-      ),
+        ),context),
+      
     );
   }
 
@@ -295,7 +292,6 @@ getIP();
                   ),
 
                   /// Navigate To Login Screen
-             
                 ],
               ),
             ),
@@ -333,51 +329,26 @@ getIP();
       show = false;
     });
     // if (_formKey.currentState!.validate()) {
-      final msg = jsonEncode({
-        "email": "${emailController.text}",
-        "password": "${passwordController.text}",
+    final msg = jsonEncode({
+      "email": "${emailController.text}",
+      "password": "${passwordController.text}",
+    });
+    var tryLogin =
+        await makeHttpRequest('${url}user/login', msg, true, User({}, ""));
+    if (tryLogin[1] == "Successfully sent") {
+      List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
+      stor(info).then((value) {
+        if (value.token != 'no') {
+          routeManager(tryLogin['user']['dep'].toString(), context, value);
+        }
       });
+    } else {
+      errono(tryLogin[1], tryLogin[1], context, true, Container(), 5);
+      setState(() {
+        show = true;
+      });
+    }
 
-      try {
-        var request = await http.post(Uri.parse('${url}user/login'),
-            headers: headr, body: msg);
-        //  print('USER :  ${request.body}');
-        if (request.statusCode == 201) {
-          // print('USER :  ${json.decode(request.body)['user']}');
-          // print('TOKEN:  ${json.decode(value.body)['token']}');
-          List<dynamic> info = [
-            json.decode(request.body)['user'],
-            json.decode(request.body)['token']
-          ];
-          stor(info).then((value) {
-        if(value.token!='no'){
-              routeManager(
-                json.decode(request.body)['user']['dep'].toString(), context,value);
-         
-        }
-          });
-        } else {
-          print('Error : ${request.body}');
-          errono("${json.decode(request.body)}", "${json.decode(request.body)}",
-              context, true, Container(), 5);
-          setState(() {
-            show = true;
-          });
-        }
-      } catch (e) {
-        errono("Connection error", "Connection error", context, true,
-            Container(), 5);
 
-        print('Catch Error: $e');
-        setState(() {
-          show = true;
-        });
-      }
-      // ... Navigate To your Home Page
-    // } else {
-    //   setState(() {
-    //     show = true;
-    //   });
-    // }
   }
 }

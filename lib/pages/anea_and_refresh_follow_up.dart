@@ -1,11 +1,14 @@
 import 'dart:convert';
+import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:aldayat_screens/models/get_request.dart';
 import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/widgets/add_ana_signs.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
+import '../controller/simpleUIController.dart';
 import '../main.dart';
 import '../models/error_message.dart';
 import '../widgets/ana_add_rescu_record_button.dart';
@@ -182,8 +185,8 @@ class _AnaesthiaAndRefreshFollowUpState
     // await getIt("afterana", widget.user, context, '0')
     //     .then((value) => setState(() => last = value));
 
-    await getIt("icuvital", widget.user, context, 'null')
-        .then((value) => setState(() => vitalSign = value));
+    // await getIt("icuvital", widget.user, context, 'null')
+    //     .then((value) => setState(() => vitalSign = value));
     setState(() => show = true);
   }
 
@@ -219,6 +222,7 @@ class _AnaesthiaAndRefreshFollowUpState
       body: SingleChildScrollView(
         child: Column(
           children: [
+            Text(drName(70)),
             // TitleD(Colors.deepOrangeAccent, size),
             Padding(
               padding: const EdgeInsets.all(8.0),

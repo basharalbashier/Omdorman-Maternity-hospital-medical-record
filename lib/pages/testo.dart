@@ -30,7 +30,7 @@ class _ParagramState extends State<Paragram> {
   );
   List<FlSpot> drawLine = [];
   Widget bottomTitleWidgets(double value, TitleMeta meta) {
-    String time = amOrPm(widget.data[value.toInt()]['created_at']);
+    String time = amOrPm(widget.data[value.toInt()]['created_at'],false);
 
     return SideTitleWidget(
       axisSide: meta.axisSide,

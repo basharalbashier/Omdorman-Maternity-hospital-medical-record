@@ -3,9 +3,9 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'user_hive.dart';
 
-Future<String> makeHttpRequest(
+Future<dynamic> makeHttpRequest(
     String url, body, bool needToken, User user) async {
-  String respons = '';
+  var respons ;
   try {
     await http
         .post(Uri.parse(url),
@@ -18,14 +18,14 @@ Future<String> makeHttpRequest(
         .then((value) {
       print(json.decode(value.body));
       if ((value.statusCode == 200 || value.statusCode == 201)) {
-        respons = "Successfully Sent";
+        respons = [json.decode(value.body),"Successfully sent"];
       } else {
         // ${json.decode(value.body)['message']}
-        respons = "Error";
+        respons =[json.decode(value.body),"Error"] ;
       }
     });
   } catch (e) {
-    respons = "Connection Error";
+    respons =[ e,"Connection Error"];
   }
   return respons;
 }
