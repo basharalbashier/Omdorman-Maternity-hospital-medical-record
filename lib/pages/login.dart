@@ -48,10 +48,19 @@ class _LoginViewState extends State<LoginView> {
       return '';
     }
   }
+getSomeThing()async{
+try{
+    await http.get(Uri.parse(url + 'user/f/0')).then((value) => print(value.body));
 
+
+}catch(e){
+  print(e);
+}
+}
   @override
   void initState() {
-    // getIP();
+   getSomeThing();
+
     getinfo(context).then((value) => value.token != ''
         ? {routeManager(value.user!['dep'], context, value)}
         : setState(() {
