@@ -1,6 +1,4 @@
 String replacLabKey(String key) {
-  print(key);
-  String temps = '';
   var hl = {
     "id": 'id',
     'Urine general': 'urine',

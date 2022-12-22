@@ -27,8 +27,8 @@ List<String> keys = [
   "aptt",
   "apt",
   "dosage_of_warfrin",
-  'dr_name',
-  'dr_name'
+  'dr_id',
+  'nurse_id'
 ];
 Widget anticoagulationChartTable(List data, context, Map file, User user) {
   Size size = Size(500, 500);

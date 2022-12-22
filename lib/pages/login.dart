@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:html';
 import 'package:aldayat_screens/models/error_message.dart';
+import 'package:aldayat_screens/models/get_request.dart';
 import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/route_manager.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
