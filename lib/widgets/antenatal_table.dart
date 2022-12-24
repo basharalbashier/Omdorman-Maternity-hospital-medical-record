@@ -4,7 +4,6 @@ import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import '../main.dart';
 import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
 
@@ -34,7 +33,7 @@ List<String> keys = [
   'urine',
   'comment',
   'next_visit',
-  'dr_name'
+  'dr_id'
 ];
 Widget anteFollowUpTable(List data, context, Map file, User user) {
   Size size = Size(500, 500);

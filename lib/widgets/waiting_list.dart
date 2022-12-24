@@ -30,19 +30,10 @@ SingleChildScrollView waitingList() {
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 2.0),
                       ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            width: 100,
-                            height: 8.0,
-                            color: Colors.white,
-                          ),
-                          Icon(
-                            Icons.arrow_drop_down,
-                            color: Colors.white,
-                          )
-                        ],
+                      Container(
+                        width: double.infinity,
+                        height: 8.0,
+                        color: Colors.white,
                       ),
                       const Padding(
                         padding: EdgeInsets.symmetric(vertical: 2.0),
