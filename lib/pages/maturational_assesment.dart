@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
@@ -15,13 +17,32 @@ class Neuromuscular extends StatefulWidget {
 }
 
 class _NeuromuscularState extends State<Neuromuscular> {
+  List<String> keys = [
+    'age_when_exam',
+    'lenght',
+    'head_circ',
+    'posture',
+    'square',
+    'arm',
+    'popliteal',
+    'scarf',
+    'heel',
+    'skin',
+    'lanugo',
+    'plantar',
+    'breast',
+    'eye_ear',
+    'genital_male',
+    'genital_femal',
+    'neu',
+    'physical',
+  ];
   int post = 0;
   int squ = 0;
   int arm = 0;
   int pop = 0;
   int scarf = 0;
   int heel = 0;
-
   int ski = 0;
   int lanug = 0;
   int platar = 0;
@@ -84,6 +105,9 @@ class _NeuromuscularState extends State<Neuromuscular> {
     'lib/assets/white.png'
   ];
 //Image.asset('lib/assets/minstery.jpeg')
+
+  List postItems = [];
+
   int sum = 0;
   Color amber =
       Color((math.Random().nextDouble() * 0xFFFFFF).toInt()).withOpacity(1.0);
@@ -162,7 +186,21 @@ class _NeuromuscularState extends State<Neuromuscular> {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
+    postItems = [
+      post,
+      squ,
+      arm,
+      pop,
+      scarf,
+      heel,
+      ski,
+      lanug,
+      platar,
+      breast,
+      eye,
+      genital,
+      genitalf
+    ];
     sum = post +
         squ +
         arm +
@@ -734,7 +772,18 @@ class _NeuromuscularState extends State<Neuromuscular> {
                       child: Text(
                     sum.toString(),
                     style: kLoginTitleStyle(size, amber),
-                  ))
+                  )),
+                  MaterialButton(
+                      child: Text('Store this exam'),
+                      onPressed: () {
+                        var body = json.encode({
+                          for (int i = 0; i < keys.length; i++)
+                            keys[i + 3]: postItems[i].toString(),
+                          'dr_id': widget.user.user!['id'].toString(),
+                          'mother_id': widget.file['patient_id'],
+                          'file_id': widget.file['id'].toString(),
+                        });
+                      })
                 ],
               ),
             ),

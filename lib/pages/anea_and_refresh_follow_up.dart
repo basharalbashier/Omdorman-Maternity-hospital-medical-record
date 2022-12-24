@@ -1,20 +1,12 @@
 import 'dart:convert';
 import 'package:aldayat_screens/models/am_or_pm_time.dart';
-import 'package:aldayat_screens/models/get_request.dart';
-import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/widgets/add_ana_signs.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
-import '../controller/simpleUIController.dart';
-import '../main.dart';
-import '../models/error_message.dart';
+import '../models/get_request.dart';
 import '../widgets/ana_add_rescu_record_button.dart';
-import '../widgets/title.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
 
 import '../widgets/waiting_widget.dart';
 import 'testo.dart';
@@ -36,8 +28,8 @@ class AnaesthiaAndRefreshFollowUp extends StatefulWidget {
 
 class _AnaesthiaAndRefreshFollowUpState
     extends State<AnaesthiaAndRefreshFollowUp> {
-  bool isFirst = false;
-  bool isSecond = true;
+  bool isFirst = true;
+  bool isSecond = false;
   bool isLast = false;
   List<String> keys = [
     "head",
@@ -178,15 +170,15 @@ class _AnaesthiaAndRefreshFollowUpState
   List last = [];
   List vitalSign = [];
   checkWhatbeeingDone() async {
-    // await getIt("beforana", widget.user, context, '0')
-    //     .then((value) => setState(() => befor = value));
-    // await getIt("whileana", widget.user, context, '0')
-    //     .then((value) => setState(() => second = value));
-    // await getIt("afterana", widget.user, context, '0')
-    //     .then((value) => setState(() => last = value));
+    await getIt("beforana", widget.user, context, '0')
+        .then((value) => setState(() => befor = value));
+    await getIt("whileana", widget.user, context, '0')
+        .then((value) => setState(() => second = value));
+    await getIt("afterana", widget.user, context, '0')
+        .then((value) => setState(() => last = value));
 
-    // await getIt("icuvital", widget.user, context, 'null')
-    //     .then((value) => setState(() => vitalSign = value));
+    await getIt("icuvital", widget.user, context, 'null')
+        .then((value) => setState(() => vitalSign = value));
     setState(() => show = true);
   }
 
@@ -222,7 +214,6 @@ class _AnaesthiaAndRefreshFollowUpState
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Text(drName(70)),
             // TitleD(Colors.deepOrangeAccent, size),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -235,95 +226,104 @@ class _AnaesthiaAndRefreshFollowUpState
               padding: const EdgeInsets.all(8.0),
               child: Divider(),
             ),
-            // Padding(
-            //   padding: const EdgeInsets.all(8.0),
-            //   child: Container(
-            //       decoration: BoxDecoration(
-            //           border: Border.all(color: Colors.deepOrangeAccent)),
-            //       child: firstPartWidget(size, befor)),
-            // ),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.deepOrangeAccent)),
-                  child: secondPartWidget(size, second)),
+                  child: firstPartWidget(size, befor)),
+            ),
+            Visibility(
+              visible: befor.isNotEmpty,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.deepOrangeAccent)),
+                    child: secondPartWidget(size, second)),
+              ),
+            ),
+            Visibility(
+              visible: befor.isNotEmpty && second.isNotEmpty,
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                    decoration: BoxDecoration(
+                        border: Border.all(color: Colors.deepOrangeAccent)),
+                    child: lastPart(size, last)),
+              ),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),
-              child: Container(
-                  decoration: BoxDecoration(
-                      border: Border.all(color: Colors.deepOrangeAccent)),
-                  child: lastPart(size, last)),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: MaterialButton(
-                      color: Colors.teal,
-                      onPressed: () async {
-                        // setState(() {
-                        //   show = !show;
-                        // });
+              child: Visibility(
+                visible: befor.isEmpty || second.isEmpty || last.isEmpty,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: MaterialButton(
+                        color: Colors.teal,
+                        onPressed: () async {
+                          // setState(() {
+                          //   show = !show;
+                          // });
 
-                        var rang = [
-                          isFirst
-                              ? 0
-                              : isSecond
-                                  ? 18
-                                  : 41,
-                          isFirst
-                              ? 18
-                              : isSecond
-                                  ? 39
-                                  : keys.length
+                          var rang = [
+                            isFirst
+                                ? 0
+                                : isSecond
+                                    ? 18
+                                    : 41,
+                            isFirst
+                                ? 18
+                                : isSecond
+                                    ? 39
+                                    : keys.length
 
-                          /*
-                                  {"respon":"موضعي","know":"إنتقالية","can_protect":"عاجلة","back_normal":"يستجيب للمخاطبة","painless":"يعرف الزمان والمكان","vomit":"إستعادة مقدرته على حماية الحنجرة","time_of_accedent":"عاد الى الطبيعي والنبض /الضغط/التنفس","blood_drop":"خال من
-الألم","breath_drop":"تقيأ ، إستنشق ،أفياءه، يشعر بالألم،إستجاب للمخاطبة، قلق","coma":"في حالة مضاعفات التخدير والجراحة:أكتب وبإختصار وقت وسبب الحدوث","contin_paralisied":"هبوط الدورة الدموية","allerg":"هبوط التنفس","breath_vomit":"عدم رجوع
-الوعي","heart_attack":"شلل مستمر ","dr_id":"0","patient_id":"0","file_id":"0"}
-                                   */
-                        ];
-                        List<String> controllersText = [];
-                        for (int i = 0; i < controllers.length; i++) {
-                          controllersText.add(controllers[i].text);
-                        }
-                        var example = controllersText;
-                        var body = json.encode({
-                          for (int i = rang[0]; i < rang[1]; i++)
-                            keys[i]: titles[isLast ? i + 3 : i],
-                          // 'breath_drop':'',
-                          // "type":typeOfSerg,
-                          // ""
-                          'dr_id': "0",
-                          'patient_id': "0",
-                          'file_id': "0"
-                        });
-                        print(body);
-                        // String root =
-                        //     "${isFirst ? 'beforana' : isSecond ? 'whileana' : 'afterana'}";
-                        // String respons = await makeHttpRequest(
-                        //     url + "$root/add", body, true, User({}, 'token'));
+                            /*
+                                    {"respon":"موضعي","know":"إنتقالية","can_protect":"عاجلة","back_normal":"يستجيب للمخاطبة","painless":"يعرف الزمان والمكان","vomit":"إستعادة مقدرته على حماية الحنجرة","time_of_accedent":"عاد الى الطبيعي والنبض /الضغط/التنفس","blood_drop":"خال من
+              الألم","breath_drop":"تقيأ ، إستنشق ،أفياءه، يشعر بالألم،إستجاب للمخاطبة، قلق","coma":"في حالة مضاعفات التخدير والجراحة:أكتب وبإختصار وقت وسبب الحدوث","contin_paralisied":"هبوط الدورة الدموية","allerg":"هبوط التنفس","breath_vomit":"عدم رجوع
+              الوعي","heart_attack":"شلل مستمر ","dr_id":"0","patient_id":"0","file_id":"0"}
+                                     */
+                          ];
+                          List<String> controllersText = [];
+                          for (int i = 0; i < controllers.length; i++) {
+                            controllersText.add(controllers[i].text);
+                          }
+                          var example = controllersText;
+                          var body = json.encode({
+                            for (int i = rang[0]; i < rang[1]; i++)
+                              keys[i]: titles[isLast ? i + 3 : i],
+                            // 'breath_drop':'',
+                            // "type":typeOfSerg,
+                            // ""
+                            'dr_id': "0",
+                            'patient_id': "0",
+                            'file_id': "0"
+                          });
+                          print(body);
+                          // String root =
+                          //     "${isFirst ? 'beforana' : isSecond ? 'whileana' : 'afterana'}";
+                          // String respons = await makeHttpRequest(
+                          //     url + "$root/add", body, true, User({}, 'token'));
 
-                        // if (respons == "Successfully Sent") {
-                        //   // Navigator.of(context).pop();
-                        // } else {
-                        //   errono(
-                        //       respons, respons, context, true, Container(), 3);
-                        //   setState(() {
-                        //     show = !show;
-                        //   });
-                        // }
-                      },
-                      child: Text(
-                        'Send',
-                        style: fileTitle(size),
+                          // if (respons == "Successfully Sent") {
+                          //   // Navigator.of(context).pop();
+                          // } else {
+                          //   errono(
+                          //       respons, respons, context, true, Container(), 3);
+                          //   setState(() {
+                          //     show = !show;
+                          //   });
+                          // }
+                        },
+                        child: Text(
+                          'Send',
+                          style: fileTitle(size),
+                        ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             )
           ],
@@ -532,35 +532,44 @@ class _AnaesthiaAndRefreshFollowUpState
             ],
           ),
         )),
+        ResponsiveGridCol(
+            xs: 6,
+            md: 3,
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Visibility(
+                  visible: data.isNotEmpty,
+                  child: Column(
+                    children: [
+                      Text(data[0]["type"] ?? ""),
+                    ],
+                  ),
+                ))),
         for (int i = 42; i < 44; i++)
           ResponsiveGridCol(
               xs: 6,
               md: 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: data.isNotEmpty
-                    ? Column(
-                        children: [
-                          Text(titles[i]),
-                          Text(data[0][keys[i]] ?? ""),
-                        ],
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            titles[i],
-                          ),
-                          Checkbox(
-                              value: bools[i],
-                              onChanged: ((value) => {
-                                    setState(() => {
-                                          bools[i] = !bools[i],
-                                          value! ? typeOfSerg = titles[i] : null
-                                        })
-                                  }))
-                        ],
+                child: Visibility(
+                  visible: data.isEmpty,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        titles[i],
                       ),
+                      Checkbox(
+                          value: bools[i],
+                          onChanged: ((value) => {
+                                setState(() => {
+                                      bools[i] = !bools[i],
+                                      value! ? typeOfSerg = titles[i] : null
+                                    })
+                              }))
+                    ],
+                  ),
+                ),
               )),
         ResponsiveGridCol(
             child: Padding(
@@ -580,35 +589,44 @@ class _AnaesthiaAndRefreshFollowUpState
             ],
           ),
         )),
+        ResponsiveGridCol(
+            xs: 6,
+            md: 3,
+            child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Visibility(
+                  visible: data.isNotEmpty,
+                  child: Column(
+                    children: [
+                      Text(data[0]["type_ana"] ?? ""),
+                    ],
+                  ),
+                ))),
         for (int i = 39; i < 42; i++)
           ResponsiveGridCol(
               xs: 6,
               md: 3,
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: data.isNotEmpty
-                    ? Column(
-                        children: [
-                          Text(titles[i]),
-                          Text(data[0][keys[i]] ?? ""),
-                        ],
-                      )
-                    : Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                            titles[i],
-                          ),
-                          Checkbox(
-                              value: bools[i],
-                              onChanged: ((value) => {
-                                    setState(() => {
-                                          bools[i] = !bools[i],
-                                          value! ? typeOfAna = titles[i] : null
-                                        })
-                                  }))
-                        ],
+                child: Visibility(
+                  visible: data.isEmpty,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(
+                        titles[i],
                       ),
+                      Checkbox(
+                          value: bools[i],
+                          onChanged: ((value) => {
+                                setState(() => {
+                                      bools[i] = !bools[i],
+                                      value! ? typeOfAna = titles[i] : null
+                                    })
+                              }))
+                    ],
+                  ),
+                ),
               )),
         ResponsiveGridCol(
             child: Padding(
@@ -867,9 +885,12 @@ class _AnaesthiaAndRefreshFollowUpState
             child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: data.isNotEmpty
-              ? Column(
+              ? Row(
                   children: [
-                    Text(data[0][keys[52]] ?? ""),
+                    Text(
+                      data[0]['breath_drop'] ?? "by",
+                      style: fileTitle(size),
+                    ),
                   ],
                 )
               : Row(
@@ -908,14 +929,14 @@ class _AnaesthiaAndRefreshFollowUpState
                   ],
                 ),
         )),
-        for (int i = 53; i < titles.length; i++)
+        for (int i = 53; i < titles.length - 3; i++)
           ResponsiveGridCol(
               // xs: 6,
               // md: 3,
               child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: data.isNotEmpty
-                ? Column(
+                ? Row(
                     children: [
                       Text(titles[i]),
                       Text(data[0][keys[i]] ?? ""),
