@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:http/http.dart' as http;
 import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
@@ -9,12 +10,13 @@ import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
 
 List<String> titles = [
+   "Date & Time",
   "Date Start",
   "Treatment/Medication",
   "Date End",
   'Dr Name'
 ];
-List<String> keys = ["start_date", "treatment", "end_date", 'dr_name'];
+List<String> keys = [ "created_at","start_date", "treatment", "end_date", 'dr_id'];
 Widget obsTeatmentTable(List data, context, Map file, User user) {
   Size size = Size(500, 500);
 
@@ -41,7 +43,7 @@ Widget obsTeatmentTable(List data, context, Map file, User user) {
             // 0: IntrinsicColumnWidth(),
 
             // 1: FlexColumnWidth(),
-            1: FlexColumnWidth(3),
+            1: FlexColumnWidth(4),
           },
           children: <TableRow>[
             TableRow(
@@ -62,23 +64,7 @@ Widget obsTeatmentTable(List data, context, Map file, User user) {
               ],
             ),
             for (var row in data)
-              TableRow(
-                children: <Widget>[
-                  for (int i = 0; i < keys.length; i++)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 32,
-                        child: Center(
-                            child: Text(
-                          row[keys[i]] ?? '',
-                          textAlign: TextAlign.center,
-                        )),
-                      ),
-                    ),
-                  //.toString().substring(0, 11)
-                ],
-              ),
+             makeTableRaw(row, keys)
           ],
         ),
       ),

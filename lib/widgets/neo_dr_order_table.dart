@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/constant.dart';
+import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:flutter/material.dart';
 import '../main.dart';
 import '../models/add_for_table_model.dart';
@@ -11,6 +12,7 @@ import 'package:http/http.dart' as http;
 
 Widget neoDoctorOrderTable(List data,context,Map file,User user) {
   List<String> titles=["Date & Time ", "Order", "Dr. Name"];
+    List<String> keys=["created_dr", "order", "dr_id"];
   Size size=Size(500,500);
 
   return Column(
@@ -51,41 +53,7 @@ Widget neoDoctorOrderTable(List data,context,Map file,User user) {
               ],
             ),
             for(var i in data)
-             TableRow(
-              children: <Widget>[
-        
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 32,
-                    child: Center(child: Column(
-                      children: [
-                         Text(textAlign:TextAlign.center,i['created_at'].toString().substring(11,19)),
-                        Text(textAlign:TextAlign.center,i['created_at'].toString().substring(0,11)),
-                            
-                      ],
-                    )),
-                  ),
-                ),
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    // height: 32,
-                    child: Center(child: Text(i['order']??"",textAlign:TextAlign.center,)),
-                  ),
-                ),
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 32,
-                    child: Center(child: Text(i['dr_name']??"",textAlign:TextAlign.center,)),
-                  ),
-                ),
-              
-              ],
-            ),
-        
-
+            makeTableRaw(i, keys)
         
         
          

@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:http/http.dart' as http;
 import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
@@ -8,97 +9,59 @@ import '../main.dart';
 import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
 
-Widget gyneCommentTable(List data,context,Map file,User user) {
-  List<String> titles=["Date & Time", "Comment", "Dr. Name"];
-  Size size=Size(500,500);
+Widget gyneCommentTable(List data, context, Map file, User user) {
+  List<String> titles = ["Date & Time", "Comment", "Dr. Name"];
+  List<String> keys = ['created_at', 'comment', 'dr_id'];
+  Size size = Size(500, 500);
 
   return Column(
     children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.end,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-          addButtonModel("+",(()async=>addgynegyneCommentTable(context, file, user, size))),
-        ],),
+            addButtonModel(
+                "+",
+                (() async =>
+                    addgynegyneCommentTable(context, file, user, size))),
+          ],
+        ),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Table(
-          border: TableBorder.all(width: 2,color: Colors.grey),
-          
+          border: TableBorder.all(width: 2, color: Colors.grey),
           columnWidths: const <int, TableColumnWidth>{
             0: IntrinsicColumnWidth(),
-       
             1: FlexColumnWidth(),
             2: IntrinsicColumnWidth(),
-         
           },
-        
-          
           children: <TableRow>[
             TableRow(
               children: <Widget>[
-                for(var i in titles)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-             
-                    height: 32,
-                    child: Center(child: Text(textAlign:TextAlign.center,i,style: fileTitle(size),)),
+                for (var i in titles)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 32,
+                      child: Center(
+                          child: Text(
+                        textAlign: TextAlign.center,
+                        i,
+                        style: fileTitle(size),
+                      )),
+                    ),
                   ),
-                ),
-              
               ],
             ),
-            for(var i in data)
-             TableRow(
-              children: <Widget>[
-        
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 32,
-                    child: Center(child: Column(
-                      children: [
-                         Text(textAlign:TextAlign.center,i['created_at'].toString().substring(11,19)),
-                        Text(textAlign:TextAlign.center,i['created_at'].toString().substring(0,11)),
-                            
-                      ],
-                    )),
-                  ),
-                ),
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    // height: 32,
-                    child: Center(child: Text(i['comment'],textAlign:TextAlign.center,)),
-                  ),
-                ),
-             
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 32,
-                    child: Center(child: Text(i['dr_name']??"",textAlign:TextAlign.center,)),
-                  ),
-                ),
-              
-              ],
-            ),
-        
-
-        
-        
-         
+            for (var row in data) makeTableRaw(row, keys),
           ],
         ),
       ),
     ],
   );
-
-  
 }
-
 
 Future<void> addgynegyneCommentTable(
   contexte,
@@ -139,7 +102,6 @@ Future<void> addgynegyneCommentTable(
                         setState(() => show = !show);
                         final body = jsonEncode({
                           'comment': commController.text,
-                         
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
@@ -200,7 +162,6 @@ Future<void> addgynegyneCommentTable(
                                   key: _formKey,
                                   child: Column(
                                     children: [
-                                    
                                       Padding(
                                         padding: const EdgeInsets.all(8.0),
                                         child: Container(
@@ -244,4 +205,3 @@ Future<void> addgynegyneCommentTable(
     },
   );
 }
-

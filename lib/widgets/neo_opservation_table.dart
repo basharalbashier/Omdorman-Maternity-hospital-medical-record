@@ -1,4 +1,5 @@
 import 'package:aldayat_screens/constant.dart';
+import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
@@ -12,8 +13,7 @@ import '../models/add_for_table_model.dart';
 
 Widget neoOpservationTable(List data, Size size, context, file, user) {
   List<String> titles = [
-    "Date",
-    "Time",
+    "Date & Time",
     "Temp",
     "R.R",
     "HR",
@@ -25,6 +25,19 @@ Widget neoOpservationTable(List data, Size size, context, file, user) {
     "Remarks",
     "Sig."
   ];
+  List<String> keys = [
+  "created_at",
+  'temp',
+  "r_r",
+  "hr",
+  "wt",
+  "oxygen",
+  "activity",
+  "urine",
+  "stool",
+  'remarks',
+  'dr_id'
+];
   double height = 32;
   return Column(
     children: [
@@ -65,98 +78,7 @@ Widget neoOpservationTable(List data, Size size, context, file, user) {
               ],
             ),
             for (var i in data)
-              TableRow(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(
-                          child: Text(
-                              i['created_at'].toString().substring(0, 11))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(
-                          child: Text(
-                              i['created_at'].toString().substring(11, 19))),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['temp'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['r_r'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['hr'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['wt'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['oxygen'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['activity'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['urine'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['stool']??'')),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['remarks'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: height,
-                      child: Center(child: Text(i['dr_id'])),
-                    ),
-                  ),
-                ],
-              ),
+            makeTableRaw(i, keys)
           ],
         ),
       ),

@@ -10,7 +10,9 @@ import '../models/user_hive.dart';
 
 Widget gyneInvTable(List data,context,Map file,User user) {
   List<String> titles=["Date", "Investigation Ordered", "Result / Management"];
-  Size size=Size(500,500);
+  List<String> keys=["created_at", "investigation", "result"];
+
+ Size size=Size(500,500);
 
   return Column(
     children: [

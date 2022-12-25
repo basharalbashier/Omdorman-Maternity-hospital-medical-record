@@ -1,4 +1,5 @@
 import 'package:aldayat_screens/constant.dart';
+import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
@@ -6,13 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
 
 import '../models/add_for_table_model.dart';
 
 Widget icuNurseNoteTable(List data, context, file, user) {
   List<String> titles = ["Date &Time", "Note", "Sign"];
+  List<String> keys = [
+  "created_at",
+  "note",
+  'nurse_id'
+];
   Size size = Size(500, 500);
   return Column(
     children: [
@@ -49,99 +54,9 @@ Widget icuNurseNoteTable(List data, context, file, user) {
                   ),
               ],
             ),
-            for (var i in data)
-              TableRow(
-                children: <Widget>[
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 32,
-                      child: Center(
-                          child: Column(
-                        children: [
-                          Text(i['created_at'].toString().substring(11, 19)),
-                          Text(i['created_at'].toString().substring(0, 10)),
-                        ],
-                      )),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      // height: 32,
-                      child: Center(child: Text(i['note'])),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Container(
-                      height: 32,
-                      child: Center(child: Text(i['nurse_id'])),
-                    ),
-                  ),
-                ],
-              ),
-            // TableRow(
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Container(
-            //         height: 32,
-            //         child: Text("POSTURE"),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // TableRow(
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Container(
-            //         height: 32,
-            //         child: Text(
-            //           "SQUARE WINDOW\n(Wrist)",
-            //           textAlign: TextAlign.center,
-            //         ),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // TableRow(
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Container(
-            //         height: 32,
-            //         child: Text("ARM RECOIL"),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // TableRow(
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Container(
-            //         height: 32,
-            //         child: Text("POPLITEAL ANGLE"),
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // TableRow(
-            //   children: <Widget>[],
-            // ),
-            // TableRow(
-            //   children: <Widget>[
-            //     Padding(
-            //       padding: const EdgeInsets.all(8.0),
-            //       child: Container(
-            //         height: 32,
-            //         child: Text("HEEL TO EAR"),
-            //       ),
-            //     ),
-            //   ],
-            // ),
+            for (var row in data)
+            makeTableRaw(row, keys),
+            
           ],
         ),
       ),

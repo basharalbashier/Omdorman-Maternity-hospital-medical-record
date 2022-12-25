@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:http/http.dart' as http;
 import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
@@ -46,7 +47,7 @@ List<String> keys = [
   "skin_color",
   "remarks",
   "comment",
-  'dr_name'
+  'dr_id'
 ];
 Widget nurseObserTable(List data, context, Map file, User user) {
   Size size = Size(500, 500);
@@ -95,25 +96,7 @@ Widget nurseObserTable(List data, context, Map file, User user) {
               ],
             ),
             for (var row in data)
-              TableRow(
-                children: <Widget>[
-                  for (int i = 0; i < keys.length; i++)
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Container(
-                        height: 32,
-                        child: Center(
-                            child: Text(
-                          i == 0
-                              ? '${row[keys[i]].toString().substring(0, 10)}\n${row[keys[i]].toString().substring(11, 19)}'
-                              : row[keys[i]] ?? '',
-                          textAlign: TextAlign.center,
-                        )),
-                      ),
-                    ),
-                  //.toString().substring(0, 11)
-                ],
-              ),
+             makeTableRaw(row, keys)
           ],
         ),
       ),

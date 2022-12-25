@@ -140,7 +140,7 @@ labRequstDialog(Map request, contexte, size, User user) async {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Text("By :  ", style: fileTitle(size)),
-                              Text(drName(int.parse(request['dr_id'])),
+                              Text(drName(request['dr_id']),
                                   style: fileTitle(size)),
                             ],
                           ),

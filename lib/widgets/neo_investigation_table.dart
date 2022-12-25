@@ -1,4 +1,5 @@
 import 'package:aldayat_screens/constant.dart';
+import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:flutter/material.dart';
 
 import '../models/add_for_table_model.dart';
@@ -13,7 +14,13 @@ import '../main.dart';
 import '../models/user_hive.dart';
 
 Widget neoInvestgationAndResultTable(List data,context, file, user,) {
-  List<String> titles=["Date & Time", "Investigation", "Result"];
+  List<String> titles=["Date & Time", "Investigation", "Result","Requested By"];
+  List<String> keys = [
+  "created_at",
+  "inv",
+  "result",
+  'dr_id',
+];
   Size size=Size(500,500);
   return Column(
     children: [
@@ -50,40 +57,7 @@ Widget neoInvestgationAndResultTable(List data,context, file, user,) {
               ],
             ),
             for(var i in data)
-             TableRow(
-              children: <Widget>[
-        
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 32,
-                    child: Center(child: Column(
-                      children: [
-                         Text(i['created_at'].toString().substring(11,19)),
-                        Text(i['created_at'].toString().substring(0,11)),
-                            
-                      ],
-                    )),
-                  ),
-                ),
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    // height: 32,
-                    child: Center(child: Text(i['inv'])),
-                  ),
-                ),
-                 Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-                    height: 32,
-                    child: Center(child: Text(i['result'])),
-                  ),
-                ),
-              
-              ],
-            ),
-        
+           makeTableRaw(i, keys)
           ],
         ),
       ),
