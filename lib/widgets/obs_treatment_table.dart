@@ -10,20 +10,26 @@ import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
 
 List<String> titles = [
-   "Date & Time",
+  "Date & Time",
   "Date Start",
   "Treatment/Medication",
   "Date End",
   'Dr Name'
 ];
-List<String> keys = [ "created_at","start_date", "treatment", "end_date", 'dr_id'];
+List<String> keys = [
+  "created_at",
+  "start_date",
+  "treatment",
+  "end_date",
+  'dr_id'
+];
 Widget obsTeatmentTable(List data, context, Map file, User user) {
   Size size = Size(500, 500);
 
   return Column(
     children: [
       Visibility(
-        visible: user.user!['dep'] == 'Department of Obstetrics',
+        visible: user.user!['dep'] == 'Department of Clinical Pharmacy',
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -43,7 +49,7 @@ Widget obsTeatmentTable(List data, context, Map file, User user) {
             // 0: IntrinsicColumnWidth(),
 
             // 1: FlexColumnWidth(),
-            1: FlexColumnWidth(4),
+            2: FlexColumnWidth(3),
           },
           children: <TableRow>[
             TableRow(
@@ -63,8 +69,7 @@ Widget obsTeatmentTable(List data, context, Map file, User user) {
                   ),
               ],
             ),
-            for (var row in data)
-             makeTableRaw(row, keys)
+            for (var row in data) makeTableRaw(row, keys)
           ],
         ),
       ),

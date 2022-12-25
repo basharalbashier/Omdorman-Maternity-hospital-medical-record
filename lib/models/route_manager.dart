@@ -17,9 +17,11 @@ import '../pages/home_nutrition.dart';
 import '../pages/home_obs.dart';
 import 'user_hive.dart';
 
-routeManager(String level, context, User user) {
-      SimpleUIController simpleUIController = Get.find<SimpleUIController>();
-        simpleUIController.getUsers(user,context);
+routeManager(context, User user) {
+  SimpleUIController simpleUIController = Get.find<SimpleUIController>();
+  simpleUIController.getUsers(user, context);
+
+  String level = user.user!['dep'];
   if (level == 'Department of Pediatrics') {
     Navigator.pushAndRemoveUntil(
       context,

@@ -54,4 +54,4 @@ TextStyle confirmStyle(Size size) => GoogleFonts.ubuntu(
     fontWeight: FontWeight.bold,
     color: Colors.white);
 
-String url = 'http://bashardinho.loca.lt/app/api/';
+String url = 'http://localhost/app/api/';

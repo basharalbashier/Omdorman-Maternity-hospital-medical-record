@@ -1,11 +1,9 @@
 import 'dart:convert';
-
 import 'package:aldayat_screens/models/error_message.dart';
+import 'package:aldayat_screens/models/make_request.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
 
 Widget uSRequest(contexte, size, Map file, User user, String type) {
@@ -18,87 +16,17 @@ Widget uSRequest(contexte, size, Map file, User user, String type) {
   var usFiveController = TextEditingController();
   var usSixController = TextEditingController();
   int number = 1;
-  var controllers = [
-    usOneController,
-    usTwoController,
-    usThreeController,
-    usFourController,
-    usFiveController,
-    usSixController
-  ];
-  Widget submit(size, file, User user, String type, context) {
-    return Padding(
-      padding: const EdgeInsets.only(left: 80.0, right: 80, bottom: 80),
-      child: SizedBox(
-        width: double.infinity,
-        height: 55,
-        child: ElevatedButton(
-          style: ButtonStyle(
-            // backgroundColor: MaterialStateProperty.all(Colors.deepPurpleAccent),
-            shape: MaterialStateProperty.all(
-              RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(15),
-              ),
-            ),
-          ),
-          onPressed: () async {
-            final body = jsonEncode({
-              'remarks': remarksController.text,
-              'unit': user.user!['unit'].toString(),
-              'us_one': usOneController.text,
-              'us_two': usTwoController.text,
-              'us_three': usThreeController.text,
-              'us_four': usFourController.text,
-              'us_five': usFiveController.text,
-              'us_six': usSixController.text,
-              'status': "0",
-              "dr_id": user.user!['id'].toString(),
-              "patient_id": file['patient_id'].toString(),
-              "file_id": file['id'].toString(),
-              'money': "free",
-              'type': type,
-            });
-            try {
-              await http
-                  .post(Uri.parse('${url}usrequest/add'),
-                      headers: {
-                        'Content-type': 'application/json',
-                        'Accept': 'application/json',
-                        'Authorization': 'Bearer ${user.token!}'
-                      },
-                      body: body)
-                  .then((value) {
-                if (value.statusCode == 200 || value.statusCode == 201) {
-                  errono(
-                      "Request sent successfully",
-                      "Request sent successfully",
-                      context,
-                      true,
-                      Container(),
-                      2);
-                  Navigator.of(context).pop();
-                }
-              });
-            } catch (e) {
-              errono("Connection Error", "Connection Error", context, true,
-                  Container(), 2);
-            }
-          },
-          child: Text(
-            'Confirm',
-            style: confirmStyle(size),
-          ),
-        ),
-      ),
-    );
-  }
 
   return MaterialButton(
       color: Colors.amber,
-      child: Text('U/S Request'),
+      child: Text(
+        'U/S Request',
+        style: TextStyle(color: Colors.white),
+      ),
       onPressed: (() async {
         await showDialog<void>(
           context: contexte,
+          barrierDismissible: false,
           builder: (BuildContext context) {
             return AlertDialog(
               content: StatefulBuilder(
@@ -109,47 +37,6 @@ Widget uSRequest(contexte, size, Map file, User user, String type) {
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            // Padding(
-                            //   padding: const EdgeInsets.all(8.0),
-                            //   child: PopupMenuButton<int>(
-                            //       itemBuilder: (context) => [
-                            //             for (int i = 0; i < forHow.length; i++)
-                            //               PopupMenuItem(
-                            //                 value: i,
-                            //                 // row with 2 children
-                            //                 child: Row(
-                            //                   children: [
-                            //                     const SizedBox(
-                            //                       width: 10,
-                            //                     ),
-                            //                     Text(
-                            //                       forHow[i],
-                            //                     )
-                            //                   ],
-                            //                 ),
-                            //               ),
-                            //           ],
-                            //       offset: const Offset(0, 100),
-                            //       elevation: 2,
-                            //       // on selected we show the dialog box
-                            //       onSelected: (value) {
-                            //         // if value 1 show dialog
-                            //         setState(() {
-                            //           whichforHow = forHow[value];
-                            //         });
-                            //       },
-                            //       child: Row(
-                            //         children: [
-                            //           Text(
-                            //               whichforHow == ''
-                            //                   ? 'For'
-                            //                   : whichforHow,
-                            //               style: insuranceStyle(size)),
-                            //           const Icon(Icons.arrow_drop_down)
-                            //         ],
-                            //       )),
-                            // ),
-
                             ResponsiveGridRow(children: [
                               ResponsiveGridCol(
                                 child: Padding(
@@ -230,7 +117,62 @@ Widget uSRequest(contexte, size, Map file, User user, String type) {
                                   ),
                                 ),
                             ]),
-                            submit(size, file, user, type, context)
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                MaterialButton(
+                                  color: Colors.pink,
+                                  onPressed: () async {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text(
+                                    'Cancel',
+                                    style: confirmStyle(size),
+                                  ),
+                                ),
+                                MaterialButton(
+                                  color: Colors.teal,
+                                  onPressed: () async {
+                                    final body = jsonEncode({
+                                      'remarks': remarksController.text,
+                                      'unit': user.user!['unit'].toString(),
+                                      'us_one': usOneController.text,
+                                      'us_two': usTwoController.text,
+                                      'us_three': usThreeController.text,
+                                      'us_four': usFourController.text,
+                                      'us_five': usFiveController.text,
+                                      'us_six': usSixController.text,
+                                      'status': "0",
+                                      "dr_id": user.user!['id'].toString(),
+                                      "patient_id":
+                                          file['patient_id'].toString(),
+                                      "file_id": file['id'].toString(),
+                                      'money': "free",
+                                      'type': type,
+                                    });
+                                    var value = await makeHttpRequest(
+                                        '${url}usrequest/add',
+                                        body,
+                                        true,
+                                        user);
+                                    if (value[1] == "Successfully sent") {
+                                      errono(
+                                          "Request sent successfully",
+                                          "Request sent successfully",
+                                          context,
+                                          true,
+                                          Container(),
+                                          2);
+                                      Navigator.of(context).pop();
+                                    }
+                                  },
+                                  child: Text(
+                                    'Confirm',
+                                    style: confirmStyle(size),
+                                  ),
+                                ),
+                              ],
+                            )
                           ]),
                     ),
                   );

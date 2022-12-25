@@ -110,15 +110,6 @@ Widget homeWidget(context, size, file, User user, List labRequest,
                   )),
         Divider(),
         Visibility(
-          visible: !labRequest.isEmpty,
-          child: SizedBox(
-              width: size.width,
-              height: size.height,
-              child: LabHistory(
-                source: labRequest,
-              )),
-        ),
-        Visibility(
           visible: unit.isNotEmpty,
           child: SizedBox(
             width: size.width,

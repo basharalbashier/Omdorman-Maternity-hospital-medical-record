@@ -49,24 +49,12 @@ class _LoginViewState extends State<LoginView> {
       return '';
     }
   }
-getSomeThing()async{
-try{
-    await http.get(Uri.parse(url + 'user/f/0')).then((value) => print(value.body));
 
-
-}catch(e){
-  print(e);
-}
-}
   @override
   void initState() {
-   getSomeThing();
-
     getinfo(context).then((value) => value.token != ''
-        ? {routeManager(value.user!['dep'], context, value)}
-        : setState(() {
-            show = true;
-          }));
+        ? {routeManager(context, value)}
+        : setState(() => show = true));
 
     super.initState();
   }
@@ -348,7 +336,7 @@ try{
       List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
       stor(info).then((value) {
         if (value.token != 'no') {
-          routeManager(tryLogin['user']['dep'].toString(), context, value);
+          routeManager(context, value);
         }
       });
     } else {

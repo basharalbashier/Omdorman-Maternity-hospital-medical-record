@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
@@ -58,8 +59,8 @@ labResult(Map request, contexte, size, User user) async {
                 );
               }
               return SizedBox(
-                      height: size.height/2,
-                    width: size.width,
+                height: size.height / 2,
+                width: size.width,
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -96,8 +97,7 @@ labResult(Map request, contexte, size, User user) async {
                           ),
                           Row(
                             children: [
-                              Text("Investigation :  ",
-                                  style: fileTitle(size)),
+                              Text("Investigation :  ", style: fileTitle(size)),
                               Column(
                                 children: [
                                   for (var i in ourTests)
@@ -149,29 +149,31 @@ labResult(Map request, contexte, size, User user) async {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: SizedBox(width: size.width,child:      Container(
-                                    // height: 100,
+                        child: SizedBox(
+                          width: size.width,
+                          child: Container(
+                            // height: 100,
 
-                                    alignment: Alignment(0, 0),
-                                    // color: Colors.green,
-                                    child: TextFormField(
-                                      maxLines: 3,
-                                      controller: comm,
-                                      style: kTextFormFieldStyle(),
-                                      decoration: InputDecoration(
-                                        // prefixIcon: Icon(Icons.person),
-                                        label: Text("Comment"),
-                                        border: OutlineInputBorder(
-                                          borderRadius: BorderRadius.all(
-                                              Radius.circular(15)),
-                                        ),
-                                      ),
-                                      // controller: nameController,
-                                      // The validator receives the text that the user has entered.
-                                    ),
-                                  ),),
+                            alignment: Alignment(0, 0),
+                            // color: Colors.green,
+                            child: TextFormField(
+                              maxLines: 3,
+                              controller: comm,
+                              style: kTextFormFieldStyle(),
+                              decoration: InputDecoration(
+                                // prefixIcon: Icon(Icons.person),
+                                label: Text("Comment"),
+                                border: OutlineInputBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(15)),
+                                ),
+                              ),
+                              // controller: nameController,
+                              // The validator receives the text that the user has entered.
+                            ),
+                          ),
+                        ),
                       ),
-                    
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -190,39 +192,30 @@ labResult(Map request, contexte, size, User user) async {
                               setState(() {
                                 showAll = F;
                               });
-
-                              try {
-                                await http
-                                    .post(
-                                        Uri.parse(url +
-                                            "lab/update/${request['id']}"),
-                                        headers: {
-                                          'Content-type':
-                                              'application/json',
-                                          'Accept': 'application/json',
-                                          'Authorization':
-                                              'Baerer ${user.token}'
-                                        },
-                                        body: jsonEncode({
-                                          for (int i = 0;
-                                              i < ourTests.length;
-                                              i++)
-                                            ourTests[i].key.toString():
-                                                controllers[i].text,
-                                                "comm":comm.text,
-                                          "got_by_id":
-                                              user.user!['id'].toString(),
-                                          "if_rejected_why":
-                                              "${DateTime.now()}",
-                                          "status": "2",
-                                        }))
-                                    .then((value) {
-                                  if (value.statusCode == 200 ||
-                                      value.statusCode == 201) {
-                                    Navigator.of(context).pop();
-                                  }
-                                });
-                              } catch (e) {
+                              List allInv = [];
+                              for (int i = 0; i < ourTests.length; i++) {
+                                allInv.add(controllers[i].text);
+                              }
+                              String item = allInv
+                                  .toString()
+                                  .replaceAll("[", '')
+                                  .replaceAll("]", '')
+                                  .replaceAll(",", "\n");
+                              var body = jsonEncode({
+                                'result': item,
+                                "comm": comm.text,
+                                "got_by_id": user.user!['id'].toString(),
+                                "if_rejected_why": "${DateTime.now()}",
+                                "status": "2",
+                              });
+                              var value = await makeHttpRequest(
+                                  url + "lab/update/${request['id']}",
+                                  body,
+                                  true,
+                                  user);
+                              if (value[1] == "Successfully sent") {
+                                Navigator.of(context).pop();
+                              } else {
                                 setState(() {
                                   showAll = F;
                                 });

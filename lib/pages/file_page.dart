@@ -2,9 +2,10 @@ import 'dart:convert';
 import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
+import 'package:aldayat_screens/pages/file_invistigation_table.dart';
 import 'package:aldayat_screens/widgets/genterate_qr_for_file.dart';
 import 'package:aldayat_screens/widgets/gyn_adm_button.dart';
-import 'package:aldayat_screens/widgets/icr_request.dart';
+import 'package:aldayat_screens/widgets/icu_request_dialog.dart';
 import 'package:aldayat_screens/widgets/move_to_lab_button.dart';
 import 'package:aldayat_screens/widgets/obs_adm_button.dart';
 import 'package:aldayat_screens/widgets/private_info_for_static.dart';
@@ -113,6 +114,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
         ? widget.type == "0"
             ? taps = [
                 "Home",
+                "Investigation",
                 "Antenatal Follow Up",
                 "Antenatal Admission Follow Up",
                 "Labour Ward Instructions",
@@ -256,7 +258,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
 
   Widget homeWidget(size) {
     return ListView(
-      scrollDirection: Axis.horizontal,
+      scrollDirection: Axis.vertical,
       children: [
         Visibility(
           visible: showAddObsButton &&
@@ -288,15 +290,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 : Visibility(
                     visible: widget.type == "1",
                     child: gynAdmissionTable(size, gynAdmList))),
-        Visibility(
-          visible: labRequest.isNotEmpty,
-          child: SizedBox(
-              width: size.width,
-              height: size.height / 2,
-              child: LabHistory(
-                source: labRequest,
-              )),
-        ),
         Visibility(
             visible: widget.user.user!['dep'] == 'Department of Statistics',
             child: privateInfo(
@@ -611,10 +604,16 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                               widget.type),
                           Column(
                             children: [
-                              iCuRequest(
-                                  context, size, widget.file, widget.user, "0"),
-                              iCuRequest(
-                                  context, size, widget.file, widget.user, "1"),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: iCuRequest(context, size, widget.file,
+                                    widget.user, "0"),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: iCuRequest(context, size, widget.file,
+                                    widget.user, "1"),
+                              ),
                             ],
                           ),
                         ],
@@ -730,10 +729,16 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                         context, widget.patient, widget.file, widget.type),
                     Column(
                       children: [
-                        iCuRequest(
-                            context, size, widget.file, widget.user, "0"),
-                        iCuRequest(
-                            context, size, widget.file, widget.user, "1"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: iCuRequest(
+                              context, size, widget.file, widget.user, "0"),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: iCuRequest(
+                              context, size, widget.file, widget.user, "1"),
+                        ),
                       ],
                     ),
                   ],
@@ -757,6 +762,8 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 controller: _tabController,
                 children: <Widget>[
                     homeWidget(size),
+                    fileInvestigationTable(labRequest.reversed.toList(),
+                        context, widget.file, widget.user),
                     anteFollowUpTable(antfollowupList.reversed.toList(),
                         context, widget.file, widget.user),
                     anteAdmFollowUpTable(
