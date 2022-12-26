@@ -2,13 +2,9 @@ import 'package:aldayat_screens/models/get_request.dart';
 import 'package:aldayat_screens/widgets/icu_follow_up_table.dart';
 import 'package:aldayat_screens/widgets/icu_nurse_note.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/widgets.dart';
 
 import '../constant.dart';
 import '../models/user_hive.dart';
-import '../widgets/genterate_qr_for_file.dart';
 import '../widgets/move_to_lab_button.dart';
 import '../widgets/u_s_request.dart';
 

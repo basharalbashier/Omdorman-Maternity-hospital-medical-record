@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/change_arabic_numbers.dart';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/widgets/title.dart';

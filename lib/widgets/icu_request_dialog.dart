@@ -4,9 +4,7 @@ import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/make_request.dart';
 import '../models/user_hive.dart';
 

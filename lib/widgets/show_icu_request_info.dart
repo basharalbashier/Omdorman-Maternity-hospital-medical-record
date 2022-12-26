@@ -6,9 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
-import 'waiting_widget.dart';
 
 class ShowRequestInfo extends StatefulWidget {
   final Map request;
@@ -131,6 +129,7 @@ class _ShowRequestInfoState extends State<ShowRequestInfo> {
                                 if (v!.length < 5) {
                                   return "Is this a Response?";
                                 }
+                                return null;
                               }),
                             ),
                           ),

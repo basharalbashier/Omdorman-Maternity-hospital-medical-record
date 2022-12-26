@@ -4,7 +4,6 @@ import 'package:aldayat_screens/widgets/log_out.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/error_message.dart';
 import '../models/user_hive.dart';
 import '../widgets/bar_code.dart';
@@ -53,7 +52,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _searchChanged(String searchText) {
-    if (searchText != null && searchText.isNotEmpty) {
+    if (searchText.isNotEmpty) {
       setState(() {
         patientSearch = List.from(
             patients.where((name) => name['name'].contains(searchText)));

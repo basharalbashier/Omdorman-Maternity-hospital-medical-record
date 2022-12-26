@@ -1,8 +1,6 @@
 import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class Paragram extends StatefulWidget {
   final String title;

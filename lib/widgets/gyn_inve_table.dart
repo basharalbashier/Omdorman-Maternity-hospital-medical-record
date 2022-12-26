@@ -4,13 +4,11 @@ import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import '../main.dart';
 import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
 
 Widget gyneInvTable(List data,context,Map file,User user) {
   List<String> titles=["Date", "Investigation Ordered", "Result / Management"];
-  List<String> keys=["created_at", "investigation", "result"];
 
  Size size=Size(500,500);
 
@@ -225,6 +223,7 @@ Future<void> addgyneInvTable(
                                               if (v!.length < 5) {
                                                 return "Is this a Comment?";
                                               }
+                                              return null;
                                             }),
                                           ),
                                         ),
@@ -251,6 +250,7 @@ Future<void> addgyneInvTable(
                                               if (v!.length < 5) {
                                                 return "Is this a Comment?";
                                               }
+                                              return null;
                                             }),
                                           ),
                                         ),

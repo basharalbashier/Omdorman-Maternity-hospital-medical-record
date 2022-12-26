@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/change_arabic_numbers.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
@@ -61,6 +60,7 @@ class _AddPatientState extends State<AddUser> {
   ];
 
   void sendData() async {
+    // ignore: unused_local_variable
     var body = jsonEncode({
       'unit': replaceArabicNumber(unit.toString()),
       'name': nameController.text,

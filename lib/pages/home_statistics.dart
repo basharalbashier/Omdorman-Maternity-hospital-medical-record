@@ -1,15 +1,13 @@
 import 'dart:convert';
-import 'package:aldayat_screens/constant.dart';
-import 'package:aldayat_screens/widgets/add_baby_file_widget.dart';
-// import 'package:aldayat_screens/widgets/add_file_button.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:aldayat_screens/widgets/waiting_list.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import '../main.dart';
+import '../constant.dart';
 import '../models/error_message.dart';
 import '../models/user_hive.dart';
-import '../widgets/add_file_widget.dart';
+import '../widgets/add_baby_file_widget_button.dart';
+import '../widgets/add_file_widget_button.dart';
 import '../widgets/bar_code.dart';
 import '../widgets/log_out.dart';
 import 'add_patient.dart';
@@ -38,7 +36,7 @@ class _SurgeryHomeState extends State<StatisticsHome>
   }
 
   void _searchChanged(String searchText) {
-    if (searchText != null && searchText.isNotEmpty) {
+    if (searchText.isNotEmpty) {
       _tabController.index == 0
           ? {
               setState(() {

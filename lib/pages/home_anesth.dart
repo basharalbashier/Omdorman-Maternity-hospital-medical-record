@@ -4,10 +4,7 @@ import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/pages/patient_page.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
-import 'package:get/route_manager.dart';
 import 'package:http/http.dart' as http;
-import 'package:just_audio/just_audio.dart';
-import '../main.dart';
 import '../models/error_message.dart';
 import '../models/play_audio.dart';
 import '../models/user_hive.dart';
@@ -97,7 +94,7 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
   }
 
   void _searchChanged(String searchText) {
-    if (searchText != null && searchText.isNotEmpty) {
+    if (searchText.isNotEmpty) {
       setState(() {
         patientSearch = List.from(
             patients.where((name) => name['name'].contains(searchText)));

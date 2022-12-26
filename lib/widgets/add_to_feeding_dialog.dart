@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
 
 Future <void> addToFeedingDialog(contexte, Map file, User user,)async{
@@ -133,6 +132,7 @@ Future <void> addToFeedingDialog(contexte, Map file, User user,)async{
                                         if(v!.length<1){
                                            return "fill this field please";
                                         }
+                                        return null;
                                        }),
                                       ),
                                     ),

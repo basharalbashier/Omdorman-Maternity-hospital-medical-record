@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
 import '../models/add_for_table_model.dart';
 
@@ -229,6 +228,7 @@ Future<void> gyneAddNote(
                                               if (v!.length < 5) {
                                                 return "Is this a Gestation?";
                                               }
+                                              return null;
                                             }),
                                           ),
                                         ),
@@ -254,6 +254,7 @@ Future<void> gyneAddNote(
                                               if (v!.length < 5) {
                                                 return "Is this a note?";
                                               }
+                                              return null;
                                             }),
                                           ),
                                         ),

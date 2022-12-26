@@ -1,7 +1,5 @@
 import 'package:aldayat_screens/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 
 class DentistryHome extends StatefulWidget {
   const DentistryHome({super.key});

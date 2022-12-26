@@ -3,14 +3,10 @@ import 'dart:convert';
 import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/pages/baby_file_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 
-import '../main.dart';
 import '../models/error_message.dart';
 import '../models/user_hive.dart';
-import '../widgets/add_baby_file_widget.dart';
 import '../widgets/log_out.dart';
 import '../widgets/title.dart';
 
@@ -43,7 +39,7 @@ class _SurgeryHomeState extends State<PediatricHome>
   }
 
   void _searchChanged(String searchText) {
-    if (searchText != null && searchText.isNotEmpty) {
+    if (searchText.isNotEmpty) {
       setState(() {
         taps.clear();
         babySearch =

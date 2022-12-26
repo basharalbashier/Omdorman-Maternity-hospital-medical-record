@@ -328,6 +328,7 @@ Future<void> seeAdmission(
             return SizedBox(
               width: size.width,
               child: !show
+                  // ignore: dead_code
                   ? waitingWidget("3")
                   : SingleChildScrollView(
                       child: Column(

@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/login.dart';
-import 'package:aldayat_screens/widgets/waiting_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -9,12 +8,16 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'pages/anea_and_refresh_follow_up.dart';
 import 'widgets/contact_me.dart';
+import 'package:flutter/foundation.dart' show kIsWeb;
+
 
 //🐒💁👌🎍😍🦊👨
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
-  Hive.registerAdapter(UserAdapter());
+ if(kIsWeb){
+   Hive.registerAdapter(UserAdapter());
+ }
   FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
   runApp(
@@ -22,6 +25,7 @@ void main() {
   );
 }
 
+// ignore: must_be_immutable
 class DayatApp extends StatelessWidget {
   DayatApp({Key? key}) : super(key: key);
 //Unauthenticated.

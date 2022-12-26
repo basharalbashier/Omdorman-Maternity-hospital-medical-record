@@ -5,7 +5,6 @@ import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
-import '../main.dart';
 import '../models/add_for_table_model.dart';
 import '../models/user_hive.dart';
 
@@ -250,6 +249,7 @@ Future<void> addAnticoagulationChartTable(
                                                 if (v!.length < 5) {
                                                   return "Is this a ${titles[i + 1]}?";
                                                 }
+                                                return null;
                                               }),
                                             ),
                                           ),

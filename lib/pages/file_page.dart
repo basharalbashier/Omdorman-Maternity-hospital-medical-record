@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'package:aldayat_screens/main.dart';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/pages/file_invistigation_table.dart';
@@ -14,11 +13,11 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../models/user_hive.dart';
-import '../widgets/add_baby_file_widget.dart';
+import '../widgets/add_baby_file_widget_button.dart';
 import '../widgets/ant_adm_folow.dart';
 import '../widgets/antenatal_table.dart';
 import '../widgets/anticoagulation_chart_table.dart';
-import '../widgets/delivery_note.dart';
+import '../widgets/delivery_note_button.dart';
 import '../widgets/gyn_inve_table.dart';
 import '../widgets/gyne_comment_table.dart';
 import '../widgets/gyne_perciption_table.dart';
@@ -33,7 +32,6 @@ import '../widgets/root_to_anea_follow_up_button.dart';
 import '../widgets/show_gyn_adm.dart';
 import '../widgets/show_obs_history.dart';
 import '../widgets/u_s_request.dart';
-import 'lab_history.dart';
 import 'vaginal_exam_button.dart';
 
 class FilePage extends StatefulWidget {

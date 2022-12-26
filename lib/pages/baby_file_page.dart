@@ -1,33 +1,21 @@
 import 'dart:convert';
 
-import 'package:aldayat_screens/widgets/matural_assesm_button.dart';
 import 'package:aldayat_screens/widgets/neo_dr_order_table.dart';
 import 'package:aldayat_screens/widgets/neo_dr_progress_tabel.dart';
 import 'package:aldayat_screens/widgets/neo_feeding_table.dart';
-import 'package:aldayat_screens/widgets/neo_investigation_table.dart';
 import 'package:aldayat_screens/widgets/neo_nurse_not_table.dart';
 import 'package:aldayat_screens/widgets/neo_opservation_table.dart';
 import 'package:aldayat_screens/widgets/neo_problem_list_table.dart';
 import 'package:aldayat_screens/widgets/neo_unit_button.dart';
 import 'package:aldayat_screens/widgets/new_open_mother_file.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import '../constant.dart';
-import '../main.dart';
-import '../models/error_message.dart';
-import 'package:http/http.dart' as http;
 import '../models/get_request.dart';
+import '../models/make_request.dart';
 import '../models/user_hive.dart';
 import '../widgets/genterate_qr_for_file.dart';
-import '../widgets/neo_admissio_button.dart';
-import '../widgets/neo_admission_table.dart';
-import '../widgets/neo_unit_table.dart';
 import '../widgets/neofile_home_widget.dart';
-import '../widgets/title.dart';
-import 'home_pediatric.dart';
-import 'lab_history.dart';
-import 'lab_request_form.dart';
+import 'file_invistigation_table.dart';
 
 class BabyFile extends StatefulWidget {
   final Map file;
@@ -46,7 +34,7 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
   List feedList = [];
   List problemList = [];
   List nurseList = [];
-  List invList = [];
+
   List opserList = [];
   List neoAdmList = [];
 
@@ -181,24 +169,17 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
   getLabRequest() async {
     if (widget.user.user!['dep'] != 'Department of Statistics') {
       try {
-        await http.post(Uri.parse('${url}lab/fileid/${widget.file['id']}'),
-            headers: {
-              'Accept': 'application/json',
-              'Authorization': 'Bearer ${widget.user.token!}'
-            },
-            body: {
-              "type": "2"
-            }).then((value) {
-          if (value.statusCode == 200) {
-            setState(() {
-              labRequest = json.decode(value.body);
-            });
-          } else {
-            print('Error : ${value.body}');
-            errono("${json.decode(value.body)}", "${json.decode(value.body)}",
-                context, true, Container(), 1);
-          }
-        });
+        var value = await makeHttpRequest(
+            '${url}lab/fileid/${widget.file['id']}',
+            json.encode({"type": "2"}),
+            true,
+            widget.user);
+
+        if (value[1] == "Successfully sent") {
+          setState(() {
+            labRequest = value[0];
+          });
+        }
       } catch (e) {}
     }
     // ... Navigate To your Home Page
@@ -249,10 +230,8 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
                 'neonurse', widget.user, context, widget.file['id'].toString())
             .then((value) => setState(() => nurseList = value));
       }
-      if (invList.isEmpty && _tabController.index == 6) {
-        await getIt(
-                'neoinv', widget.user, context, widget.file['id'].toString())
-            .then((value) => setState(() => invList = value));
+      if (labRequest.isEmpty && _tabController.index == 6) {
+        getLabRequest();
       }
       if (opserList.isEmpty && _tabController.index == 7) {
         await getIt(
@@ -289,14 +268,20 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
     return TabBarView(controller: _tabController, children: <Widget>[
       homeWidget(context, size, widget.file, widget.user, labRequest,
           !hasNeoAdmi, neoUnitList, neoAdmList),
-      neoDoctorOrderTable(doctorList, context, widget.file, widget.user),
+      neoDoctorOrderTable(
+          doctorList.reversed.toList(), context, widget.file, widget.user),
       neoFeedingAndMedication(
-          feedList, size, context, widget.file, widget.user),
-      neoProblemListTable(problemList, context, widget.file, widget.user),
-      neoProgressTable(progressList, context, widget.file, widget.user),
-      neoNurseNoteTable(nurseList, context, widget.file, widget.user),
-      neoInvestgationAndResultTable(invList, context, widget.file, widget.user),
-      neoOpservationTable(opserList, size, context, widget.file, widget.user),
+          feedList.reversed.toList(), size, context, widget.file, widget.user),
+      neoProblemListTable(
+          problemList.reversed.toList(), context, widget.file, widget.user),
+      neoProgressTable(
+          progressList.reversed.toList(), context, widget.file, widget.user),
+      neoNurseNoteTable(
+          nurseList.reversed.toList(), context, widget.file, widget.user),
+      fileInvestigationTable(
+          labRequest.reversed.toList(), context, widget.file, widget.user),
+      neoOpservationTable(
+          opserList.reversed.toList(), size, context, widget.file, widget.user),
     ]);
   }
 }

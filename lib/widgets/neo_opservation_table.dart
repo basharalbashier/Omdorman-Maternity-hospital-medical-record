@@ -3,11 +3,8 @@ import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
-import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
-import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
 import '../models/add_for_table_model.dart';
 
@@ -38,7 +35,6 @@ Widget neoOpservationTable(List data, Size size, context, file, user) {
   'remarks',
   'dr_id'
 ];
-  double height = 32;
   return Column(
     children: [
       Padding(
@@ -228,6 +224,7 @@ Future<void> addToOpservationDialoge(contexte, Map file, User user) async {
                                             if (v!.length < 1) {
                                               return "fill this field please";
                                             }
+                                            return null;
                                           }),
                                         ),
                                       ),

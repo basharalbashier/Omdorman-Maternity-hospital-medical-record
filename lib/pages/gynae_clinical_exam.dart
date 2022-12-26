@@ -2,12 +2,9 @@ import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:intl/intl.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
 import '../constant.dart';
-import '../models/check_input_isinteger.dart';
-import '../widgets/accept_or_not_lab_request.dart';
 
 class ClinicalExam extends StatefulWidget {
   const ClinicalExam({

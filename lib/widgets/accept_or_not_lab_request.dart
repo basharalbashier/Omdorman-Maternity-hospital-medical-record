@@ -8,7 +8,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
 
 labRequstDialog(Map request, contexte, size, User user) async {

@@ -1,5 +1,4 @@
 import 'package:aldayat_screens/models/user_hive.dart';
-import 'package:aldayat_screens/pages/delivery_note.dart';
 import 'package:aldayat_screens/widgets/vaginal_exam_finding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';

@@ -216,7 +216,7 @@ class _LoginViewState extends State<EddExpectation> {
                 GestureDetector(
                   onTap: () async {
                     try {
-                      await launch("https://wa.me/+249117630388?text=Dr.");
+                      await launchUrl(Uri.parse("https://wa.me/+249117630388?text=Dr."));
                     } catch (e) {
                       errono('+249117630388', '+249117630388',
                           context, true,Container(),1);

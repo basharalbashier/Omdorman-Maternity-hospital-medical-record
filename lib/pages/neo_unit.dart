@@ -4,12 +4,8 @@ import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
-import '../main.dart';
 import '../models/error_message.dart';
 import '../widgets/title.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
 import '../widgets/waiting_widget.dart';
 
 List keysOf = [
@@ -290,6 +286,7 @@ class _NeoUnitState extends State<NeoUnit> {
   bool isAttended = true;
   @override
   void initState() {
+    // ignore: unused_local_variable
     for (var i in titles) {
       controllers.add(TextEditingController());
     }

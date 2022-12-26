@@ -1,22 +1,18 @@
 import 'dart:convert';
-import 'dart:html';
 import 'package:aldayat_screens/models/error_message.dart';
-import 'package:aldayat_screens/models/get_request.dart';
 import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/route_manager.dart';
 import 'package:aldayat_screens/models/user_hive.dart';
-import 'package:aldayat_screens/pages/home_obs.dart';
 import 'package:aldayat_screens/widgets/contact_me.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
 import 'package:http/http.dart' as http;
 import 'package:network_info_plus/network_info_plus.dart';
-import 'package:url_launcher/url_launcher.dart';
 import '../constant.dart';
 import '../controller/simpleUIController.dart';
-import '../main.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
+
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -52,9 +48,10 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    getinfo(context).then((value) => value.token != ''
+    if(kIsWeb)
+ {   getinfo(context).then((value) => value.token != ''
         ? {routeManager(context, value)}
-        : setState(() => show = true));
+        : setState(() => show = true));}
 
     super.initState();
   }
@@ -334,11 +331,8 @@ class _LoginViewState extends State<LoginView> {
 
     if (tryLogin[1] == "Successfully sent") {
       List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
-      stor(info).then((value) {
-        if (value.token != 'no') {
-          routeManager(context, value);
-        }
-      });
+     var value=kIsWeb? await stor(info):null;
+       routeManager(context,kIsWeb? value!:User(tryLogin[0]['user'], tryLogin[0]['token']));
     } else {
       errono(tryLogin[1], tryLogin[1], context, true, Container(), 5);
       setState(() {

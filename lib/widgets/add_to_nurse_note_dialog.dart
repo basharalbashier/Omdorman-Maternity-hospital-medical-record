@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
-import '../main.dart';
 import '../models/user_hive.dart';
 
 Future <void> addToNurseDialog(contexte, Map file, User user, size,)async{
@@ -119,6 +118,7 @@ Future <void> addToNurseDialog(contexte, Map file, User user, size,)async{
                                         if(v!.length<5){
                                           return "Is this a Note?";
                                         }
+                                        return null;
                                        }),
                                       ),
                                     ),

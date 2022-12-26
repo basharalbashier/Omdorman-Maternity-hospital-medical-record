@@ -776,6 +776,7 @@ class _NeuromuscularState extends State<Neuromuscular> {
                   MaterialButton(
                       child: Text('Store this exam'),
                       onPressed: () {
+                        // ignore: unused_local_variable
                         var body = json.encode({
                           for (int i = 0; i < keys.length; i++)
                             keys[i + 3]: postItems[i].toString(),

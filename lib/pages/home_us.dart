@@ -6,7 +6,6 @@ import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/pages/usResponseGynae.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
-import '../main.dart';
 import '../models/error_message.dart';
 import '../models/user_hive.dart';
 import 'package:http/http.dart' as http;
@@ -49,7 +48,7 @@ class _SurgeryHomeState extends State<UltrasoundHome>
   }
 
   void _searchChanged(String searchText) {
-    if (searchText != null && searchText.isNotEmpty) {
+    if (searchText.isNotEmpty) {
       {
         setState(() {
           usRequestsSearch = List.from(
