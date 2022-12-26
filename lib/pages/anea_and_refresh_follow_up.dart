@@ -291,7 +291,7 @@ class _AnaesthiaAndRefreshFollowUpState
                             controllersText.add(controllers[i].text);
                           }
                           var example = controllersText;
-                          var body = json.encode({
+                          var preBody = {
                             for (int i = rang[0]; i < rang[1]; i++)
                               keys[i]: titles[isLast ? i + 3 : i],
                             // 'breath_drop':'',
@@ -300,7 +300,16 @@ class _AnaesthiaAndRefreshFollowUpState
                             'dr_id': "0",
                             'patient_id': "0",
                             'file_id': "0"
-                          });
+                          };
+                          if (second.isEmpty) {
+                            preBody['type'] = typeOfSerg;
+                             preBody['type_ana'] = typeOfAna;
+                          }
+                            if (last.isEmpty &&second.isNotEmpty) {
+                            preBody['breath_drop'] = controllers[52].text ;
+                        
+                          }
+                          var body = json.encode(preBody);
                           print(body);
                           // String root =
                           //     "${isFirst ? 'beforana' : isSecond ? 'whileana' : 'afterana'}";
