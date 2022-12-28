@@ -3,6 +3,7 @@
 import 'dart:convert';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/widgets/add_ana_signs.dart';
+import 'package:aldayat_screens/widgets/ana_refresh_table.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
@@ -170,16 +171,21 @@ class _AnaesthiaAndRefreshFollowUpState
   List second = [];
   List last = [];
   List vitalSign = [];
+  List refresh = [];
+  TextStyle titleStyle = TextStyle(fontWeight: FontWeight.bold, fontSize: 20);
   checkWhatbeeingDone() async {
-    await getIt("beforana", widget.user, context, '0')
-        .then((value) => setState(() => befor = value));
-    await getIt("whileana", widget.user, context, '0')
-        .then((value) => setState(() => second = value));
-    await getIt("afterana", widget.user, context, '0')
-        .then((value) => setState(() => last = value));
+    await getIt("beforana", widget.user, context, '0').then((value) =>
+        setState(() => {befor = value, befor.isEmpty ? isFirst = true : null}));
+
+    await getIt("whileana", widget.user, context, '0').then((value) => setState(
+        () => {second = value, second.isEmpty ? isSecond = true : null}));
+    await getIt("afterana", widget.user, context, '0').then((value) =>
+        setState(() => {last = value, last.isEmpty ? isLast = true : null}));
 
     await getIt("icuvital", widget.user, context, 'null')
         .then((value) => setState(() => vitalSign = value));
+    await getIt("refresh", widget.user, context, 'null')
+        .then((value) => setState(() => refresh = value));
     setState(() => show = true);
   }
 
@@ -303,11 +309,10 @@ class _AnaesthiaAndRefreshFollowUpState
                           };
                           if (second.isEmpty) {
                             preBody['type'] = typeOfSerg;
-                             preBody['type_ana'] = typeOfAna;
+                            preBody['type_ana'] = typeOfAna;
                           }
-                            if (last.isEmpty &&second.isNotEmpty) {
-                            preBody['breath_drop'] = controllers[52].text ;
-                        
+                          if (last.isEmpty && second.isNotEmpty) {
+                            preBody['breath_drop'] = controllers[52].text;
                           }
                           var body = json.encode(preBody);
                           print(body);
@@ -387,7 +392,7 @@ class _AnaesthiaAndRefreshFollowUpState
             children: [
               Text(
                 'سجل قبل التخدير',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),
@@ -420,7 +425,7 @@ class _AnaesthiaAndRefreshFollowUpState
             children: [
               Text(
                 'فحوصات قبل الجراحة',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),
@@ -453,7 +458,7 @@ class _AnaesthiaAndRefreshFollowUpState
             children: [
               Text(
                 'نتائج الكشف ',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),
@@ -486,7 +491,7 @@ class _AnaesthiaAndRefreshFollowUpState
             children: [
               Text(
                 'المعالجة الأولية ',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),
@@ -537,7 +542,7 @@ class _AnaesthiaAndRefreshFollowUpState
             children: [
               Text(
                 'نوع الجراحة',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),
@@ -594,7 +599,7 @@ class _AnaesthiaAndRefreshFollowUpState
             children: [
               Text(
                 'نوع التخدير',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),
@@ -654,7 +659,7 @@ class _AnaesthiaAndRefreshFollowUpState
                 children: [
                   Text(
                     'طريقة التخدير',
-                    style: kLoginTitleStyle(size / 2, Colors.black),
+                    style: titleStyle,
                   ),
                   Text(
                     'أعط أوكسجين لمدة خمس دقائق قبل العمليات الكبيرة',
@@ -765,7 +770,7 @@ class _AnaesthiaAndRefreshFollowUpState
             children: [
               Text(
                 'صعوبات في بداية التخدير',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),
@@ -833,13 +838,18 @@ class _AnaesthiaAndRefreshFollowUpState
         )),
         ResponsiveGridCol(
             child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: refreshTable(refresh.reversed.toList(), context,
+                    widget.file, widget.user))),
+        ResponsiveGridCol(
+            child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               Text(
                 'الحالة العامة بعد إنتهاء الإنعاش',
-                style: kLoginTitleStyle(size / 2, Colors.black),
+                style: titleStyle,
               )
             ],
           ),

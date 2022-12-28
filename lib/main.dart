@@ -10,14 +10,13 @@ import 'pages/anea_and_refresh_follow_up.dart';
 import 'widgets/contact_me.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-
 //🐒💁👌🎍😍🦊👨
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
- if(kIsWeb){
-   Hive.registerAdapter(UserAdapter());
- }
+  if (kIsWeb) {
+    Hive.registerAdapter(UserAdapter());
+  }
   FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
   runApp(

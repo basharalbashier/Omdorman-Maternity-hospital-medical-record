@@ -17,6 +17,7 @@ Future<List> getIt(
         'Authorization': 'Bearer ${user.token}'
       },
     ).then((value) {
+      // print(json.decode(value.body)['message']);
       if (value.statusCode == 200) {
         list = json.decode(value.body);
 

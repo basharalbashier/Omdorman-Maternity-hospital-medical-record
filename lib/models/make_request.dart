@@ -16,7 +16,7 @@ Future<dynamic> makeHttpRequest(
         },
         body: body);
 
-    print(value.request!.method);
+    // print(json.decode(value.body)['message']);
     if ((value.statusCode == 200 || value.statusCode == 201)) {
       respons = [json.decode(value.body), "Successfully sent"];
     } else {
