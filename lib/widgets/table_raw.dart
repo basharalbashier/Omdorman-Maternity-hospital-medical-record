@@ -13,7 +13,7 @@ TableRow makeTableRaw(Map<String, dynamic> row, List<String> keys) {
               i == 0
                   ? amOrPm(row[keys[i]], true)
                   : (keys[i] == 'dr_id' || keys[i] == 'nurse_id'
-                      ? drName(row[keys[i]])
+                      ? drName(row[keys[i]].toString())
                       : row[keys[i]] ?? ''),
               textAlign: TextAlign.center,
             )),

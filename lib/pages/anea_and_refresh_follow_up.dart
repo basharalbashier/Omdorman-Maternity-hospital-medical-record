@@ -2,12 +2,15 @@
 
 import 'dart:convert';
 import 'package:aldayat_screens/models/user_hive.dart';
+import 'package:aldayat_screens/testo.dart';
 import 'package:aldayat_screens/widgets/add_ana_signs.dart';
 import 'package:aldayat_screens/widgets/ana_refresh_table.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
+import '../models/error_message.dart';
 import '../models/get_request.dart';
+import '../models/make_request.dart';
 import '../widgets/ana_add_rescu_record_button.dart';
 
 import '../widgets/waiting_widget.dart';
@@ -177,15 +180,18 @@ class _AnaesthiaAndRefreshFollowUpState
     await getIt("beforana", widget.user, context, '0').then((value) =>
         setState(() => {befor = value, befor.isEmpty ? isFirst = true : null}));
 
-    await getIt("whileana", widget.user, context, '0').then((value) => setState(
-        () => {second = value, second.isEmpty ? isSecond = true : null}));
-    await getIt("afterana", widget.user, context, '0').then((value) =>
-        setState(() => {last = value, last.isEmpty ? isLast = true : null}));
+    if (befor.isNotEmpty) {
+      await getIt("whileana", widget.user, context, '0').then((value) =>
+          setState(
+              () => {second = value, second.isEmpty ? isSecond = true : null}));
+      await getIt("afterana", widget.user, context, '0').then((value) =>
+          setState(() => {last = value, last.isEmpty ? isLast = true : null}));
 
-    await getIt("icuvital", widget.user, context, 'null')
-        .then((value) => setState(() => vitalSign = value));
-    await getIt("refresh", widget.user, context, 'null')
-        .then((value) => setState(() => refresh = value));
+      await getIt("icuvital", widget.user, context, 'null')
+          .then((value) => setState(() => vitalSign = value));
+      await getIt("refresh", widget.user, context, 'null')
+          .then((value) => setState(() => refresh = value));
+    }
     setState(() => show = true);
   }
 
@@ -240,26 +246,24 @@ class _AnaesthiaAndRefreshFollowUpState
                       border: Border.all(color: Colors.deepOrangeAccent)),
                   child: firstPartWidget(size, befor)),
             ),
-            Visibility(
-              visible: befor.isNotEmpty,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.deepOrangeAccent)),
-                    child: secondPartWidget(size, second)),
-              ),
-            ),
-            Visibility(
-              visible: befor.isNotEmpty && second.isNotEmpty,
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Container(
-                    decoration: BoxDecoration(
-                        border: Border.all(color: Colors.deepOrangeAccent)),
-                    child: lastPart(size, last)),
-              ),
-            ),
+            befor.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.deepOrangeAccent)),
+                        child: secondPartWidget(size, second)),
+                  )
+                : Container(),
+            befor.isNotEmpty && second.isNotEmpty
+                ? Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                        decoration: BoxDecoration(
+                            border: Border.all(color: Colors.deepOrangeAccent)),
+                        child: lastPart(size, last)),
+                  )
+                : Container(),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Visibility(
@@ -315,21 +319,21 @@ class _AnaesthiaAndRefreshFollowUpState
                             preBody['breath_drop'] = controllers[52].text;
                           }
                           var body = json.encode(preBody);
-                          print(body);
-                          // String root =
-                          //     "${isFirst ? 'beforana' : isSecond ? 'whileana' : 'afterana'}";
-                          // String respons = await makeHttpRequest(
-                          //     url + "$root/add", body, true, User({}, 'token'));
+                          // print(body);
+                          String root =
+                              "${isFirst ? 'beforana' : isSecond ? 'whileana' : 'afterana'}";
+                          String respons = await makeHttpRequest(
+                              url + "$root/add", body, true, User({}, 'token'));
 
-                          // if (respons == "Successfully Sent") {
-                          //   // Navigator.of(context).pop();
-                          // } else {
-                          //   errono(
-                          //       respons, respons, context, true, Container(), 3);
-                          //   setState(() {
-                          //     show = !show;
-                          //   });
-                          // }
+                          if (respons == "Successfully Sent") {
+                            // Navigator.of(context).pop();
+                          } else {
+                            errono(respons, respons, context, true, Container(),
+                                3);
+                            setState(() {
+                              show = !show;
+                            });
+                          }
                         },
                         child: Text(
                           'Send',
@@ -533,7 +537,12 @@ class _AnaesthiaAndRefreshFollowUpState
         ResponsiveGridCol(
             child: Visibility(
                 visible: vitalSign.isNotEmpty,
-                child: Paragram(title: 'Vital Signs Chart', data: vitalSign))),
+                child: SizedBox(
+                  height: size.height / 3,
+                  child: Chartooo(
+                    data: vitalSign,
+                  ),
+                ))),
         ResponsiveGridCol(
             child: Padding(
           padding: const EdgeInsets.all(8.0),
@@ -827,6 +836,7 @@ class _AnaesthiaAndRefreshFollowUpState
   }
 
   Widget lastPart(Size size, List data) {
+    print(data);
     return SizedBox(
       width: size.width,
       child: ResponsiveGridRow(children: [
@@ -909,7 +919,6 @@ class _AnaesthiaAndRefreshFollowUpState
                   children: [
                     Text(
                       data[0]['breath_drop'] ?? "by",
-                      style: fileTitle(size),
                     ),
                   ],
                 )
@@ -949,7 +958,7 @@ class _AnaesthiaAndRefreshFollowUpState
                   ],
                 ),
         )),
-        for (int i = 53; i < titles.length - 3; i++)
+        for (int i = 53; i < titles.length - (last.isEmpty ? 0 : 3); i++)
           ResponsiveGridCol(
               // xs: 6,
               // md: 3,
@@ -980,6 +989,35 @@ class _AnaesthiaAndRefreshFollowUpState
                     ],
                   ),
           )),
+        ResponsiveGridCol(
+          child: Visibility(
+              visible: data.isNotEmpty,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Row(
+                    children: [
+                      Text(
+                        data[0]['breath_vomit'] ?? "",
+                      ),
+                      Text(
+                        titles[56],
+                      ),
+                    ],
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        data[0]['heart_attack'] ?? '',
+                      ),
+                      Text(
+                        titles[57],
+                      ),
+                    ],
+                  ),
+                ],
+              )),
+        ),
       ]),
     );
   }

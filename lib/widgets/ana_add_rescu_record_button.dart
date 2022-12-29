@@ -1,10 +1,11 @@
 import 'dart:convert';
 
 import 'package:aldayat_screens/constant.dart';
+import 'package:aldayat_screens/models/am_or_pm_time.dart';
+import 'package:aldayat_screens/models/make_request.dart';
 import 'package:flutter/material.dart';
 import '../models/user_hive.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
-import 'package:http/http.dart' as http;
 
 MaterialButton addAnaethRescuationRecordButton(
     contexte, Map patient, Map file, User user, size) {
@@ -40,10 +41,11 @@ Future<void> addAnaethSign(
     "سجل الملاحضات الأتية إذا وجدت تقيأ،إستنشق إعياء،يشعر بألم،إستجاب للمخاطبة ، قلق عادي،تشنج،توقف النبض،توقف التنفس،إستجاب للألم"
   ];
   List<TextEditingController> contForVital = [];
-  // ignore: unused_local_variable
   for (var i in titlesForVital) {
+    i;
     contForVital.add(TextEditingController());
   }
+  contForVital[0].text = amOrPm(DateTime.now().toString(), false);
   final _formKey = GlobalKey<FormState>();
   bool show = true;
   return await showDialog<void>(
@@ -70,37 +72,33 @@ Future<void> addAnaethSign(
                   MaterialButton(
                     color: Colors.teal,
                     onPressed: () async {
+                      setState(() => show = !show);
+
                       // Validate returns true if the form is valid, or false otherwise.
                       if (_formKey.currentState!.validate()) {
-                        setState(() => show = !show);
                         final body = jsonEncode({
-                          // 'order': orderController.text,
-                          //   'progress': orderController.text,
+                          'time': contForVital[0].text,
+                          'prus':
+                              contForVital[1].text + "/" + contForVital[2].text,
+                          'puls': contForVital[3].text,
+                          'breath': contForVital[4].text,
+                          'medic': contForVital[5].text,
+                          'fluid': contForVital[6].text,
+                          'note': contForVital[7].text,
                           "dr_id": user.user!['id'].toString(),
                           "file_id": file['id'].toString(),
-                          "mother_id": file['patient_id'].toString(),
+                          "patient_id": file['patient_id'].toString(),
                         });
-                        try {
-                          await http
-                              .post(Uri.parse('${url}neodoctor/add'),
-                                  headers: {
-                                    'Content-type': 'application/json',
-                                    'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
-                                  },
-                                  body: body)
-                              .then((value) {
-                            if (value.statusCode == 200 ||
-                                value.statusCode == 201) {
-                              Navigator.of(context).pop();
-                            } else {
-                              print(value.body);
-                              setState(() => show = !show);
-                            }
-                          });
-                        } catch (e) {
-                          setState(() => show = !show);
+
+                        var value = await makeHttpRequest(
+                            url + "refresh/add", body, true, user);
+                        if (value[1] == "Successfully sent") {
+                          Navigator.of(context).pop();
+                        } else {
+                          setState(() => show = true);
                         }
+                      } else {
+                        setState(() => show = true);
                       }
                     },
                     child: Text(
@@ -117,70 +115,65 @@ Future<void> addAnaethSign(
               child: !show
                   ? waitingWidget("3")
                   : SingleChildScrollView(
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Text(
-                                "سجل الإنعاش".toUpperCase(),
-                                style: fileTitle(size),
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  "سجل الإنعاش".toUpperCase(),
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 20),
+                                ),
                               ),
-                            ),
-                            SizedBox(
-                              height: size.height / 8,
-                            ),
-                           Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            for (int i = 0; i < titlesForVital.length; i++)
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: SizedBox(
-                                                  width: size.width / 1.2,
-                                                  child: Container(
-                                                    alignment: Alignment(0, 0),
-                                                    // color: Colors.green,
-                                                    child: TextFormField(
-                                                      style:
-                                                          kTextFormFieldStyle(),
-                                                      controller:
-                                                          contForVital[i],
-                                                      decoration:
-                                                          InputDecoration(
-                                                        // prefixIcon: Icon(Icons.person),
-                                                        label: Text(
-                                                            titlesForVital[i]),
-                                                        border:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius.all(
-                                                                  Radius
-                                                                      .circular(
-                                                                          15)),
-                                                        ),
-                                                      ),
-                                                      validator: ((v) {
-                                                        if (v!.length < 1) {
-                                                          return "Is this an ${titlesForVital[i]}?";
-                                                        }
-                                                        return null;
-                                                      }),
-                                                    ),
-                                                  ),
-                                                ),
+                              SizedBox(
+                                height: size.height / 8,
+                              ),
+                              Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  for (int i = 0;
+                                      i < titlesForVital.length;
+                                      i++)
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: SizedBox(
+                                        width: size.width / 1.2,
+                                        child: Container(
+                                          alignment: Alignment(0, 0),
+                                          // color: Colors.green,
+                                          child: TextFormField(
+                                            style: kTextFormFieldStyle(),
+                                            controller: contForVital[i],
+                                            decoration: InputDecoration(
+                                              // prefixIcon: Icon(Icons.person),
+                                              label: Text(titlesForVital[i]),
+                                              border: OutlineInputBorder(
+                                                borderRadius: BorderRadius.all(
+                                                    Radius.circular(15)),
                                               ),
-                                         
-                                          ],
+                                            ),
+                                            validator: ((v) {
+                                              if (v!.length < 1) {
+                                                return "Is this an ${titlesForVital[i]}?";
+                                              }
+                                              return null;
+                                            }),
+                                          ),
                                         ),
-                                       
-                            SizedBox(
-                              height: size.height / 8,
-                            ),
-                            submit(size, file, user)
-                          ]),
+                                      ),
+                                    ),
+                                ],
+                              ),
+                              SizedBox(
+                                height: size.height / 8,
+                              ),
+                              submit(size, file, user)
+                            ]),
+                      ),
                     ),
             );
           },

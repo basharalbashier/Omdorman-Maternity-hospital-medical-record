@@ -38,7 +38,7 @@ Widget refreshTable(List data, context, Map file, User user) {
             // 0: IntrinsicColumnWidth(),
 
             // 1: FlexColumnWidth(),
-            2: FlexColumnWidth(3),
+            7: FlexColumnWidth(3),
           },
           children: <TableRow>[
             TableRow(

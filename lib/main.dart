@@ -30,14 +30,15 @@ void main() {
 class DayatApp extends StatelessWidget {
   DayatApp({Key? key}) : super(key: key);
 //Unauthenticated.
-var item ={
-  "id":1,
-  "time":"2022-02-13T18:28:2.0000000000",
-  "prus":"120/80",
-  "puls":"83",
-  "breath":"33",
-
-};
+  var item = {
+    "id": 1,
+    "created_at": "2022-02-13T18:28:2.0000000000",
+    "temp": "37",
+    "bp": "120.80",
+    "puls": "83",
+    "breath": "33",
+    "other": "70",
+  };
 
   AnaesthiaAndRefreshFollowUp v = AnaesthiaAndRefreshFollowUp(
     file: {},
@@ -53,10 +54,11 @@ var item ={
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(Chartooo(data: item,), context));
+        home: PrivateScaffold(v, context));
   }
- // LoginView()
+  // LoginView()
 }
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {

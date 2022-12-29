@@ -29,10 +29,14 @@ String amOrPm(String timeFrom, bool fullDateAndtime) {
   return time;
 }
 
-String drName(String id) {
+String drName(String? id) {
+  if (id == 'null') return "Not Found";
   Get.put(SimpleUIController());
   SimpleUIController simpleUIController = Get.find<SimpleUIController>();
-  return simpleUIController.users.where((e) => e['id'].toString() == id).isNotEmpty
-      ? simpleUIController.users.firstWhere((e) => e['id'].toString() == id)['name']
+  return simpleUIController.users
+          .where((e) => e['id'].toString() == id)
+          .isNotEmpty
+      ? simpleUIController.users
+          .firstWhere((e) => e['id'].toString() == id)['name']
       : "Not Found";
 }
