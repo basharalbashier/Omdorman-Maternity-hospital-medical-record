@@ -7,6 +7,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'pages/anea_and_refresh_follow_up.dart';
+import 'testo.dart';
+import 'widgets/single_chart_line.dart';
 import 'widgets/contact_me.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -28,6 +30,14 @@ void main() {
 class DayatApp extends StatelessWidget {
   DayatApp({Key? key}) : super(key: key);
 //Unauthenticated.
+var item ={
+  "id":1,
+  "time":"2022-02-13T18:28:2.0000000000",
+  "prus":"120/80",
+  "puls":"83",
+  "breath":"33",
+
+};
 
   AnaesthiaAndRefreshFollowUp v = AnaesthiaAndRefreshFollowUp(
     file: {},
@@ -43,10 +53,10 @@ class DayatApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(LoginView(), context));
+        home: PrivateScaffold(Chartooo(data: item,), context));
   }
+ // LoginView()
 }
-
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {
