@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
+import 'package:aldayat_screens/pages/add_user.dart';
 import 'package:aldayat_screens/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -54,7 +55,7 @@ class DayatApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(v, context));
+        home: PrivateScaffold(LoginView(), context));
   }
   // LoginView()
 }

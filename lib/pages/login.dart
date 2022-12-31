@@ -13,6 +13,7 @@ import '../constant.dart';
 import '../controller/simpleUIController.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
+import 'add_user.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
@@ -48,10 +49,11 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    if(kIsWeb)
- {   getinfo(context).then((value) => value.token != ''
-        ? {routeManager(context, value)}
-        : setState(() => show = true));}
+    if (kIsWeb) {
+      getinfo(context).then((value) => value.token != ''
+          ? {routeManager(context, value)}
+          : setState(() => show = true));
+    }
 
     super.initState();
   }
@@ -269,6 +271,15 @@ class _LoginViewState extends State<LoginView> {
                   SizedBox(
                     height: size.height * 0.01,
                   ),
+                  TextButton(
+                      onPressed: () => Get.to(() => AddUser()),
+                      child: Text(
+                        'I do not have an account',
+                        style: TextStyle(
+                          color: Colors.indigo,
+                          decoration: TextDecoration.underline,
+                        ),
+                      )),
                   Text(
                     'Trying to access hospital data without permission  is not allowed ',
                     style: kLoginTermsAndPrivacyStyle(size),
@@ -331,8 +342,9 @@ class _LoginViewState extends State<LoginView> {
 
     if (tryLogin[1] == "Successfully sent") {
       List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
-     var value=kIsWeb? await stor(info):null;
-       routeManager(context,kIsWeb? value!:User(tryLogin[0]['user'], tryLogin[0]['token']));
+      var value = kIsWeb ? await stor(info) : null;
+      routeManager(context,
+          kIsWeb ? value! : User(tryLogin[0]['user'], tryLogin[0]['token']));
     } else {
       errono(tryLogin[1], tryLogin[1], context, true, Container(), 5);
       setState(() {

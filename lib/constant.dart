@@ -54,4 +54,4 @@ TextStyle confirmStyle(Size size) => GoogleFonts.ubuntu(
     fontWeight: FontWeight.bold,
     color: Colors.white);
 
-String url = 'http://localhost:8000/api/';
+String url = 'http://192.168.100.95/app/api/';
