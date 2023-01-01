@@ -16,7 +16,7 @@ class AddUser extends StatefulWidget {
 
 class _AddPatientState extends State<AddUser> {
   bool isScure = true;
-  var unit = 'General';
+  var unit = '';
   var whichlevel = '';
   var depart = '';
   var titles = ["Name", "Phone", "Email"];
@@ -192,6 +192,8 @@ class _AddPatientState extends State<AddUser> {
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: PopupMenuButton<int>(
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(20)),
                             itemBuilder: (context) => [
                                   for (int i = 0; i < level.length; i++)
                                     PopupMenuItem(
@@ -200,7 +202,7 @@ class _AddPatientState extends State<AddUser> {
                                       child: Container(
                                         color: i % 2 == 0
                                             ? Colors.white
-                                            : Colors.amber,
+                                            : Colors.amber.withOpacity(0.5),
                                         child: Row(
                                           mainAxisAlignment:
                                               MainAxisAlignment.center,
@@ -239,56 +241,55 @@ class _AddPatientState extends State<AddUser> {
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
-                        child: PopupMenuButton<int>(
-                            itemBuilder: (context) => [
-                                  for (int i = 0; i < dep.length; i++)
-                                    PopupMenuItem(
-                                      value: i,
-                                      // row with 2 children
-                                      child: Container(
-                                        color: i % 2 == 0
-                                            ? Colors.white
-                                            : Colors.amber.withOpacity(.3),
-                                        child: SizedBox(
-                                          width: size.width / 2,
-                                          child: Row(
-                                            children: [
-                                              const SizedBox(
-                                                width: 10,
-                                              ),
-                                              Text(
-                                                dep[i],
-                                                overflow: TextOverflow.ellipsis,
-                                              )
-                                            ],
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: PopupMenuButton<int>(
+                            
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              itemBuilder: (context) => [
+                                    for (int i = 0; i < dep.length; i++)
+                                      PopupMenuItem(
+                                        padding:const EdgeInsets.all(8.0) ,
+                                        value: i,                                        child: Container(
+                                          width: double.infinity,
+                                          color: i % 2 == 0
+                                              ? Colors.white
+                                              : Colors.amber.withOpacity(.3),
+                                          child: Text(
+                                            dep[i],
+                                            overflow:
+                                                TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
-                                    ),
+                                  ],
+                              offset: const Offset(0, 0),
+                              elevation: 2,
+                              // on selected we show the dialog box
+                              onSelected: (value) {
+                                // if value 1 show dialog
+                                setState(() {
+                                  depart = dep[value];
+                                });
+                              },
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Text(depart == '' ? 'Department' : depart,
+                                      style: insuranceStyle(size)),
+                                  const Icon(Icons.arrow_drop_down)
                                 ],
-                            offset: const Offset(0, 0),
-                            elevation: 2,
-                            // on selected we show the dialog box
-                            onSelected: (value) {
-                              // if value 1 show dialog
-                              setState(() {
-                                depart = dep[value];
-                              });
-                            },
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(depart == '' ? 'Department' : depart,
-                                    style: insuranceStyle(size)),
-                                const Icon(Icons.arrow_drop_down)
-                              ],
-                            )),
+                              )),
+                        ),
                       ),
                       Padding(
                         padding: const EdgeInsets.all(8.0),
                         child: Visibility(
                           visible: depart == 'Department of Obstetrics',
                           child: PopupMenuButton<int>(
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.center,
                                 children: [
