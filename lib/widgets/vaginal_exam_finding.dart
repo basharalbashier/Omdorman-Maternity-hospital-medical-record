@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:aldayat_screens/widgets/time_picker_footer.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 
@@ -639,7 +638,7 @@ class _VaginalExamState extends State<VaginalExam> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                      ),
+                      ),  
                       // controller: nameController,
                       // The validator receives the text that the user has entered.
                     ),
@@ -682,7 +681,8 @@ class _VaginalExamState extends State<VaginalExam> {
                       setState(() {
                         show = !show;
                       });
-                      var body = jsonEncode({
+                      var body = jsonEncode(
+                        {
                         "dil": dilatation.text,
                         "position_cx": postion.text,
                         "eff": effacement.text,
@@ -704,7 +704,11 @@ class _VaginalExamState extends State<VaginalExam> {
                         "dr_id": widget.user.user!['id'].toString(),
                         "patient_id": widget.patient['id'].toString(),
                         "file_id": widget.file['id'].toString(),
-                      });
+                      }
+                      
+                      
+                      );
+                     
                       String respons = await makeHttpRequest(
                           url + "vagin/add", body, true, widget.user);
 

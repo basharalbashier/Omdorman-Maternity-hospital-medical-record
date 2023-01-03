@@ -3,7 +3,7 @@ import 'package:aldayat_screens/widgets/vaginal_exam_finding.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 
-Widget vaginalFindingButton(context, patient, file, User user) {
+Widget vaginalFindingButtonB(context, patient, file, User user) {
   return MaterialButton(
     color: Colors.blueGrey.shade800,
     onPressed: () => Get.to(() => VaginalExam(
@@ -16,7 +16,7 @@ Widget vaginalFindingButton(context, patient, file, User user) {
           height: 30,
           child: Center(
             child: Text(
-              "Vaginal Exam",
+              "Add Vaginal Exam",
               style: TextStyle(color: Colors.white),
             ),
           )),

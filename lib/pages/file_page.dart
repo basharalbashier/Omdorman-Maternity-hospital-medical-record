@@ -208,11 +208,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                   ),
                   operationButtonButton(
                       context, widget.patient, widget.file, widget.user),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: vaginalFindingButton(
-                        context, widget.patient, widget.file, widget.user),
-                  ),
+                
                 ],
               ),
             ),
@@ -567,11 +563,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                         ),
                         operationButtonButton(
                             context, widget.patient, widget.file, widget.user),
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: vaginalFindingButton(context, widget.patient,
-                              widget.file, widget.user),
-                        ),
+                      
                       ],
                     ),
                   )

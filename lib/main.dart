@@ -8,7 +8,7 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'pages/anea_and_refresh_follow_up.dart';
-import 'testo.dart';
+import 'pages/chart_vital_sign.dart';
 import 'widgets/single_chart_line.dart';
 import 'widgets/contact_me.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;

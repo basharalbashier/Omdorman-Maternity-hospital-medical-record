@@ -1,75 +1,151 @@
-import 'package:aldayat_screens/models/am_or_pm_time.dart';
+import 'package:aldayat_screens/pages/vaginal_exam_button.dart';
+import 'package:aldayat_screens/widgets/table_raw.dart';
+import 'package:aldayat_screens/constant.dart';
 import 'package:flutter/material.dart';
-import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
+import '../models/user_hive.dart';
 
-class Chartooo extends StatefulWidget {
-  final List data;
-  Chartooo({Key? key, required this.data}) : super(key: key);
+List<String> titles = [
+  "Date",
+  "Dilatation",
+  "Position",
+  'Effacement',
+  'Consistency',
+  'Position',
+  'Station',
+  'Caput',
+  'Moulding',
+  "Intact or Ruptured",
+  "Time",
+  'Amount',
+  'Meconium',
+  'HB',
+  'Urine',
+  'USS',
+  'CTG',
+  'Comment',
+  'Dr Name'
+];
+List<String> topTitles = [
+  "CX",
+  "Presenting Part",
+   'Membranes',
+    'Investigations',
 
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
+];
+List<String> keys = [
+  "created_at",
+  "dil",
+  "position_cx",
+  "eff",
+  "cons",
+  "position",
+  "station",
+  "cap",
+  "moul",
+  "intact_rup",
+  "time",
+  "amount",
+  "mec",
+  "hb",
+  "urine",
+  "uss",
+  "ctg",
+  "comm",
+  "dr_id",
+];
+Widget vaginalExamTable(List data, context, Map patient, Map file, User user) {
+  Size size = Size(500, 500);
+
+  return Column(
+    children: [
+      Visibility(
+        // visible: user.user!['dep'] == 'Department of Obstetrics',
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              vaginalFindingButtonB(context, patient, file, user),
+            ],
+          ),
+        ),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left:8.0,top:8.0,right:8.0),
+        child: Table(
+            border: TableBorder.all(width: 2, color: Colors.grey),
+            columnWidths: <int, TableColumnWidth>{
+              // 0: IntrinsicColumnWidth(),
+
+              // 1: FlexColumnWidth(),
+              // 9: FlexColumnWidth(3),
+            },
+            children: <TableRow>[
+              TableRow(
+                children: <Widget>[
+                  for (var i in topTitles)
+                    Padding(
+                      padding: const EdgeInsets.all(2.0),
+                      child: Container(
+                        height: 32,
+                        child: Center(
+                            child: Text(
+                          textAlign: TextAlign.center,
+                          i,
+                          // style: fileTitle(size),
+                        )),
+                      ),
+                    ),
+                ],
+              ),]),
+      ),
+      Padding(
+        padding: const EdgeInsets.only(left:8.0,right:8.0),
+        child: Table(
+          border: TableBorder.all(width: 2, color: Colors.grey),
+          columnWidths: <int, TableColumnWidth>{
+            // 0: IntrinsicColumnWidth(),
+
+            // 1: FlexColumnWidth(),
+            // 9: FlexColumnWidth(3),
+          },
+          children: <TableRow>[
+            TableRow(
+              children: <Widget>[
+                for (var i in titles)
+                  Padding(
+                    padding: const EdgeInsets.all(2.0),
+                    child: Container(
+                      height: 32,
+                      child: Center(
+                          child: Text(
+                        textAlign: TextAlign.center,
+                        i,
+                        // style: fileTitle(size),
+                      )),
+                    ),
+                  ),
+              ],
+            ),
+            for (var row in data) makeTableRaw(row, keys)
+          ],
+        ),
+      ),
+    ],
+  );
 }
 
-class _MyHomePageState extends State<Chartooo> {
-  List<List<_SalesData>> allData = [];
-  List<_SalesData> prus = [];
-  List<_SalesData> puls = [];
-  List<_SalesData> breath = [];
-  List<_SalesData> temp = [];
-  List<_SalesData> other = [];
-  List<String> titles = ["Blood Pruser", "Pulse", "Breath", "Temp", "Other"];
-  @override
-  void initState() {
-    for (Map i in widget.data) {
-      prus.add(_SalesData(
-          amOrPm(i['created_at'], true),
-          double.parse(
-              i['bp'].toString().replaceAll("/", ".").replaceAll(" ", ''))));
-      puls.add(_SalesData(
-          amOrPm(i['created_at'], true), double.parse(i['puls'] ?? "0")));
-      breath.add(_SalesData(
-          amOrPm(i['created_at'], true), double.parse(i['breath'] ?? "0")));
-      temp.add(_SalesData(
-          amOrPm(i['created_at'], true), double.parse(i['temp'] ?? "0")));
-      other.add(_SalesData(
-          amOrPm(i['created_at'], true), double.parse(i['other'] ?? "0")));
-    }
-    allData = [prus, puls, breath, temp, other];
-    super.initState();
-  }
 
+class Testo extends StatefulWidget {
+  const Testo({super.key});
+
+  @override
+  State<Testo> createState() => _TestoState();
+}
+
+class _TestoState extends State<Testo> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        body: SingleChildScrollView(
-      child: Column(children: [
-        //Initialize the chart widget
-        SfCartesianChart(
-            primaryXAxis: CategoryAxis(),
-            // Chart title
-            title: ChartTitle(text: 'Vital Sign'),
-            // Enable legend
-            legend: Legend(isVisible: true), // Enable tooltip
-            tooltipBehavior: TooltipBehavior(enable: true),
-            series: <ChartSeries<_SalesData, String>>[
-              for (int i = 0; i < allData.length; i++)
-                LineSeries<_SalesData, String>(
-                    isVisibleInLegend: true,
-                    legendItemText: titles[i],
-                    dataSource: allData[i],
-                    xValueMapper: (_SalesData sales, _) => sales.year,
-                    yValueMapper: (_SalesData sales, _) => sales.sales,
-                    dataLabelSettings: DataLabelSettings(isVisible: true))
-            ]),
-      ]),
-    ));
+    return Scaffold(body: vaginalExamTable([], context, {}, {}, User({}, '')),);
   }
-}
-
-class _SalesData {
-  _SalesData(this.year, this.sales);
-
-  final String year;
-  final double sales;
 }
