@@ -9,7 +9,8 @@ String amOrPm(String timeFrom, bool fullDateAndtime) {
   String after = timeFrom.substring(13, 16);
   String dateFrom = timeFrom.substring(0, 10);
   int intHour = int.parse(hour);
-  if (!fullDateAndtime) {
+try{
+    if (!fullDateAndtime) {
     if (intHour > 12) {
       time = "${intHour - 12 + 2}${after} PM";
     } else {
@@ -26,6 +27,9 @@ String amOrPm(String timeFrom, bool fullDateAndtime) {
     }
   }
 
+}catch(e){
+  time='Error on time';
+}
   return time;
 }
 

@@ -84,7 +84,7 @@ class _LoginViewState extends State<LoginView> {
       onTap: () => FocusManager.instance.primaryFocus?.unfocus(),
       child: PrivateScaffold(LayoutBuilder(
         builder: (context, constraints) {
-          if (constraints.maxWidth > 600) {
+          if (constraints.maxWidth > 700) {
             return _buildLargeScreen(size, simpleUIController);
           } else {
             return _buildSmallScreen(size, simpleUIController);
@@ -329,27 +329,28 @@ class _LoginViewState extends State<LoginView> {
   }
 
   send() async {
-    setState(() {
-      show = false;
-    });
-    // if (_formKey.currentState!.validate()) {
-    final msg = jsonEncode({
-      "email": emailController.text,
-      "password": passwordController.text,
-    });
-    var tryLogin =
-        await makeHttpRequest(url + 'user/login', msg, true, User({}, ""));
-
-    if (tryLogin[1] == "Successfully sent") {
-      List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
-      var value = kIsWeb ? await stor(info) : null;
-      routeManager(context,
-          kIsWeb ? value! : User(tryLogin[0]['user'], tryLogin[0]['token']));
-    } else {
-      errono(tryLogin[1], tryLogin[1], context, true, Container(), 5);
+    if (_formKey.currentState!.validate()) {
       setState(() {
-        show = true;
+        show = false;
       });
+      final msg = jsonEncode({
+        "email": emailController.text,
+        "password": passwordController.text,
+      });
+      var tryLogin =
+          await makeHttpRequest(url + 'user/login', msg, true, User({}, ""));
+
+      if (tryLogin[1] == "Successfully sent") {
+        List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
+        var value = kIsWeb ? await stor(info) : null;
+        routeManager(context,
+            kIsWeb ? value! : User(tryLogin[0]['user'], tryLogin[0]['token']));
+      } else {
+        errono(tryLogin[1], tryLogin[1], context, true, Container(), 5);
+        setState(() {
+          show = true;
+        });
+      }
     }
   }
 }

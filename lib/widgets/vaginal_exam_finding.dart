@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:aldayat_screens/widgets/time_picker_footer.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/cupertino.dart';
@@ -420,8 +421,19 @@ class _VaginalExamState extends State<VaginalExam> {
                           padding: const EdgeInsets.all(8.0),
                           child: TextFormField(
                             readOnly: true,
-                            onTap: () {
-                              pickTime(context);
+                            onTap: () async {
+                              setState(() {
+                                var time =
+                                    amOrPm(DateTime.now().toString(), true)
+                                        .replaceAll("\n", " ");
+                                if_ruptured_time.text = time;
+                                pickTime(context).then((value) => setState(() =>
+                                    value != "Time"
+                                        ? if_ruptured_time.text =
+                                            amOrPm(value, true)
+                                                .replaceAll("\n", " ")
+                                        : null));
+                              });
                             },
                             onChanged: (v) {},
                             controller: if_ruptured_time,
@@ -572,13 +584,13 @@ class _VaginalExamState extends State<VaginalExam> {
                     BoxDecoration(border: Border.all(color: Colors.blueAccent)),
                 child: ResponsiveGridRow(children: [
                   textFi("HB", hb, true),
-                  ResponsiveGridCol(
-                      xs: 4,
-                      md: 3,
-                      child: Container(
-                          height: 100,
-                          alignment: Alignment(0, 0),
-                          child: bloodGroup(context, size))),
+                  // ResponsiveGridCol(
+                  //     xs: 4,
+                  //     md: 3,
+                  //     child: Container(
+                  //         height: 100,
+                  //         alignment: Alignment(0, 0),
+                  //         child: bloodGroup(context, size))),
                   textFi("Urine", urine, true),
                 ]),
               ),

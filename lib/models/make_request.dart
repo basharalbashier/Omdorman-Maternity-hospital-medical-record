@@ -15,7 +15,7 @@ Future<dynamic> makeHttpRequest(
           'Authorization': 'Bearer ${user.token!}'
         },
         body: body);
-
+print(value.body);
     if ((value.statusCode == 200 || value.statusCode == 201)) {
       respons = [json.decode(value.body), "Successfully sent"];
     } else {
