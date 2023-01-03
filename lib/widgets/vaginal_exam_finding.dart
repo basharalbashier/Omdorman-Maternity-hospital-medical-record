@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:aldayat_screens/widgets/time_picker_footer.dart';
 import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -13,10 +14,14 @@ import '../models/user_hive.dart';
 import 'title.dart';
 
 class VaginalExam extends StatefulWidget {
-    final Map file;
+  final Map file;
   final Map patient;
   final User user;
-  const VaginalExam({super.key, required this.file, required this.patient, required this.user});
+  const VaginalExam(
+      {super.key,
+      required this.file,
+      required this.patient,
+      required this.user});
 
   @override
   State<VaginalExam> createState() => _VaginalExamState();
@@ -36,7 +41,7 @@ class _VaginalExamState extends State<VaginalExam> {
   var caput = TextEditingController();
   var mulding = TextEditingController();
   var if_ruptured_time = TextEditingController();
-bool show=true;
+  bool show = true;
   var persinting_postions = [
     'R O L',
     'L O L',
@@ -75,28 +80,6 @@ bool show=true;
   DateTime last = DateTime(2025);
   TimeOfDay selectedTime = TimeOfDay.now();
 
-  iosDatePicker(BuildContext context) {
-    showCupertinoModalPopup(
-        context: context,
-        builder: (BuildContext builder) {
-          return Container(
-            height: MediaQuery.of(context).copyWith().size.height * 0.25,
-            color: Color.fromRGBO(255, 255, 255, 1),
-            child: CupertinoDatePicker(
-              mode: CupertinoDatePickerMode.dateAndTime,
-              onDateTimeChanged: (value) {
-                setState(() {
-                  if_ruptured_time.text = value.toString();
-                });
-              },
-              initialDateTime: DateTime.now(),
-              minimumYear: 2000,
-              maximumYear: 3000,
-            ),
-          );
-        });
-  }
-
   @override
   void initState() {
     super.initState();
@@ -104,10 +87,10 @@ bool show=true;
 
   @override
   Widget build(BuildContext context) {
-
-    if(!show){
-
-      return Scaffold(body: waitingWidget(widget.user.user!['unit']),);
+    if (!show) {
+      return Scaffold(
+        body: waitingWidget(widget.user.user!['unit']),
+      );
     }
     size = MediaQuery.of(context).size;
 
@@ -115,7 +98,7 @@ bool show=true;
       body: SingleChildScrollView(
         child: Column(
           children: [
-                TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
+            TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
@@ -162,6 +145,9 @@ bool show=true;
                             ],
                           ),
                         ),
+                        // CX  //Dilatation ,Position,Effacement,Consistency
+                        //Presenting Part// Position,Station,Caput,Moulding,
+                        //Membranes//
                         itemBuilder: (context) => [
                               for (int i = 1; i < 11; i++)
                                 PopupMenuItem(
@@ -190,7 +176,7 @@ bool show=true;
                   ),
 
                   ResponsiveGridCol(
-                   xs: 10,
+                    xs: 10,
                     md: 4,
                     child: PopupMenuButton<int>(
                         child: Padding(
@@ -230,7 +216,7 @@ bool show=true;
 
                   //  textFi("Dilatation", dilatation, true),
                   ResponsiveGridCol(
-          xs: 10,
+                    xs: 10,
                     md: 4,
                     child: PopupMenuButton<int>(
                         child: Padding(
@@ -273,7 +259,7 @@ bool show=true;
                   ),
 
                   ResponsiveGridCol(
-                 xs: 10,
+                    xs: 10,
                     md: 4,
                     child: PopupMenuButton<int>(
                         child: Padding(
@@ -435,7 +421,7 @@ bool show=true;
                           child: TextFormField(
                             readOnly: true,
                             onTap: () {
-                              iosDatePicker(context);
+                              pickTime(context);
                             },
                             onChanged: (v) {},
                             controller: if_ruptured_time,
@@ -457,7 +443,7 @@ bool show=true;
                   for (int i = 0; i < spon_arm.length; i++)
                     ResponsiveGridCol(
                       xs: 6,
-                      md: 2,
+                      md: 3,
                       child: Visibility(
                         visible: whatIsintact_or_rupured == 'Ruptured',
                         child: Container(
@@ -587,9 +573,12 @@ bool show=true;
                 child: ResponsiveGridRow(children: [
                   textFi("HB", hb, true),
                   ResponsiveGridCol(
-                      xs: 4, md: 3, child:  Container(
-                  height: 100,
-                  alignment: Alignment(0, 0),child: bloodGroup(context, size))),
+                      xs: 4,
+                      md: 3,
+                      child: Container(
+                          height: 100,
+                          alignment: Alignment(0, 0),
+                          child: bloodGroup(context, size))),
                   textFi("Urine", urine, true),
                 ]),
               ),
@@ -670,57 +659,54 @@ bool show=true;
                   ),
                 ),
               )
-            ])
-          ,
+            ]),
             Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Center(
-                  child: MaterialButton(
-                      color: Colors.amber,
-                      child: Text('Submit'),
-                      onPressed: (() async {
-                          setState(() {
-                        show=!show;
-                      });
-                        var body = jsonEncode({
-                          "dil": dilatation.text,
-                          "position_cx": postion.text,
-                          "eff": effacement.text,
-                          "cons": consistency.text,
-                          "position": postion_presting.text,
-                          "station": station.text,
-                          "cap": caput.text,
-                          "moul": mulding.text,
-                          "intact_rup": whatIsintact_or_rupured,
-                          "time": if_ruptured_time.text,
-                          "amount": amount.text,
-                          "mec": meconium.text,
-                          "hb": hb.text,
-                          "blood": whatIsBlood,
-                          "urine": urine.text,
-                          "uss": uss.text,
-                          "ctg": ctg.text,
-                          "comm":
-                              others.text,
-                          "dr_id": widget.user.user!['id'].toString(),
-                          "patient_id": widget.patient['id'].toString(),
-                          "file_id": widget.file['id'].toString(),
-                        });
-                     String respons=await   makeHttpRequest(url + "vagin/add", body, true,widget.user);
-
-                     if(respons== "Successfully Sent"){
-                      Navigator.of(context).pop();
-                     }else{
-                      errono(respons, respons, context, true, Container(), 3);
+              padding: const EdgeInsets.all(8.0),
+              child: Center(
+                child: MaterialButton(
+                    color: Colors.amber,
+                    child: Text('Submit'),
+                    onPressed: (() async {
                       setState(() {
-                        show=!show;
+                        show = !show;
                       });
-                     }
-                      })),
-                ),
-              )
-           
-          
+                      var body = jsonEncode({
+                        "dil": dilatation.text,
+                        "position_cx": postion.text,
+                        "eff": effacement.text,
+                        "cons": consistency.text,
+                        "position": postion_presting.text,
+                        "station": station.text,
+                        "cap": caput.text,
+                        "moul": mulding.text,
+                        "intact_rup": whatIsintact_or_rupured,
+                        "time": if_ruptured_time.text,
+                        "amount": amount.text,
+                        "mec": meconium.text,
+                        "hb": hb.text,
+                        "blood": whatIsBlood,
+                        "urine": urine.text,
+                        "uss": uss.text,
+                        "ctg": ctg.text,
+                        "comm": others.text,
+                        "dr_id": widget.user.user!['id'].toString(),
+                        "patient_id": widget.patient['id'].toString(),
+                        "file_id": widget.file['id'].toString(),
+                      });
+                      String respons = await makeHttpRequest(
+                          url + "vagin/add", body, true, widget.user);
+
+                      if (respons == "Successfully Sent") {
+                        Navigator.of(context).pop();
+                      } else {
+                        errono(respons, respons, context, true, Container(), 3);
+                        setState(() {
+                          show = !show;
+                        });
+                      }
+                    })),
+              ),
+            )
           ],
         ),
       ),

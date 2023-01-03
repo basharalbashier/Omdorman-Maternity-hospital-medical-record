@@ -54,4 +54,20 @@ TextStyle confirmStyle(Size size) => GoogleFonts.ubuntu(
     fontWeight: FontWeight.bold,
     color: Colors.white);
 
-String url = 'http://192.168.100.95/app/api/';
+String url = 'http://localhost:8000/api/';
+
+
+
+
+
+
+
+
+
+
+
+/*
+1 # php artisan make:mail WelcomeNewUser --markdown=emails/users/welcome-new-user
+
+2#  composer require symfony/mailgun-mailer symfony/http-client
+ */

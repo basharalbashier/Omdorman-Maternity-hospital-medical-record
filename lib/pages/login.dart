@@ -76,8 +76,8 @@ class _LoginViewState extends State<LoginView> {
       return Scaffold(
         body: Center(
             child: CircularProgressIndicator(
-          strokeWidth: 1,
-        )),
+                // strokeWidth: 1,
+                )),
       );
     }
     return GestureDetector(
