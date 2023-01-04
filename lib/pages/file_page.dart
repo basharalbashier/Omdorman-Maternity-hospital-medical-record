@@ -9,6 +9,7 @@ import 'package:aldayat_screens/widgets/move_to_lab_button.dart';
 import 'package:aldayat_screens/widgets/obs_adm_button.dart';
 import 'package:aldayat_screens/widgets/private_info_for_static.dart';
 import 'package:aldayat_screens/widgets/title.dart';
+import 'package:aldayat_screens/widgets/vaginal_out_put_table.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
@@ -103,6 +104,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   List treatmentList = [];
   List disChargList = [];
   List iVfluidsList = [];
+  List vaginalExamList = [];
 
   bool showAddObsButton = false;
   late TabController _tabController;
@@ -115,6 +117,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 "Investigation",
                 "Antenatal Follow Up",
                 "Antenatal Admission Follow Up",
+                "Vaginal Examination",
                 "Labour Ward Instructions",
                 "Nurse Observations",
                 "Treatment",
@@ -124,7 +127,8 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
               ]
             : taps = [
                 "Home",
-                "Investigation",
+                "Lab Investigation",
+                "Other Investigation",
                 "Comments",
                 "Perciption",
                 "Post-Operative",
@@ -208,7 +212,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                   ),
                   operationButtonButton(
                       context, widget.patient, widget.file, widget.user),
-                
                 ],
               ),
             ),
@@ -563,7 +566,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                         ),
                         operationButtonButton(
                             context, widget.patient, widget.file, widget.user),
-                      
                       ],
                     ),
                   )
@@ -589,8 +591,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           uSRequest(context, size, widget.file, widget.user,
-                              widget.type),
-                          labButton(context, widget.patient, widget.file,
                               widget.type),
                           Column(
                             children: [
@@ -715,8 +715,6 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                   children: [
                     uSRequest(
                         context, size, widget.file, widget.user, widget.type),
-                    labButton(
-                        context, widget.patient, widget.file, widget.type),
                     Column(
                       children: [
                         Padding(
@@ -752,8 +750,13 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 controller: _tabController,
                 children: <Widget>[
                     homeWidget(size),
-                    fileInvestigationTable(labRequest.reversed.toList(),
-                        context, widget.file, widget.user),
+                    fileInvestigationTable(
+                        labRequest.reversed.toList(),
+                        context,
+                        widget.file,
+                        widget.user,
+                        widget.patient,
+                        widget.type),
                     anteFollowUpTable(antfollowupList.reversed.toList(),
                         context, widget.file, widget.user),
                     anteAdmFollowUpTable(
@@ -761,6 +764,8 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                         context,
                         widget.file,
                         widget.user),
+                    vaginalExamTable(vaginalExamList.reversed.toList(), context,
+                        widget.patient, widget.file, widget.user),
                     labourWardInstTable(labourWardInst.reversed.toList(),
                         context, widget.file, widget.user),
                     nurseObserTable(nurseObserList.reversed.toList(), context,
@@ -780,6 +785,13 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 controller: _tabController,
                 children: <Widget>[
                     homeWidget(size),
+                    fileInvestigationTable(
+                        labRequest.reversed.toList(),
+                        context,
+                        widget.file,
+                        widget.user,
+                        widget.patient,
+                        widget.type),
                     gyneInvTable(gynInvestigation.reversed.toList(), context,
                         widget.file, widget.user),
                     gyneCommentTable(gynCommentList.reversed.toList(), context,

@@ -2,7 +2,7 @@ import 'package:aldayat_screens/pages/vaginal_exam_button.dart';
 import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:aldayat_screens/constant.dart';
 import 'package:flutter/material.dart';
-import '../models/user_hive.dart';
+import '../../models/user_hive.dart';
 
 List<String> titles = [
   "Date",
@@ -28,9 +28,8 @@ List<String> titles = [
 List<String> topTitles = [
   "CX",
   "Presenting Part",
-   'Membranes',
-    'Investigations',
-
+  'Membranes',
+  'Investigations',
 ];
 List<String> keys = [
   "created_at",
@@ -54,8 +53,6 @@ List<String> keys = [
   "dr_id",
 ];
 Widget vaginalExamTable(List data, context, Map patient, Map file, User user) {
-  Size size = Size(500, 500);
-
   return Column(
     children: [
       Visibility(
@@ -71,7 +68,7 @@ Widget vaginalExamTable(List data, context, Map patient, Map file, User user) {
         ),
       ),
       Padding(
-        padding: const EdgeInsets.only(left:8.0,top:8.0,right:8.0),
+        padding: const EdgeInsets.only(left: 8.0, top: 8.0, right: 8.0),
         child: Table(
             border: TableBorder.all(width: 2, color: Colors.grey),
             columnWidths: <int, TableColumnWidth>{
@@ -97,10 +94,11 @@ Widget vaginalExamTable(List data, context, Map patient, Map file, User user) {
                       ),
                     ),
                 ],
-              ),]),
+              ),
+            ]),
       ),
       Padding(
-        padding: const EdgeInsets.only(left:8.0,right:8.0),
+        padding: const EdgeInsets.only(left: 8.0, right: 8.0),
         child: Table(
           border: TableBorder.all(width: 2, color: Colors.grey),
           columnWidths: <int, TableColumnWidth>{
@@ -133,19 +131,4 @@ Widget vaginalExamTable(List data, context, Map patient, Map file, User user) {
       ),
     ],
   );
-}
-
-
-class Testo extends StatefulWidget {
-  const Testo({super.key});
-
-  @override
-  State<Testo> createState() => _TestoState();
-}
-
-class _TestoState extends State<Testo> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: vaginalExamTable([], context, {}, {}, User({}, '')),);
-  }
 }

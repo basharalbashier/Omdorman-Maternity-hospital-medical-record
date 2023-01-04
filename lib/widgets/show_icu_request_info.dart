@@ -32,7 +32,7 @@ class _ShowRequestInfoState extends State<ShowRequestInfo> {
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            naoOpenMotherFileButton(context, widget.request, widget.user),
+            // naoOpenMotherFileButton(context, widget.request, widget.user),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Text(
@@ -213,7 +213,7 @@ class _ShowRequestInfoState extends State<ShowRequestInfo> {
             }
           },
           child: Text(
-           isAccepted ?'Confirm':"Reject",
+            isAccepted ? 'Confirm' : "Reject",
             style: confirmStyle(size),
           ),
         ),

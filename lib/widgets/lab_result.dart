@@ -1,15 +1,14 @@
 import 'dart:convert';
 
+import 'package:aldayat_screens/models/get_request.dart';
 import 'package:aldayat_screens/models/make_request.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_connect/http/src/utils/utils.dart';
-import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../models/user_hive.dart';
 
 labResult(Map request, contexte, size, User user) async {
-  bool showAll = F;
+  bool showAll = false;
   Map patientInfo = {};
   List ourTests = [];
   List<MapEntry> singles = request.entries.map((e) => e).toList();
@@ -34,16 +33,13 @@ labResult(Map request, contexte, size, User user) async {
     forthController,
     fifthController
   ];
-  http.get(Uri.parse(url + "patient/find/${request['patient_id']}"), headers: {
-    'Content-type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': 'Baerer ${user.token}'
-  }).then((value) async {
-    patientInfo = json.decode(value.body);
+  await getIt("patient", user, contexte, request['patient_id'])
+      .then((value) async {
+    patientInfo = value[0];
 
-    showAll = T;
+    showAll = true;
     await showDialog<void>(
-      barrierDismissible: F,
+      barrierDismissible: false,
       context: contexte,
       builder: (BuildContext context) {
         return AlertDialog(
@@ -189,7 +185,7 @@ labResult(Map request, contexte, size, User user) async {
                           MaterialButton(
                             onPressed: () async {
                               setState(() {
-                                showAll = F;
+                                showAll = false;
                               });
                               List allInv = [];
                               for (int i = 0; i < ourTests.length; i++) {
@@ -216,7 +212,7 @@ labResult(Map request, contexte, size, User user) async {
                                 Navigator.of(context).pop();
                               } else {
                                 setState(() {
-                                  showAll = F;
+                                  showAll = false;
                                 });
                               }
                             },

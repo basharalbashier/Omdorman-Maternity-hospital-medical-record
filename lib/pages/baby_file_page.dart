@@ -37,10 +37,16 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
 
   List opserList = [];
   List neoAdmList = [];
+  Map patient = {};
+  getPatient() async {
+    await getIt('patient', widget.user, context, widget.file['patient_id'])
+        .then((value) => setState(() => patient = value[0]));
+  }
 
   late TabController _tabController;
   @override
   void initState() {
+    getPatient();
     if (widget.user.user!['dep'] != 'Department of Statistics') {
       _tabController = TabController(length: taps.length, vsync: this);
 
@@ -140,7 +146,8 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
             // SizedBox(
             //   height: 10,
             // ),
-            header(size, widget.file, widget.user, context, hasNeoUnit),
+            header(
+                size, widget.file, widget.user, context, hasNeoUnit, patient),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Divider(),
@@ -278,15 +285,15 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
           progressList.reversed.toList(), context, widget.file, widget.user),
       neoNurseNoteTable(
           nurseList.reversed.toList(), context, widget.file, widget.user),
-      fileInvestigationTable(
-          labRequest.reversed.toList(), context, widget.file, widget.user),
+      fileInvestigationTable(labRequest.reversed.toList(), context, widget.file,
+          widget.user, patient, '3'),
       neoOpservationTable(
           opserList.reversed.toList(), size, context, widget.file, widget.user),
     ]);
   }
 }
 
-Widget header(Size size, file, user, context, bool hasNeoUnit) {
+Widget header(Size size, file, user, context, bool hasNeoUnit, Map patient) {
   return size.width < 800.0
       ? SizedBox(
           width: size.width,
@@ -335,7 +342,9 @@ Widget header(Size size, file, user, context, bool hasNeoUnit) {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: [naoOpenMotherFileButton(context, file, user)],
+                      children: [
+                        naoOpenMotherFileButton(context, file, user, patient)
+                      ],
                     ),
                   )
                 ],
@@ -401,7 +410,9 @@ Widget header(Size size, file, user, context, bool hasNeoUnit) {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Row(
-                      children: [naoOpenMotherFileButton(context, file, user)],
+                      children: [
+                        naoOpenMotherFileButton(context, file, user, patient)
+                      ],
                     ),
                   )
                 ],

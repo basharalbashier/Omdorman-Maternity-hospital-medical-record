@@ -3,11 +3,12 @@ import 'package:aldayat_screens/widgets/table_raw.dart';
 import 'package:aldayat_screens/constant.dart';
 import 'package:flutter/material.dart';
 import '../models/user_hive.dart';
+import '../widgets/move_to_lab_button.dart';
 
 List<String> titles = ["Date & Time", "Investigation", "Result", 'Dr Name'];
 List<String> keys = ["created_at", "inv", "result", 'dr_id'];
-Widget fileInvestigationTable(
-    List dataFromServe, context, Map file, User user) {
+Widget fileInvestigationTable(List dataFromServe, context, Map file, User user,
+    Map patient, String type) {
   Size size = Size(500, 500);
   List data = [];
   for (int i = 0; i < dataFromServe.length; i++) {
@@ -31,6 +32,15 @@ Widget fileInvestigationTable(
   }
   return Column(
     children: [
+      Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            labButton(context, patient, file, type),
+          ],
+        ),
+      ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Table(

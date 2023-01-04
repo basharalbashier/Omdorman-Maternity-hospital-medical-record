@@ -3,18 +3,12 @@ import 'package:flutter/material.dart';
 import '../models/get_request.dart';
 import '../models/user_hive.dart';
 
-Widget naoOpenMotherFileButton(
-  context,
-  Map babyFile,
-  User user,
-) {
+Widget naoOpenMotherFileButton(context, Map babyFile, User user, Map patient) {
   return MaterialButton(
       color: Colors.purple,
       onPressed: () async {
         if (babyFile['file_id'] != "0") {
           var file = await getIt('file', user, context, babyFile['file_id']);
-          var patient =
-              await getIt('patient', user, context, babyFile['patient_id']);
 
           Navigator.pushAndRemoveUntil(
             context,
@@ -23,7 +17,7 @@ Widget naoOpenMotherFileButton(
                       file: file[0],
                       user: user,
                       type: "0",
-                      patient: patient[0],
+                      patient: patient,
                     )),
             (Route<dynamic> route) => true,
           );

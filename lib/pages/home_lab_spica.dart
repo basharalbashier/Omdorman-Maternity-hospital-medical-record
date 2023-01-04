@@ -189,8 +189,6 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                 Column(
                   children: [
                     Divider(),
-                    Visibility(
-                        visible: labRequests.isEmpty, child: waitingList()),
                     ListView.builder(
                       shrinkWrap: true,
                       itemCount: labRequestsSearch.length,
@@ -201,32 +199,25 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                                     labRequstDialog(labRequestsSearch[index],
                                         context, size, widget.user);
                                   },
-                                  child: SizedBox(
-                                    height: size.height / 10,
-                                    child: Card(
-                                      color: color.withOpacity(.3),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "ID : ${labRequestsSearch[index]['id']}",
-                                              style: fileTitle(size),
-                                            ),
+                                  child: Card(
+                                    color: color.withOpacity(.3),
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Text(
+                                            "ID : ${labRequestsSearch[index]['id']}",
+                                            style: fileTitle(size),
                                           ),
-                                          SizedBox(
-                                            height: size.height / 5,
-                                            child: SizedBox(
-                                                width: size.width / 3,
-                                                child: Text(amOrPm(
-                                                    labRequestsSearch[index]
-                                                        ["created_at"],
-                                                    true))),
-                                          )
-                                        ],
-                                      ),
+                                        ),
+                                        Text(amOrPm(
+                                                labRequestsSearch[index]
+                                                    ['created_at'],
+                                                true)
+                                            .replaceAll("\n", " "))
+                                      ],
                                     ),
                                   ))
                               : Container(),
@@ -263,12 +254,25 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                                           Row(
                                             children: [
                                               Text(
-                                                "Seen at:  ",
+                                                "Received at:  ",
                                                 style: fileTitle(size),
                                               ),
+                                              Text(amOrPm(
+                                                      labRequestsSearch[index]
+                                                          ['seen_at'],
+                                                      true)
+                                                  .replaceAll("\n", " ")),
+                                            ],
+                                          ),
+                                          Row(
+                                            children: [
                                               Text(
-                                                  "${labRequestsSearch[index]['seen_at']}"
-                                                      .substring(0, 19)),
+                                                "Received by:  ",
+                                                style: fileTitle(size),
+                                              ),
+                                              Text(drName(
+                                                  labRequestsSearch[index]
+                                                      ['got_by_id'])),
                                             ],
                                           )
                                         ],
@@ -292,16 +296,13 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                                 // labRequstDialog(request, context, size);
                               },
                               child: Card(
-                                color: setUniColor(
-                                    labRequestsSearch[index]['id'].toString()),
                                 child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Text(
-                                          "${labRequestsSearch[index]['id']}"),
-                                    ),
                                     Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
                                       children: [
                                         for (int i = 1;
                                             i <
@@ -310,7 +311,7 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                                                         .map((e) => e)
                                                         .toList()
                                                         .length -
-                                                    12;
+                                                    13;
                                             i++)
                                           labRequestsSearch[index]
                                                       .entries
@@ -329,16 +330,89 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                                                         style: fileTitle(size),
                                                       ),
                                                       Text(
-                                                          "${labRequestsSearch[index].entries.map((e) => e).toList()[i].value}"),
+                                                          "${labRequestsSearch[index]["result"]}"),
                                                     ],
                                                   ),
                                                 )
                                               : Container(),
-                                        Text(
-                                            "${labRequestsSearch[index]['if_rejected_why']}"
-                                                .substring(0, 19)),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "comment  :  ".toUpperCase(),
+                                                style: fileTitle(size),
+                                              ),
+                                              Text(
+                                                  "${labRequestsSearch[index]["comm"]}"),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Reqested At  :  "
+                                                    .toUpperCase(),
+                                                style: fileTitle(size),
+                                              ),
+                                              Text(amOrPm(
+                                                      labRequestsSearch[index]
+                                                          ["created_at"],
+                                                      true)
+                                                  .replaceAll("\n", " ")),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Responded At  :  "
+                                                    .toUpperCase(),
+                                                style: fileTitle(size),
+                                              ),
+                                              Text(amOrPm(
+                                                      labRequestsSearch[index]
+                                                          ["updated_at"],
+                                                      true)
+                                                  .replaceAll("\n", " ")),
+                                            ],
+                                          ),
+                                        ),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Row(
+                                            children: [
+                                              Text(
+                                                "Responded by  :  "
+                                                    .toUpperCase(),
+                                                style: fileTitle(size),
+                                              ),
+                                              Text(drName(
+                                                labRequestsSearch[index]
+                                                    ["got_by_id"],
+                                              )),
+                                            ],
+                                          ),
+                                        ),
                                       ],
-                                    )
+                                    ),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Row(
+                                        children: [
+                                          Text(
+                                            'ID : ',
+                                            style: fileTitle(size),
+                                          ),
+                                          Text(
+                                              "${labRequestsSearch[index]['id']}"),
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ))
@@ -353,29 +427,57 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                       itemCount: labRequestsSearch.length,
                       itemBuilder: (context, index) =>
                           labRequestsSearch[index]['status'] == '5'
-                              ? GestureDetector(
-                                  onTap: () {
-                                    // labRequstDialog(request, context, size,user);
-                                  },
-                                  child: SizedBox(
-                                    height: size.height / 10,
-                                    child: Card(
-                                      color: setUniColor(
-                                          labRequestsSearch[index]['id']
-                                              .toString()),
-                                      child: Row(
+                              ? Card(
+                                  // color: setUniColor(request['id'].toString()),
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: Text(
+                                          "ID: ${labRequestsSearch[index]['id']}",
+                                          style: fileTitle(size),
+                                        ),
+                                      ),
+                                      Row(
                                         children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                                "${labRequestsSearch[index]['id']}"),
-                                          ),
                                           Text(
-                                              "${labRequestsSearch[index]['if_rejected_why']}")
+                                            "Justification:  ",
+                                            style: fileTitle(size),
+                                          ),
+                                          Text(labRequestsSearch[index]
+                                              ['if_rejected_why']),
                                         ],
                                       ),
-                                    ),
-                                  ))
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Rejected at:  ",
+                                            style: fileTitle(size),
+                                          ),
+                                          Text(amOrPm(
+                                                  labRequestsSearch[index]
+                                                      ['seen_at'],
+                                                  true)
+                                              .replaceAll("\n", " ")),
+                                        ],
+                                      ),
+                                      Row(
+                                        children: [
+                                          Text(
+                                            "Rejected by:  ",
+                                            style: fileTitle(size),
+                                          ),
+                                          Text(drName(labRequestsSearch[index]
+                                              ['got_by_id'])),
+                                        ],
+                                      )
+                                    ],
+                                  ),
+                                )
+
+                              //if_rejected_why
                               : Container(),
                     )
                   ],
