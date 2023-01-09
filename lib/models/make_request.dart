@@ -12,10 +12,10 @@ Future<dynamic> makeHttpRequest(
           'Access-Control-Allow-Origin': '*',
           'Content-type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': 'Bearer ${user.token!}'
+          'Authorization': 'Bearer ${user.token!}',
         },
-        body: body);
-print(value.body);
+        body: json.encode(body));
+    // print(value.body);
     if ((value.statusCode == 200 || value.statusCode == 201)) {
       respons = [json.decode(value.body), "Successfully sent"];
     } else {

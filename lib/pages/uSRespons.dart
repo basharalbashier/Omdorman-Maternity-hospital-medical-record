@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:aldayat_screens/models/check_input_isinteger.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
+import 'package:aldayat_screens/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
@@ -26,7 +27,7 @@ class UsResponse extends StatefulWidget {
 class _MyHomePageState extends State<UsResponse> {
   bool showAll = true;
   var fetalHeart = true;
-var numPregnancesCon=TextEditingController();
+  var numPregnancesCon = TextEditingController();
   var comm = TextEditingController();
   var bpd = TextEditingController();
   var bpd_week = TextEditingController();
@@ -36,7 +37,7 @@ var numPregnancesCon=TextEditingController();
   var fl_week = TextEditingController();
   var ac = TextEditingController();
   var ac_week = TextEditingController();
-    var crl = TextEditingController();
+  var crl = TextEditingController();
   var crl_week = TextEditingController();
 
   var efw = TextEditingController();
@@ -302,10 +303,9 @@ var numPregnancesCon=TextEditingController();
                               children: [
                                 Text(presentation[i]),
                                 Checkbox(
-                                    value:
-                                        whatIspresentation == presentation[i]
-                                            ? true
-                                            : false,
+                                    value: whatIspresentation == presentation[i]
+                                        ? true
+                                        : false,
                                     onChanged: ((value) {
                                       setState(() {
                                         whatIspresentation = presentation[i];
@@ -701,9 +701,8 @@ var numPregnancesCon=TextEditingController();
                               child: Row(
                                 children: [
                                   Checkbox(
-                                      value: whatIsanot == anot[i]
-                                          ? true
-                                          : false,
+                                      value:
+                                          whatIsanot == anot[i] ? true : false,
                                       onChanged: ((value) {
                                         setState(() {
                                           whatIsanot = anot[i];
@@ -774,9 +773,8 @@ var numPregnancesCon=TextEditingController();
                               children: [
                                 Text(bioph[i]),
                                 Checkbox(
-                                    value: whatIsbioph == bioph[i]
-                                        ? true
-                                        : false,
+                                    value:
+                                        whatIsbioph == bioph[i] ? true : false,
                                     onChanged: ((value) {
                                       setState(() {
                                         whatIsbioph = bioph[i];
@@ -861,9 +859,7 @@ var numPregnancesCon=TextEditingController();
                   ),
                 ),
               ),
-              
-              
-               Padding(
+              Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: MaterialButton(
                   onPressed: () async {
@@ -902,13 +898,18 @@ var numPregnancesCon=TextEditingController();
                       "file_id": widget.request['file_id'].toString(),
                       "money": 'free',
                     };
-                    String respons = await makeHttpRequest(
-                         "${url}usresponse/add",jsonEncode(body) , true, widget.user);
+                    var respons = await makeHttpRequest("${url}usresponse/add",
+                        jsonEncode(body), true, widget.user);
 
-                    if (respons == "Successfully Sent") {
-                      Navigator.of(context).pop();
+                    if (respons[1] == "Successfully Sent") {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(builder: (context) => LoginView()),
+                        (Route<dynamic> route) => false,
+                      );
                     } else {
-                      errono(respons, respons, context, true, Container(), 3);
+                      errono(respons[1], respons[1], context, true, Container(),
+                          3);
                       setState(() {
                         showAll = !showAll;
                       });
@@ -921,7 +922,6 @@ var numPregnancesCon=TextEditingController();
                   ),
                 ),
               ),
-    
             ],
           ),
         ),

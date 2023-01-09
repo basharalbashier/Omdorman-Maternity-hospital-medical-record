@@ -333,10 +333,8 @@ class _LoginViewState extends State<LoginView> {
       setState(() {
         show = false;
       });
-      final msg = jsonEncode({
-        "email": emailController.text,
-        "password": passwordController.text,
-      });
+      final msg = jsonEncode(
+          {"email": emailController.text, "password": passwordController.text});
       var tryLogin =
           await makeHttpRequest(url + 'user/login', msg, true, User({}, ""));
 

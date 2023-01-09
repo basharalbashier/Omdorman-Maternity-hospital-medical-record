@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:aldayat_screens/constant.dart';
+import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/pages/usResponseGynae.dart';
 import 'package:aldayat_screens/widgets/title.dart';
@@ -34,7 +35,7 @@ class _SurgeryHomeState extends State<UltrasoundHome>
         if (value.statusCode == 200) {
           setState(() {
             usRequests = json.decode(value.body);
-            usRequestsSearch=usRequests.reversed.toList();
+            usRequestsSearch = usRequests.reversed.toList();
           });
         } else {
           errono("${json.decode(value.body)}", "${json.decode(value.body)}",
@@ -51,8 +52,8 @@ class _SurgeryHomeState extends State<UltrasoundHome>
     if (searchText.isNotEmpty) {
       {
         setState(() {
-          usRequestsSearch = List.from(
-              usRequests.where((name) => name['id'].toString().contains(searchText)));
+          usRequestsSearch = List.from(usRequests
+              .where((name) => name['id'].toString().contains(searchText)));
         });
       }
     } else {
@@ -144,24 +145,22 @@ class _SurgeryHomeState extends State<UltrasoundHome>
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                                SizedBox(
-                          height: 40,
-                          width: size.width / 3,
-                          child: TextFormField(
-                            onChanged: (search) => _searchChanged(search),
-                            // controller: searchController,
-                            style: kTextFormFieldStyle(),
-                            decoration: InputDecoration(
-                            
-                             
-                              prefixIcon: Icon(Icons.search),
-                              hintText: 'Search',
-                            ),
-
-                            // controller: emailController,
-                            // The validator receives the text that the user has entered.
+                      SizedBox(
+                        height: 40,
+                        width: size.width / 3,
+                        child: TextFormField(
+                          onChanged: (search) => _searchChanged(search),
+                          // controller: searchController,
+                          style: kTextFormFieldStyle(),
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.search),
+                            hintText: 'Search',
                           ),
+
+                          // controller: emailController,
+                          // The validator receives the text that the user has entered.
                         ),
+                      ),
 
                       // Visibility(
                       //     visible: patients.isNotEmpty,
@@ -197,162 +196,180 @@ class _SurgeryHomeState extends State<UltrasoundHome>
                 ListView.builder(
                     shrinkWrap: true,
                     itemCount: usRequestsSearch.length,
-                    itemBuilder: (context, index) => GestureDetector(
-                        onTap: () {
-                          usRequestsSearch[index]['type'] == '0'
-                              ? Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UsResponse(
-                                            user: widget.user,
-                                            request: usRequestsSearch[index],
-                                          )),
-                                  (Route<dynamic> route) => true,
-                                )
-                              : Navigator.pushAndRemoveUntil(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => UsResponseGynae(  user: widget.user,
-                                            request: usRequestsSearch[index],)),
-                                  (Route<dynamic> route) => true,
-                                );
-                        },
-                        child: Card(
-                          child: Column(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "ID: ${usRequestsSearch[index]['id']}",
-                                  style: fileTitle(size),
-                                ),
-                              ),
-                              Divider(),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceAround,
+                    itemBuilder: (context, index) => usRequestsSearch[index]
+                                ['status'] ==
+                            '0'
+                        ? GestureDetector(
+                            onTap: () {
+                              usRequestsSearch[index]['type'] == '0'
+                                  ? Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => UsResponse(
+                                                user: widget.user,
+                                                request:
+                                                    usRequestsSearch[index],
+                                              )),
+                                      (Route<dynamic> route) => true,
+                                    )
+                                  : Navigator.pushAndRemoveUntil(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => UsResponseGynae(
+                                                user: widget.user,
+                                                request:
+                                                    usRequestsSearch[index],
+                                              )),
+                                      (Route<dynamic> route) => true,
+                                    );
+                            },
+                            child: Card(
+                              child: Column(
                                 children: [
-                                  Column(
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "ID: ${usRequestsSearch[index]['id']}",
+                                      style: fileTitle(size),
+                                    ),
+                                  ),
+                                  Divider(),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceAround,
                                     children: [
-                                      Divider(),
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "From: ${usRequestsSearch[index]['type'] == "0" ? "OBS" : "GYNAE"}",
-                                          style: fileTitle(size / 1.3),
-                                        ),
-                                      ),
-                                      Divider(),
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
+                                      Column(
                                         children: [
-                                          Container(
-                                            width: size.width / 20,
-                                            height: size.width / 20,
-                                            color: setUniColor(
-                                                usRequestsSearch[index]['unit']
-                                                    .toString()),
-                                          ),
+                                          Divider(),
                                           Padding(
                                             padding: const EdgeInsets.all(8.0),
                                             child: Text(
-                                              "Unit: ${usRequestsSearch[index]['unit']}",
+                                              "From: ${usRequestsSearch[index]['type'] == "0" ? "OBS" : "GYNAE"}",
                                               style: fileTitle(size / 1.3),
                                             ),
                                           ),
+                                          Divider(),
+                                          Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Container(
+                                                width: size.width / 20,
+                                                height: size.width / 20,
+                                                color: setUniColor(
+                                                    usRequestsSearch[index]
+                                                            ['unit']
+                                                        .toString()),
+                                              ),
+                                              Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text(
+                                                  "Unit: ${usRequestsSearch[index]['unit']}",
+                                                  style: fileTitle(size / 1.3),
+                                                ),
+                                              ),
+                                            ],
+                                          ),
                                         ],
                                       ),
-                                    ],
-                                  ),
-                                  SingleChildScrollView(
-                                    child: Column(
-                                      children: [
-                                        for (int i = 3;
-                                            i <
-                                                usRequestsSearch[index]
-                                                        .entries
-                                                        .map((e) => e)
-                                                        .toList()
-                                                        .length -
-                                                    10;
-                                            i++)
-                                          usRequestsSearch[index]
-                                                      .entries
-                                                      .map((e) => e)
-                                                      .toList()[i]
-                                                      .value !=
-                                                  null
-                                              ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        "${i - 2}   /  "
-                                                            .toUpperCase(),
-                                                        style: fileTitle(size),
+                                      SingleChildScrollView(
+                                        child: Column(
+                                          children: [
+                                            for (int i = 3;
+                                                i <
+                                                    usRequestsSearch[index]
+                                                            .entries
+                                                            .map((e) => e)
+                                                            .toList()
+                                                            .length -
+                                                        10;
+                                                i++)
+                                              usRequestsSearch[index]
+                                                          .entries
+                                                          .map((e) => e)
+                                                          .toList()[i]
+                                                          .value !=
+                                                      null
+                                                  ? Padding(
+                                                      padding:
+                                                          const EdgeInsets.all(
+                                                              8.0),
+                                                      child: Row(
+                                                        children: [
+                                                          Text(
+                                                            "${i - 2}   /  "
+                                                                .toUpperCase(),
+                                                            style:
+                                                                fileTitle(size),
+                                                          ),
+                                                          Text(
+                                                              "${usRequestsSearch[index].entries.map((e) => e).toList()[i].value}"),
+                                                        ],
                                                       ),
-                                                      Text(
-                                                          "${usRequestsSearch[index].entries.map((e) => e).toList()[i].value}"),
-                                                    ],
-                                                  ),
-                                                )
-                                              : Container(),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Container(
-                                            decoration: BoxDecoration(
-                                                border: Border.all(
-                                                  color: color,
-                                                ),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(20))),
-                                            child: Padding(
+                                                    )
+                                                  : Container(),
+                                            Padding(
                                               padding:
                                                   const EdgeInsets.all(8.0),
-                                              child: SingleChildScrollView(
-                                                child: Column(
-                                                  children: [
-                                                    Text(
-                                                      "Doctor remarks:",
-                                                      style:
-                                                          fileTitle(size / 1.5),
+                                              child: Container(
+                                                decoration: BoxDecoration(
+                                                    border: Border.all(
+                                                      color: color,
                                                     ),
-                                                    SizedBox(
-                                                        width: size.width / 3,
-                                                        child: Text(
-                                                          "${usRequestsSearch[index]['remarks']}",
-                                                          overflow: TextOverflow
-                                                              .ellipsis,
-                                                          textAlign:
-                                                              TextAlign.center,
-                                                        )),
-                                                  ],
+                                                    borderRadius:
+                                                        BorderRadius.all(
+                                                            Radius.circular(
+                                                                20))),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          "Doctor remarks:",
+                                                          style: fileTitle(
+                                                              size / 1.5),
+                                                        ),
+                                                        SizedBox(
+                                                            width:
+                                                                size.width / 3,
+                                                            child: Text(
+                                                              "${usRequestsSearch[index]['remarks']}",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ),
-                                          ),
+                                          ],
                                         ),
-                                      ],
+                                      )
+                                    ],
+                                  ),
+                                  Divider(),
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Text(
+                                      "Sent:  ${amOrPm(usRequestsSearch[index]['created_at'], true).replaceAll('\n', ' ')}",
+                                      // style: fileTitle(size/1.3),
                                     ),
-                                  )
+                                  ),
                                 ],
                               ),
-                              Divider(),
-                              Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Text(
-                                  "Sent:  ${usRequestsSearch[index]['created_at'].toString().substring(0, 19)}",
-                                  // style: fileTitle(size/1.3),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ))),
+                            ))
+                        : Container()),
                 Column(
                   children: [
-                    for (var request in usRequests.reversed)
+                    for (var request in usRequestsSearch.reversed)
                       request['status'] == '2'
                           ? Card(
                               child: Column(
@@ -474,14 +491,14 @@ class _SurgeryHomeState extends State<UltrasoundHome>
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      "Sent:  ${request['created_at'].toString().substring(0, 19)}",
+                                      "Sent:  ${amOrPm(request['created_at'], true).replaceAll('\n', ' ')}",
                                       // style: fileTitle(size/1.3),
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.all(8.0),
                                     child: Text(
-                                      "Responded at:  ${request['updated_at'].toString().substring(0, 19)}",
+                                      "Responded at: ${amOrPm(request['updated_at'], true).replaceAll('\n', ' ')}",
                                       // style: fileTitle(size/1.3),
                                     ),
                                   ),
