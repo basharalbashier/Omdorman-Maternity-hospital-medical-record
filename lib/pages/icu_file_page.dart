@@ -154,11 +154,11 @@ class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
                       widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
                     ),
                     labButton(
-                      context,
-                      widget.patient,
-                      widget.admission,
-                      widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
-                    ),
+                        context,
+                        widget.patient,
+                        widget.admission,
+                        widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
+                        widget.user),
                   ],
                 ),
               )
@@ -265,11 +265,11 @@ class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
                     widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
                   ),
                   labButton(
-                    context,
-                    widget.patient,
-                    widget.admission,
-                    widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
-                  ),
+                      context,
+                      widget.patient,
+                      widget.admission,
+                      widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
+                      widget.user),
                 ],
               ),
             )

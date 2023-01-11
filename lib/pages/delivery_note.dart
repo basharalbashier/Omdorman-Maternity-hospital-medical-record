@@ -10,6 +10,7 @@ import 'package:responsive_grid/responsive_grid.dart';
 import '../models/error_message.dart';
 import '../models/make_request.dart';
 import '../models/user_hive.dart';
+import '../widgets/back_button.dart';
 
 class DeliveryPostnatal extends StatefulWidget {
   final Map patient;
@@ -82,6 +83,7 @@ class _OperationNoteState extends State<DeliveryPostnatal> {
           child: Column(
         children: [
           TitleD(setUniColor(widget.user.user!['unit']), size),
+          backButton(context),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Text(

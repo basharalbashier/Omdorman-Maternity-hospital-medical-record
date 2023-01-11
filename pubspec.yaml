@@ -49,9 +49,10 @@ dependencies:
   shimmer: ^2.0.0
   fl_chart: ^0.55.2
   just_audio: ^0.9.30
-  audioplayers: ^1.1.1
+  # audioplayers: ^1.1.1
   network_info_plus: ^3.0.1
   syncfusion_flutter_charts: ^20.4.38
+  sqflite_common_ffi: ^2.2.0+1
 
 dev_dependencies:
   flutter_test:

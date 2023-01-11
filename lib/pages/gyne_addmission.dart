@@ -10,6 +10,7 @@ import '../constant.dart';
 import '../models/error_message.dart';
 import '../models/make_request.dart';
 import '../models/user_hive.dart';
+import '../widgets/back_button.dart';
 
 class GynaeAdmission extends StatefulWidget {
   final Map file;
@@ -77,6 +78,7 @@ class _MyHomePageState extends State<GynaeAdmission> {
           child: Column(
             children: [
               TitleD(setUniColor(widget.user.user!['unit']), size),
+              backButton(context),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -154,7 +156,6 @@ class _MyHomePageState extends State<GynaeAdmission> {
                           SizedBox(
                               width: size.width / 2.3,
                               child: TextField(
-                    
                                 keyboardType: TextInputType.number,
                                 controller: cycleController,
                                 decoration: const InputDecoration(
@@ -178,7 +179,6 @@ class _MyHomePageState extends State<GynaeAdmission> {
                           SizedBox(
                               width: size.width / 5,
                               child: TextField(
-                           
                                 keyboardType: TextInputType.number,
                                 controller: pmbController,
                                 decoration: const InputDecoration(
@@ -196,7 +196,6 @@ class _MyHomePageState extends State<GynaeAdmission> {
                           SizedBox(
                               width: size.width / 5,
                               child: TextField(
-                        
                                 keyboardType: TextInputType.number,
                                 controller: dyspareuniaController,
                                 decoration: InputDecoration(

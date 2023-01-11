@@ -11,6 +11,7 @@ import '../models/error_message.dart';
 import '../models/make_request.dart';
 import '../models/setUnitColor.dart';
 import '../models/user_hive.dart';
+import 'back_button.dart';
 import 'title.dart';
 
 class VaginalExam extends StatefulWidget {
@@ -99,6 +100,7 @@ class _VaginalExamState extends State<VaginalExam> {
         child: Column(
           children: [
             TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
+            backButton(context),
             Padding(
               padding: const EdgeInsets.all(8.0),
               child: Center(
@@ -638,7 +640,7 @@ class _VaginalExamState extends State<VaginalExam> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(15)),
                         ),
-                      ),  
+                      ),
                       // controller: nameController,
                       // The validator receives the text that the user has entered.
                     ),
@@ -681,8 +683,7 @@ class _VaginalExamState extends State<VaginalExam> {
                       setState(() {
                         show = !show;
                       });
-                      var body = jsonEncode(
-                        {
+                      var body = jsonEncode({
                         "dil": dilatation.text,
                         "position_cx": postion.text,
                         "eff": effacement.text,
@@ -704,11 +705,8 @@ class _VaginalExamState extends State<VaginalExam> {
                         "dr_id": widget.user.user!['id'].toString(),
                         "patient_id": widget.patient['id'].toString(),
                         "file_id": widget.file['id'].toString(),
-                      }
-                      
-                      
-                      );
-                     
+                      });
+
                       String respons = await makeHttpRequest(
                           url + "vagin/add", body, true, widget.user);
 

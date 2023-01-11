@@ -37,7 +37,7 @@ Widget fileInvestigationTable(List dataFromServe, context, Map file, User user,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
-            labButton(context, patient, file, type),
+            labButton(context, patient, file, type, user),
           ],
         ),
       ),

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
+import '../models/user_hive.dart';
 import '../pages/lab_request_form.dart';
 
-Widget labButton(context, patient, file, type) {
+Widget labButton(context, patient, file, type, User user) {
   return MaterialButton(
     color: Colors.blue,
     onPressed: () {
@@ -10,10 +10,7 @@ Widget labButton(context, patient, file, type) {
         context,
         MaterialPageRoute(
             builder: (context) => AddRequestForm(
-                  patient: patient,
-                  file: file,
-                  type: type,
-                )),
+                patient: patient, file: file, type: type, user: user)),
         (Route<dynamic> route) => true,
       );
     },

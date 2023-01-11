@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
-import 'package:aldayat_screens/pages/add_user.dart';
 import 'package:aldayat_screens/pages/login.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
@@ -8,8 +7,6 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
 import 'pages/anea_and_refresh_follow_up.dart';
-import 'pages/chart_vital_sign.dart';
-import 'widgets/single_chart_line.dart';
 import 'widgets/contact_me.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 

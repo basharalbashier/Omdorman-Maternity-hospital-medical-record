@@ -12,6 +12,7 @@ import 'package:responsive_grid/responsive_grid.dart';
 
 import '../constant.dart';
 import '../models/check_input_isinteger.dart';
+import '../widgets/back_button.dart';
 
 class AddObs extends StatefulWidget {
   final Map file;
@@ -101,6 +102,7 @@ class _MyHomePageState extends State<AddObs> {
           child: Column(
             children: [
               TitleD(setUniColor(widget.user.user!['unit']), size),
+              backButton(context),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -413,9 +415,9 @@ class _MyHomePageState extends State<AddObs> {
                       color: Colors.amber,
                       child: Text('Submit'),
                       onPressed: (() async {
-                          setState(() {
-                        show=!show;
-                      });
+                        setState(() {
+                          show = !show;
+                        });
                         var body = jsonEncode({
                           "gr": grController.text,
                           "para": "${paraController.text} + ${remain.text}",
@@ -439,20 +441,21 @@ class _MyHomePageState extends State<AddObs> {
                           "patient_id": widget.patient['id'].toString(),
                           "file_id": widget.file['id'].toString(),
                         });
-                     String respons=await   makeHttpRequest(url + "obs/add", body, true,widget.user);
+                        String respons = await makeHttpRequest(
+                            url + "obs/add", body, true, widget.user);
 
-                     if(respons== "Successfully Sent"){
-                      Navigator.of(context).pop();
-                     }else{
-                      errono(respons, respons, context, true, Container(), 3);
-                      setState(() {
-                        show=!show;
-                      });
-                     }
+                        if (respons == "Successfully Sent") {
+                          Navigator.of(context).pop();
+                        } else {
+                          errono(
+                              respons, respons, context, true, Container(), 3);
+                          setState(() {
+                            show = !show;
+                          });
+                        }
                       })),
                 ),
               )
-           
             ],
           ),
         ),

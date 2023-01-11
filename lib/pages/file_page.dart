@@ -5,7 +5,6 @@ import 'package:aldayat_screens/pages/file_invistigation_table.dart';
 import 'package:aldayat_screens/widgets/genterate_qr_for_file.dart';
 import 'package:aldayat_screens/widgets/gyn_adm_button.dart';
 import 'package:aldayat_screens/widgets/icu_request_dialog.dart';
-import 'package:aldayat_screens/widgets/move_to_lab_button.dart';
 import 'package:aldayat_screens/widgets/obs_adm_button.dart';
 import 'package:aldayat_screens/widgets/private_info_for_static.dart';
 import 'package:aldayat_screens/widgets/title.dart';
@@ -18,6 +17,7 @@ import '../widgets/add_baby_file_widget_button.dart';
 import '../widgets/ant_adm_folow.dart';
 import '../widgets/antenatal_table.dart';
 import '../widgets/anticoagulation_chart_table.dart';
+import '../widgets/back_button.dart';
 import '../widgets/delivery_note_button.dart';
 import '../widgets/gyn_inve_table.dart';
 import '../widgets/gyne_comment_table.dart';
@@ -33,7 +33,6 @@ import '../widgets/root_to_anea_follow_up_button.dart';
 import '../widgets/show_gyn_adm.dart';
 import '../widgets/show_obs_history.dart';
 import '../widgets/u_s_request.dart';
-import 'vaginal_exam_button.dart';
 
 class FilePage extends StatefulWidget {
   final Map file;
@@ -237,6 +236,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
             SizedBox(
               height: 10,
             ),
+            backButton(context),
             heading(size),
             Divider(),
             widget.user.user!['dep'] != 'Department of Statistics'

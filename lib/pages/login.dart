@@ -24,6 +24,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   bool show = false;
+  bool _remember = false;
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
@@ -53,6 +54,8 @@ class _LoginViewState extends State<LoginView> {
       getinfo(context).then((value) => value.token != ''
           ? {routeManager(context, value)}
           : setState(() => show = true));
+    } else {
+      setState(() => show = true);
     }
 
     super.initState();
@@ -74,6 +77,7 @@ class _LoginViewState extends State<LoginView> {
 
     if (!show) {
       return Scaffold(
+        // backgroundColor: Color.,
         body: Center(
             child: CircularProgressIndicator(
                 // strokeWidth: 1,
@@ -268,6 +272,18 @@ class _LoginViewState extends State<LoginView> {
                       },
                     ),
                   ),
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Row(
+                      children: [
+                        Checkbox(
+                            value: _remember,
+                            onChanged: ((v) =>
+                                setState(() => _remember = !_remember))),
+                        Text("Remember me"),
+                      ],
+                    ),
+                  ),
                   SizedBox(
                     height: size.height * 0.01,
                   ),
@@ -333,10 +349,10 @@ class _LoginViewState extends State<LoginView> {
       setState(() {
         show = false;
       });
-      final msg = jsonEncode(
+      final msg = json.encode(
           {"email": emailController.text, "password": passwordController.text});
       var tryLogin =
-          await makeHttpRequest(url + 'user/login', msg, true, User({}, ""));
+          await makeHttpRequest('${url}user/login', msg, true, User({}, ""));
 
       if (tryLogin[1] == "Successfully sent") {
         List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];

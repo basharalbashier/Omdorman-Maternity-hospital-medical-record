@@ -12,6 +12,7 @@ import 'package:responsive_grid/responsive_grid.dart';
 import '../models/error_message.dart';
 import '../models/make_request.dart';
 import '../models/user_hive.dart';
+import '../widgets/back_button.dart';
 
 class OperationNote extends StatefulWidget {
   final Map patient;
@@ -111,7 +112,17 @@ class _OperationNoteState extends State<OperationNote> {
           child: Column(
         children: [
           TitleD(setUniColor(widget.user.user!['unit']), size),
-     myOperations.isNotEmpty?     whoAddDataAndWhen(size, context, myOperations[0]):Text("Operation Note",style: fileTitle(size),),
+          backButton(context),
+          myOperations.isNotEmpty
+              ? whoAddDataAndWhen(size, context, myOperations[0])
+              : Text(
+                  "Operation Note",
+                  style: fileTitle(size),
+                ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Divider(),
+          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: ResponsiveGridRow(children: [
@@ -454,68 +465,68 @@ class _OperationNoteState extends State<OperationNote> {
                 ),
             ]),
           ),
-   
-     myOperations.isEmpty?  
-        Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Center(
-              child: MaterialButton(
-                  color: Colors.amber,
-                  child: Text('Submit'),
-                  onPressed: (() async {
-                    setState(() {
-                      show = !show;
-                    });
-                    var body = jsonEncode({
-                      "caesarean": caesar.toString(),
-                      "ventouse": ventouse.toString(),
-                      "repair": repair.toString(),
-                      "emergency": emergency.toString(),
-                      "forceps": forcep.toString(),
-                      "m_r_o": mro.toString(),
-                      "other": other.toString(),
-                      "elective": elective.toString(),
-                      "indication": incision.toString(),
-                      "surgeon": surgeon.text,
-                      "assistant": assistantController.text,
-                      "anaesth": anaesthetistController.text,
-                      "anashisia": anaesthesiaController.text,
-                      "incision": incision.toString(),
-                      "procedure": procedureController.text,
-                      "blood_loss": whatIsBloodLose,
-                      "ovaries": ovaries.toString(),
-                      "baby": babySex ? "Boy" : "Girl",
-                      "weight": weightController.text,
-                      "apgar": apgarScorController.text,
-                      "refer_to_scbu": refar.toString(),
-                      "treatment": treatmentController.text,
-                      "antibiotic": antibioticsController.text,
-                      "analgesia": analgesiaController.text,
-                      "anticoagulant": anticoagulantController.text,
-                      "iv_fluids": ivFluidsController.text,
-                      "blood_trans": bloodController.text,
-                      "recommendation": recommendationController.text,
-                      "dr_id": widget.user.user!['id'].toString(),
-                      "patient_id": widget.patient['id'].toString(),
-                      "file_id": widget.file['id'].toString(),
-                    });
-                    String respons = await makeHttpRequest(
-                        url + "operation/add", body, true, widget.user);
+          myOperations.isEmpty
+              ? Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: Center(
+                    child: MaterialButton(
+                        color: Colors.amber,
+                        child: Text('Submit'),
+                        onPressed: (() async {
+                          setState(() {
+                            show = !show;
+                          });
+                          var body = jsonEncode({
+                            "caesarean": caesar.toString(),
+                            "ventouse": ventouse.toString(),
+                            "repair": repair.toString(),
+                            "emergency": emergency.toString(),
+                            "forceps": forcep.toString(),
+                            "m_r_o": mro.toString(),
+                            "other": other.toString(),
+                            "elective": elective.toString(),
+                            "indication": incision.toString(),
+                            "surgeon": surgeon.text,
+                            "assistant": assistantController.text,
+                            "anaesth": anaesthetistController.text,
+                            "anashisia": anaesthesiaController.text,
+                            "incision": incision.toString(),
+                            "procedure": procedureController.text,
+                            "blood_loss": whatIsBloodLose,
+                            "ovaries": ovaries.toString(),
+                            "baby": babySex ? "Boy" : "Girl",
+                            "weight": weightController.text,
+                            "apgar": apgarScorController.text,
+                            "refer_to_scbu": refar.toString(),
+                            "treatment": treatmentController.text,
+                            "antibiotic": antibioticsController.text,
+                            "analgesia": analgesiaController.text,
+                            "anticoagulant": anticoagulantController.text,
+                            "iv_fluids": ivFluidsController.text,
+                            "blood_trans": bloodController.text,
+                            "recommendation": recommendationController.text,
+                            "dr_id": widget.user.user!['id'].toString(),
+                            "patient_id": widget.patient['id'].toString(),
+                            "file_id": widget.file['id'].toString(),
+                          });
+                          String respons = await makeHttpRequest(
+                              url + "operation/add", body, true, widget.user);
 
-                    if (respons == "Successfully Sent") {
-                      Navigator.of(context).pop();
-                    } else {
-                      errono(respons, respons, context, true, Container(), 3);
-                      setState(() {
-                        show = !show;
-                      });
-                    }
-                  })),
-            ),
-          )
-       :Container() ],
+                          if (respons == "Successfully Sent") {
+                            Navigator.of(context).pop();
+                          } else {
+                            errono(respons, respons, context, true, Container(),
+                                3);
+                            setState(() {
+                              show = !show;
+                            });
+                          }
+                        })),
+                  ),
+                )
+              : Container()
+        ],
       )),
     );
   }
 }
-

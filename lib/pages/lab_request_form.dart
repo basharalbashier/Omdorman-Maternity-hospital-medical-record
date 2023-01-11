@@ -8,17 +8,20 @@ import 'package:http/http.dart' as http;
 import '../constant.dart';
 import '../models/error_message.dart';
 import '../models/user_hive.dart';
+import '../widgets/back_button.dart';
 import '../widgets/title.dart';
 
 class AddRequestForm extends StatefulWidget {
   final Map patient;
   final Map file;
   final String type;
+  final User user;
   const AddRequestForm({
     super.key,
     required this.patient,
     required this.file,
-      required this.type,
+    required this.type,
+    required this.user,
   });
 
   @override
@@ -75,9 +78,6 @@ class _MyHomePageState extends State<AddRequestForm> {
 
   @override
   void initState() {
-    getinfo(context).then((value) => setState(() {
-          user = value;
-        }));
     super.initState();
   }
 
@@ -101,6 +101,7 @@ class _MyHomePageState extends State<AddRequestForm> {
           child: Column(
             children: [
               TitleD(setUniColor(widget.file['unit']), size),
+              backButton(context),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -281,7 +282,6 @@ class _MyHomePageState extends State<AddRequestForm> {
                         ),
                       ),
                     ),
-                   
                     ResponsiveGridCol(
                       xs: 4,
                       md: 2,
@@ -309,7 +309,6 @@ class _MyHomePageState extends State<AddRequestForm> {
                   ]),
                 ),
               ),
-             
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(
@@ -1231,8 +1230,6 @@ class _MyHomePageState extends State<AddRequestForm> {
     );
   }
 
-  User user = User({}, '');
-
   postLabRequest() async {
     setState(() {
       show = F;
@@ -1273,11 +1270,11 @@ class _MyHomePageState extends State<AddRequestForm> {
       "hiVag": hiVag.toString(),
       "comm": comm.text,
       "status": "0",
-      "dr_id": user.user!['id'].toString(),
+      "dr_id": widget.user.user!['id'].toString(),
       "patient_id": widget.patient['id'].toString(),
       "file_id": widget.file['id'].toString(),
       "money": "Free",
-       "type": widget.type,
+      "type": widget.type,
     });
     try {
       await http
@@ -1285,7 +1282,7 @@ class _MyHomePageState extends State<AddRequestForm> {
               headers: {
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ${user.token!}'
+                'Authorization': 'Bearer ${widget.user.token!}'
               },
               body: body)
           .then((value) {
