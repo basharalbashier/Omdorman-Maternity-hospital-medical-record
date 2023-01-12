@@ -25,6 +25,7 @@ class IcuFile extends StatefulWidget {
 
 class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
   late TabController _tabController;
+  List usRequest = [];
   @override
   void initState() {
     taps = [
@@ -147,12 +148,12 @@ class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     uSRequest(
-                      context,
-                      size,
-                      widget.admission,
-                      widget.user,
-                      widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
-                    ),
+                        context,
+                        size,
+                        widget.admission,
+                        widget.user,
+                        widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
+                        usRequest),
                     labButton(
                         context,
                         widget.patient,
@@ -258,12 +259,12 @@ class _IcuFileState extends State<IcuFile> with TickerProviderStateMixin {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   uSRequest(
-                    context,
-                    size,
-                    widget.admission,
-                    widget.user,
-                    widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
-                  ),
+                      context,
+                      size,
+                      widget.admission,
+                      widget.user,
+                      widget.admission['icu_file_id'] == "0" ? "ICU" : "HDU",
+                      usRequest),
                   labButton(
                       context,
                       widget.patient,

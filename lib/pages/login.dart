@@ -11,8 +11,6 @@ import 'package:http/http.dart' as http;
 import 'package:network_info_plus/network_info_plus.dart';
 import '../constant.dart';
 import '../controller/simpleUIController.dart';
-import 'package:flutter/foundation.dart' show kIsWeb;
-
 import 'add_user.dart';
 
 class LoginView extends StatefulWidget {
@@ -50,13 +48,9 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    if (kIsWeb) {
-      getinfo(context).then((value) => value.token != ''
-          ? {routeManager(context, value)}
-          : setState(() => show = true));
-    } else {
-      setState(() => show = true);
-    }
+    getinfo(context).then((value) => value.token != ''
+        ? {routeManager(context, value)}
+        : setState(() => show = true));
 
     super.initState();
   }
@@ -356,9 +350,9 @@ class _LoginViewState extends State<LoginView> {
 
       if (tryLogin[1] == "Successfully sent") {
         List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
-        var value = kIsWeb ? await stor(info) : null;
-        routeManager(context,
-            kIsWeb ? value! : User(tryLogin[0]['user'], tryLogin[0]['token']));
+
+        var value = await stor(info, _remember);
+        routeManager(context, value);
       } else {
         errono(tryLogin[1], tryLogin[1], context, true, Container(), 5);
         setState(() {

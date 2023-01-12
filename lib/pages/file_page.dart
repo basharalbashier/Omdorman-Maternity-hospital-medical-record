@@ -12,6 +12,7 @@ import 'package:aldayat_screens/widgets/vaginal_out_put_table.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
+import '../models/get_request.dart' as getRequst;
 import '../models/user_hive.dart';
 import '../widgets/add_baby_file_widget_button.dart';
 import '../widgets/ant_adm_folow.dart';
@@ -52,6 +53,7 @@ class FilePage extends StatefulWidget {
 
 class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   List labRequest = [];
+  List usRequest = [];
   List obsHistory = [];
   List gynAdmList = [
     {
@@ -336,7 +338,8 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
               body: {
                 "type": widget.type
               }).then((value) {
-            if (value.statusCode == 200) {
+            getUsRespons();
+            if (value.statusCode == 200 || value.statusCode == 201) {
               setState(() {
                 obsHistory = json.decode(value.body);
                 if (obsHistory.isEmpty) {
@@ -357,6 +360,12 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
       }
     }
     // ... Navigate To your Home Page
+  }
+
+  getUsRespons() async {
+    getRequst
+        .getIt("icureq", widget.user, context, widget.file['id'].toString())
+        .then((value) => setState(() => usRequest = value));
   }
 
   checkThefuckers() async {
@@ -591,7 +600,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           uSRequest(context, size, widget.file, widget.user,
-                              widget.type),
+                              widget.type, usRequest),
                           Column(
                             children: [
                               Padding(
@@ -713,8 +722,8 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    uSRequest(
-                        context, size, widget.file, widget.user, widget.type),
+                    uSRequest(context, size, widget.file, widget.user,
+                        widget.type, usRequest),
                     Column(
                       children: [
                         Padding(

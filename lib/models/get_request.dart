@@ -18,7 +18,7 @@ Future<List> getIt(
       },
     ).then((value) {
       // print(json.decode(value.body)['message']);
-      if (value.statusCode == 200) {
+      if (value.statusCode == 200 || value.statusCode == 201) {
         list = json.decode(value.body);
 
         return list;

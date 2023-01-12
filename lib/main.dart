@@ -6,7 +6,7 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'pages/anea_and_refresh_follow_up.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'widgets/contact_me.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
@@ -17,6 +17,9 @@ void main() {
   if (kIsWeb) {
     Hive.registerAdapter(UserAdapter());
   }
+  if (Platform.isLinux || Platform.isWindows) {
+    initDataBase();
+  }
   FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
   runApp(
@@ -24,25 +27,24 @@ void main() {
   );
 }
 
-// ignore: must_be_immutable
 class DayatApp extends StatelessWidget {
-  DayatApp({Key? key}) : super(key: key);
+  const DayatApp({Key? key}) : super(key: key);
 //Unauthenticated.
-  var item = {
-    "id": 1,
-    "created_at": "2022-02-13T18:28:2.0000000000",
-    "temp": "37",
-    "bp": "120.80",
-    "puls": "83",
-    "breath": "33",
-    "other": "70",
-  };
+  // var item = {
+  //   "id": 1,
+  //   "created_at": "2022-02-13T18:28:2.0000000000",
+  //   "temp": "37",
+  //   "bp": "120.80",
+  //   "puls": "83",
+  //   "breath": "33",
+  //   "other": "70",
+  // };
 
-  AnaesthiaAndRefreshFollowUp v = AnaesthiaAndRefreshFollowUp(
-    file: {},
-    patient: {},
-    user: User({}, ''),
-  );
+  // AnaesthiaAndRefreshFollowUp v = AnaesthiaAndRefreshFollowUp(
+  //   file: {},
+  //   patient: {},
+  //   user: User({}, ''),
+  // );
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

@@ -5,7 +5,7 @@ import 'user_hive.dart';
 
 Future<dynamic> makeHttpRequest(
     String url, body, bool needToken, User user) async {
-  var respons;
+  var response;
   try {
     var value = await http.post(Uri.parse(url),
         headers: {
@@ -15,16 +15,16 @@ Future<dynamic> makeHttpRequest(
           'Authorization': 'Bearer ${user.token!}',
         },
         body: body);
-    print(value.body);
-    if ((value.statusCode == 200 || value.statusCode == 201)) {
-      respons = [json.decode(value.body), "Successfully sent"];
+    // print(value.body);
+    if (value.statusCode == 200 || value.statusCode == 201) {
+      response = [json.decode(value.body), "Successfully sent"];
     } else {
       // ${json.decode(value.body)['message']}
-      respons = [json.decode(value.body), "Error"];
+      response = [json.decode(value.body), "Error"];
     }
   } catch (e) {
     print(e);
-    respons = [e, "Connection Error"];
+    response = [e, "Connection Error"];
   }
-  return respons;
+  return response;
 }

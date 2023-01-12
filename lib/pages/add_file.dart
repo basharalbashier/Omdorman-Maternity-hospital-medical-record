@@ -52,7 +52,6 @@ class _AddPatientState extends State<AddFile> {
             child: LinearProgressIndicator(
           color: Colors.lightBlue,
         )),
-    
       );
     }
     var size = MediaQuery.of(context).size;
@@ -296,9 +295,9 @@ class _AddPatientState extends State<AddFile> {
             ),
           ),
           onPressed: () async {
-             setState(() {
-                show = !show;
-              });
+            setState(() {
+              show = !show;
+            });
             final msg = jsonEncode({
               'unit': unit,
               'booking': whatIsBooking,
@@ -307,7 +306,7 @@ class _AddPatientState extends State<AddFile> {
               'husband_tel': replaceArabicNumber(husbandTelController.text),
               'husband_occup': husbandOccupController.text,
               'patient_id': "${widget.patienId}",
-              'user_id': "${user.user!['id']}"
+              'user_id': "${user.user['id']}"
             });
             try {
               await http
@@ -319,14 +318,22 @@ class _AddPatientState extends State<AddFile> {
                       },
                       body: msg)
                   .then((value) {
-                    print(value.body);
-                      errono("File Added Successfully","File Added Successfully", context, true,
-                 Icon(Icons.check,color: Colors.teal,), 2);
-                    Navigator.of(context).pop();
-                 
+                print(value.body);
+                errono(
+                    "File Added Successfully",
+                    "File Added Successfully",
+                    context,
+                    true,
+                    Icon(
+                      Icons.check,
+                      color: Colors.teal,
+                    ),
+                    2);
+                Navigator.of(context).pop();
               });
-            } catch (e) {print(e);
-                  errono("Connection Error", "Connection Error", context, true,
+            } catch (e) {
+              print(e);
+              errono("Connection Error", "Connection Error", context, true,
                   Container(), 2);
               setState(() {
                 show = !show;

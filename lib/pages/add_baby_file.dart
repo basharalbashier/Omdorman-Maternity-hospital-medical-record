@@ -243,7 +243,7 @@ class _AddPatientState extends State<AddBabyFile> {
               'phone': replaceArabicNumber(phoneNumberController.text),
               'patient_id': "${widget.patientId}",
               'file_id': "${widget.fileId}",
-              'user_id': "${user.user!['id']}"
+              'user_id': "${user.user['id']}"
             });
             try {
               await http
