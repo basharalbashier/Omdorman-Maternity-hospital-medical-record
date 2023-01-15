@@ -6,11 +6,9 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
-import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'widgets/contact_me.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
-//🐒💁👌🎍😍🦊👨
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
@@ -18,7 +16,7 @@ void main() {
     Hive.registerAdapter(UserAdapter());
   }
   if (Platform.isLinux || Platform.isWindows) {
-    initDataBase();
+    // DbLite.db.database;
   }
   FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
