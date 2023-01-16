@@ -3,9 +3,11 @@ import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:aldayat_screens/models/error_message.dart';
 import 'package:aldayat_screens/models/make_request.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import '../constant.dart';
 import '../models/user_hive.dart';
+import '../pages/us_respons_output.dart';
 
 Widget uSRequest(
     contexte, size, Map file, User user, String type, List oldRequsts) {
@@ -18,52 +20,6 @@ Widget uSRequest(
   var usFiveController = TextEditingController();
   var usSixController = TextEditingController();
   int number = 1;
-
-  showNotification(Size size, contextOfPage) {
-    return Visibility(
-      visible: oldRequsts.isNotEmpty,
-      child: PopupMenuButton<int>(
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Stack(
-              children: [
-                Positioned(
-                    right: 0,
-                    child: CircleAvatar(
-                        radius: 10,
-                        backgroundColor: Colors.pink,
-                        child: Text(
-                          '${oldRequsts.length}',
-                          style: TextStyle(color: Colors.white),
-                        )))
-              ],
-            ),
-          ),
-          itemBuilder: (context) => [
-                for (int i = 0; i < oldRequsts.length; i++)
-                  PopupMenuItem(
-                      value: i,
-                      // row with 2 children
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Text(
-                              "${oldRequsts[i]['type'] == "0" ? "ICU" : "HDU"} Request"),
-                          Text("${oldRequsts[i]['comment']}"),
-                          Text(
-                              "${oldRequsts[i]['created_at'].toString().substring(0, 10)}"),
-                          Divider()
-                        ],
-                      ),
-                      onTap: () {
-                        // Future.delayed(Duration(seconds: 1))
-                        //     .then((value) => callTheDia(requists[i], size));
-                      }),
-
-                // Pop
-              ]),
-    );
-  }
 
   return Stack(
     fit: StackFit.loose,
@@ -316,10 +272,10 @@ Widget uSRequest(
                                 Divider()
                               ],
                             ),
-                            onTap: () {
-                              // Future.delayed(Duration(seconds: 1))
-                              //     .then((value) => callTheDia(requists[i], size));
-                            }),
+                            onTap: () async => Future.delayed(
+                                    Duration(seconds: 1))
+                                .then((value) => Get.to(() =>
+                                    UsResponseOutput(data: oldRequsts[i])))),
 
                       // Pop
                     ]),
@@ -330,8 +286,4 @@ Widget uSRequest(
   );
 }
 
-
-
-// 
-  
-  
+//
