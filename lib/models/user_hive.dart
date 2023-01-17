@@ -81,19 +81,24 @@ Future<User> stor(List<dynamic> info, bool remember) async {
 }
 
 Future remove(context) async {
-  try {
-    var box = await Hive.openBox<User>('info');
+  if (kIsWeb) {
+    try {
+      var box = await Hive.openBox<User>('info');
 
-    box.delete(0);
-    box.close();
+      box.delete(0);
+      box.close();
 
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => const LoginView()),
-      (Route<dynamic> route) => false,
-    );
-  } catch (e) {
-    print("HIVE Error:  => $e");
+      Navigator.pushAndRemoveUntil(
+        context,
+        MaterialPageRoute(builder: (context) => const LoginView()),
+        (Route<dynamic> route) => false,
+      );
+    } catch (e) {
+      print("HIVE Error:  => $e");
+    }
+  }
+  if (Platform.isLinux || Platform.isWindows) {
+    await DbLite.db.deletUserData();
   }
 }
 

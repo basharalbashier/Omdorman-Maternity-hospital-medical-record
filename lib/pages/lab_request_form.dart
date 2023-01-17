@@ -10,6 +10,7 @@ import '../models/error_message.dart';
 import '../models/user_hive.dart';
 import '../widgets/back_button.dart';
 import '../widgets/title.dart';
+import 'login.dart';
 
 class AddRequestForm extends StatefulWidget {
   final Map patient;
@@ -1270,7 +1271,7 @@ class _MyHomePageState extends State<AddRequestForm> {
       "hiVag": hiVag.toString(),
       "comm": comm.text,
       "status": "0",
-      "dr_id": widget.user.user!['id'].toString(),
+      "dr_id": widget.user.user['id'].toString(),
       "patient_id": widget.patient['id'].toString(),
       "file_id": widget.file['id'].toString(),
       "money": "Free",
@@ -1282,7 +1283,7 @@ class _MyHomePageState extends State<AddRequestForm> {
               headers: {
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ${widget.user.token!}'
+                'Authorization': 'Bearer ${widget.user.token}'
               },
               body: body)
           .then((value) {
@@ -1297,7 +1298,15 @@ class _MyHomePageState extends State<AddRequestForm> {
                 color: Colors.green,
               ),
               5);
-          Navigator.of(context).pop();
+          if (widget.type == "ex") {
+            Navigator.pushAndRemoveUntil(
+              context,
+              MaterialPageRoute(builder: (context) => LoginView()),
+              (Route<dynamic> route) => true,
+            );
+          } else {
+            Navigator.of(context).pop();
+          }
         } else {
           setState(() {
             show = T;

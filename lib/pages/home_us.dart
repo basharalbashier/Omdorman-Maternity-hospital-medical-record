@@ -7,11 +7,14 @@ import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/pages/usResponseGynae.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import '../models/error_message.dart';
+import '../models/get_request.dart';
 import '../models/user_hive.dart';
 import 'package:http/http.dart' as http;
 import '../widgets/log_out.dart';
 import 'uSRespons.dart';
+import 'us_respons_output.dart';
 
 class UltrasoundHome extends StatefulWidget {
   final User user;
@@ -30,7 +33,7 @@ class _SurgeryHomeState extends State<UltrasoundHome>
     try {
       await http.get(Uri.parse('${url}us'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.user.token!}'
+        'Authorization': 'Bearer ${widget.user.token}'
       }).then((value) {
         if (value.statusCode == 200) {
           setState(() {
@@ -113,7 +116,7 @@ class _SurgeryHomeState extends State<UltrasoundHome>
       body: SingleChildScrollView(
           child: Column(
         children: [
-          TitleD(setUniColor(widget.user.user!['unit']), size),
+          TitleD(setUniColor(widget.user.user['unit']), size),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Divider(),
@@ -127,13 +130,13 @@ class _SurgeryHomeState extends State<UltrasoundHome>
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.user.user!['level'],
+                      widget.user.user['level'],
                       style: kLoginSubtitleStyle(size * 1.2),
                     ),
                     SizedBox(
                       width: size.width / 3.1,
                       child: Text(
-                        widget.user.user!['name'],
+                        widget.user.user['name'],
                         overflow: TextOverflow.fade,
                         style: fileTitle(size),
                       ),
@@ -173,7 +176,7 @@ class _SurgeryHomeState extends State<UltrasoundHome>
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    logout(context));
+                                    logout(context, size));
                           },
                           icon: Icon(Icons.logout_outlined))
                     ],
@@ -371,138 +374,156 @@ class _SurgeryHomeState extends State<UltrasoundHome>
                   children: [
                     for (var request in usRequestsSearch.reversed)
                       request['status'] == '2'
-                          ? Card(
-                              child: Column(
-                                children: [
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "ID: ${request['id']}",
-                                      style: fileTitle(size),
+                          ? GestureDetector(
+                              onTap: () async => await getIt(
+                                      'usresponse',
+                                      widget.user,
+                                      context,
+                                      request['file_id'].toString())
+                                  .then((value) => value[0]['request_id'] ==
+                                          request['id'].toString()
+                                      ? Get.to(() =>
+                                          UsResponseOutput(data: value[0]))
+                                      : print('problem made me mad!')),
+                              child: Card(
+                                child: Column(
+                                  children: [
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "ID: ${request['id']}",
+                                        style: fileTitle(size),
+                                      ),
                                     ),
-                                  ),
-                                  Divider(),
-                                  Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceAround,
-                                    children: [
-                                      Column(
-                                        children: [
-                                          Divider(),
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "From: ${request['type'] == "0" ? "OBS" : "GYNAE"}",
-                                              style: fileTitle(size / 1.3),
-                                            ),
-                                          ),
-                                          Divider(),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              Container(
-                                                width: size.width / 20,
-                                                height: size.width / 20,
-                                                color: setUniColor(
-                                                    request['unit'].toString()),
+                                    Divider(),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceAround,
+                                      children: [
+                                        Column(
+                                          children: [
+                                            Divider(),
+                                            Padding(
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: Text(
+                                                "From: ${request['type'] == "0" ? "OBS" : "GYNAE"}",
+                                                style: fileTitle(size / 1.3),
                                               ),
+                                            ),
+                                            Divider(),
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment
+                                                      .spaceBetween,
+                                              children: [
+                                                Container(
+                                                  width: size.width / 20,
+                                                  height: size.width / 20,
+                                                  color: setUniColor(
+                                                      request['unit']
+                                                          .toString()),
+                                                ),
+                                                Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: Text(
+                                                    "Unit: ${request['unit']}",
+                                                    style:
+                                                        fileTitle(size / 1.3),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          ],
+                                        ),
+                                        SingleChildScrollView(
+                                          child: Column(
+                                            children: [
+                                              for (int i = 3;
+                                                  i <
+                                                      request.entries
+                                                              .map((e) => e)
+                                                              .toList()
+                                                              .length -
+                                                          10;
+                                                  i++)
+                                                request.entries
+                                                            .map((e) => e)
+                                                            .toList()[i]
+                                                            .value !=
+                                                        null
+                                                    ? Padding(
+                                                        padding:
+                                                            const EdgeInsets
+                                                                .all(8.0),
+                                                        child: Row(
+                                                          children: [
+                                                            Text(
+                                                              "${i - 2}   /  "
+                                                                  .toUpperCase(),
+                                                              style: fileTitle(
+                                                                  size),
+                                                            ),
+                                                            Text(
+                                                                "${request.entries.map((e) => e).toList()[i].value}"),
+                                                          ],
+                                                        ),
+                                                      )
+                                                    : Container(),
                                               Padding(
                                                 padding:
                                                     const EdgeInsets.all(8.0),
-                                                child: Text(
-                                                  "Unit: ${request['unit']}",
-                                                  style: fileTitle(size / 1.3),
+                                                child: Padding(
+                                                  padding:
+                                                      const EdgeInsets.all(8.0),
+                                                  child: SingleChildScrollView(
+                                                    child: Column(
+                                                      children: [
+                                                        Text(
+                                                          "Doctor remarks:",
+                                                          style: fileTitle(
+                                                              size / 1.5),
+                                                        ),
+                                                        SizedBox(
+                                                            width:
+                                                                size.width / 3,
+                                                            child: Text(
+                                                              "${request['remarks']}",
+                                                              overflow:
+                                                                  TextOverflow
+                                                                      .ellipsis,
+                                                              textAlign:
+                                                                  TextAlign
+                                                                      .center,
+                                                            )),
+                                                      ],
+                                                    ),
+                                                  ),
                                                 ),
                                               ),
                                             ],
                                           ),
-                                        ],
+                                        )
+                                      ],
+                                    ),
+                                    Divider(),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Sent:  ${amOrPm(request['created_at'], true).replaceAll('\n', ' ')}",
+                                        // style: fileTitle(size/1.3),
                                       ),
-                                      SingleChildScrollView(
-                                        child: Column(
-                                          children: [
-                                            for (int i = 3;
-                                                i <
-                                                    request.entries
-                                                            .map((e) => e)
-                                                            .toList()
-                                                            .length -
-                                                        10;
-                                                i++)
-                                              request.entries
-                                                          .map((e) => e)
-                                                          .toList()[i]
-                                                          .value !=
-                                                      null
-                                                  ? Padding(
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              8.0),
-                                                      child: Row(
-                                                        children: [
-                                                          Text(
-                                                            "${i - 2}   /  "
-                                                                .toUpperCase(),
-                                                            style:
-                                                                fileTitle(size),
-                                                          ),
-                                                          Text(
-                                                              "${request.entries.map((e) => e).toList()[i].value}"),
-                                                        ],
-                                                      ),
-                                                    )
-                                                  : Container(),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: SingleChildScrollView(
-                                                  child: Column(
-                                                    children: [
-                                                      Text(
-                                                        "Doctor remarks:",
-                                                        style: fileTitle(
-                                                            size / 1.5),
-                                                      ),
-                                                      SizedBox(
-                                                          width: size.width / 3,
-                                                          child: Text(
-                                                            "${request['remarks']}",
-                                                            overflow:
-                                                                TextOverflow
-                                                                    .ellipsis,
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                          )),
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )
-                                    ],
-                                  ),
-                                  Divider(),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Sent:  ${amOrPm(request['created_at'], true).replaceAll('\n', ' ')}",
-                                      // style: fileTitle(size/1.3),
                                     ),
-                                  ),
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Text(
-                                      "Responded at: ${amOrPm(request['updated_at'], true).replaceAll('\n', ' ')}",
-                                      // style: fileTitle(size/1.3),
+                                    Padding(
+                                      padding: const EdgeInsets.all(8.0),
+                                      child: Text(
+                                        "Responded at: ${amOrPm(request['updated_at'], true).replaceAll('\n', ' ')}",
+                                        // style: fileTitle(size/1.3),
+                                      ),
                                     ),
-                                  ),
-                                ],
+                                  ],
+                                ),
                               ),
                             )
                           : Container(),

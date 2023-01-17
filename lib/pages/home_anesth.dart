@@ -145,7 +145,7 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    logout(context));
+                                    logout(context, size));
                           },
                           icon: Icon(Icons.logout_outlined))
                     ],

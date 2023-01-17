@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
     try {
       await http.get(Uri.parse('${url}patient'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.user.token!}'
+        'Authorization': 'Bearer ${widget.user.token}'
       }).then((value) {
         if (value.statusCode == 200) {
           setState(() {
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          TitleD(setUniColor(widget.user.user!['unit']), size),
+          TitleD(setUniColor(widget.user.user['unit']), size),
           Divider(),
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -82,13 +82,13 @@ class _HomePageState extends State<HomePage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.user.user!['level'],
+                      widget.user.user['level'],
                       style: kLoginSubtitleStyle(size * 1.2),
                     ),
                     SizedBox(
                       width: size.width / 3.1,
                       child: Text(
-                        widget.user.user!['name'],
+                        widget.user.user['name'],
                         overflow: TextOverflow.fade,
                         style: fileTitle(size),
                       ),
@@ -133,7 +133,7 @@ class _HomePageState extends State<HomePage> {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    logout(context));
+                                    logout(context, size));
                           },
                           icon: Icon(Icons.logout_outlined))
                     ],

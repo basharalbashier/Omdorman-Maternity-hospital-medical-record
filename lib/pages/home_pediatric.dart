@@ -98,13 +98,13 @@ class _SurgeryHomeState extends State<PediatricHome>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.user.user!['level'],
+                        widget.user.user['level'],
                         style: kLoginSubtitleStyle(size * 1.2),
                       ),
                       SizedBox(
                         width: size.width / 3,
                         child: Text(
-                          widget.user.user!['name'],
+                          widget.user.user['name'],
                           overflow: TextOverflow.fade,
                           style: fileTitle(size),
                         ),
@@ -114,7 +114,7 @@ class _SurgeryHomeState extends State<PediatricHome>
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    logout(context));
+                                    logout(context, size));
                           },
                           icon: Icon(Icons.logout_outlined))
                     ],
@@ -261,7 +261,7 @@ class _SurgeryHomeState extends State<PediatricHome>
     try {
       await http.get(Uri.parse('${url}baby'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.user.token!}'
+        'Authorization': 'Bearer ${widget.user.token}'
       }).then((value) {
         if (value.statusCode == 200) {
           setState(() {
@@ -280,7 +280,6 @@ class _SurgeryHomeState extends State<PediatricHome>
             }
             _tabController =
                 TabController(length: babySearch.length, vsync: this);
-         
           });
         } else {
           // print('Error : ${value.body}');
@@ -292,4 +291,3 @@ class _SurgeryHomeState extends State<PediatricHome>
     // ... Navigate To your Home Page
   }
 }
-

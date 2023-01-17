@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 
-Future<String> pickTime(context) async{
+Future<String> pickTime(context) async {
   String timePicked = 'Time';
-await  showCupertinoModalPopup(
+  await showCupertinoModalPopup(
       context: context,
       builder: (BuildContext builder) {
         return Container(

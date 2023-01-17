@@ -618,7 +618,7 @@ class _AddPatientState extends State<AntenatalAddmission> {
               'vaginal_exam': vaginalController.text,
               'diagnosis': diaController.text,
               'immediat_instruction': immediateController.text,
-              'dr_id': widget.user.user!['id'],
+              'dr_id': widget.user.user['id'],
               'patient_id': widget.patient['id'],
               'file_id': widget.file['id'],
             });

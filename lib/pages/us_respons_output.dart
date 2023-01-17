@@ -5,6 +5,7 @@ import '../constant.dart';
 import '../models/setUnitColor.dart';
 import '../widgets/back_button.dart';
 import '../widgets/title.dart';
+import '../widgets/who_add_data.dart';
 
 class UsResponseOutput extends StatelessWidget {
   final Map data;
@@ -13,7 +14,6 @@ class UsResponseOutput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
     return Scaffold(
       body: SizedBox(
         height: size.height,
@@ -36,6 +36,7 @@ class UsResponseOutput extends StatelessWidget {
                       'OBS',
                       style: kLoginTitleStyle(size, Colors.orange),
                     ),
+                    whoAddDataAndWhen(size, context, data),
                   ],
                 ),
               ),
@@ -56,7 +57,18 @@ class UsResponseOutput extends StatelessWidget {
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.blueAccent)),
-                    child: Text("data")),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['number_of_pregnancies'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        )),
+                      ],
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -74,7 +86,18 @@ class UsResponseOutput extends StatelessWidget {
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.blueAccent)),
-                    child: Text("data")),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['fetal_heart'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        )),
+                      ],
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -92,7 +115,18 @@ class UsResponseOutput extends StatelessWidget {
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.blueAccent)),
-                    child: Text("data")),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['presentation'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        )),
+                      ],
+                    )),
               ),
               const Padding(
                 padding: EdgeInsets.all(8.0),
@@ -115,7 +149,13 @@ class UsResponseOutput extends StatelessWidget {
                     child: Row(
                       children: [
                         Text('BPD'),
-                        Text("data"),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['bpd'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('CM'),
                       ],
                     ),
@@ -127,7 +167,13 @@ class UsResponseOutput extends StatelessWidget {
                     // color: Colors.green,
                     child: Row(
                       children: [
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['bpd_week'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('Weeks'),
                       ],
                     ),
@@ -145,7 +191,13 @@ class UsResponseOutput extends StatelessWidget {
                     child: Row(
                       children: [
                         Text('HC'),
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['hc'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('CM'),
                       ],
                     ),
@@ -157,7 +209,13 @@ class UsResponseOutput extends StatelessWidget {
                     // color: Colors.green,
                     child: Row(
                       children: [
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['hc_week'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('Weeks'),
                       ],
                     ),
@@ -175,7 +233,13 @@ class UsResponseOutput extends StatelessWidget {
                     child: Row(
                       children: [
                         Text('F.L'),
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['fl'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('CM'),
                       ],
                     ),
@@ -187,7 +251,13 @@ class UsResponseOutput extends StatelessWidget {
                     // color: Colors.green,
                     child: Row(
                       children: [
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['fl_week'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('Weeks'),
                       ],
                     ),
@@ -205,7 +275,13 @@ class UsResponseOutput extends StatelessWidget {
                     child: Row(
                       children: [
                         Text('AC'),
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['ac'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('CM'),
                       ],
                     ),
@@ -217,7 +293,13 @@ class UsResponseOutput extends StatelessWidget {
                     // color: Colors.green,
                     child: Row(
                       children: [
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['ac_week'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('Weeks'),
                       ],
                     ),
@@ -235,7 +317,13 @@ class UsResponseOutput extends StatelessWidget {
                     child: Row(
                       children: [
                         Text('CRL'),
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['crl'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('CM'),
                       ],
                     ),
@@ -247,7 +335,13 @@ class UsResponseOutput extends StatelessWidget {
                     // color: Colors.green,
                     child: Row(
                       children: [
-                        Text('data'),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['crl_week'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        ),
                         Text('Weeks'),
                       ],
                     ),
@@ -268,7 +362,14 @@ class UsResponseOutput extends StatelessWidget {
                         child: Row(
                           children: [
                             Text('EFW'),
-                            Text('data'),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                data['efw'],
+                                style:
+                                    kLoginTitleStyle(size / 1.4, Colors.black),
+                              ),
+                            ),
                             Text('Kgs'),
                           ],
                         ),
@@ -287,7 +388,14 @@ class UsResponseOutput extends StatelessWidget {
                         child: Row(
                           children: [
                             Text('USS EDD'),
-                            Text('data'),
+                            Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Text(
+                                data['uss_edd'],
+                                style:
+                                    kLoginTitleStyle(size / 1.4, Colors.black),
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -312,7 +420,18 @@ class UsResponseOutput extends StatelessWidget {
                 child: Container(
                   decoration: BoxDecoration(
                       border: Border.all(color: Colors.blueAccent)),
-                  child: Text('data'),
+                  child: Row(
+                    children: [
+                      Expanded(
+                          child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          data['number_of_pregnancies'],
+                          style: kLoginTitleStyle(size / 1.4, Colors.black),
+                        ),
+                      )),
+                    ],
+                  ),
                 ),
               ),
               Padding(
@@ -336,7 +455,13 @@ class UsResponseOutput extends StatelessWidget {
                       'MVP',
                       style: kLoginTitleStyle(size / 3, Colors.black),
                     ),
-                    Text('data'),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        data['mvp'],
+                        style: kLoginTitleStyle(size / 1.4, Colors.black),
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -347,7 +472,16 @@ class UsResponseOutput extends StatelessWidget {
                   alignment: Alignment(0, 0),
                   // color: Colors.green,
                   child: Column(
-                    children: [Text('Structural Abnormalities'), Text('data')],
+                    children: [
+                      Text('Structural Abnormalities'),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          data['structural_abnormalities'],
+                          style: kLoginTitleStyle(size / 1.4, Colors.black),
+                        ),
+                      )
+                    ],
                   ),
                 ),
               ),
@@ -367,7 +501,18 @@ class UsResponseOutput extends StatelessWidget {
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.blueAccent)),
-                    child: Text('data')),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['biophysical_profile'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        )),
+                      ],
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -385,7 +530,18 @@ class UsResponseOutput extends StatelessWidget {
                 child: Container(
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.blueAccent)),
-                    child: Text('data')),
+                    child: Row(
+                      children: [
+                        Expanded(
+                            child: Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            data['doppler_edf'],
+                            style: kLoginTitleStyle(size / 1.4, Colors.black),
+                          ),
+                        )),
+                      ],
+                    )),
               ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -394,7 +550,21 @@ class UsResponseOutput extends StatelessWidget {
                   alignment: Alignment(0, 0),
                   // color: Colors.green,
                   child: Column(
-                    children: [Text('Comments and Suggestions'), Text('data')],
+                    children: [
+                      Text('Comments and Suggestions'),
+                      Row(
+                        children: [
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              data['comm'],
+                              style: kLoginTitleStyle(size / 1.4, Colors.black),
+                            ),
+                          )),
+                        ],
+                      )
+                    ],
                   ),
                 ),
               ),

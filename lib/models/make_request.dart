@@ -12,7 +12,7 @@ Future<dynamic> makeHttpRequest(
           'Access-Control-Allow-Origin': '*',
           'Content-type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': 'Bearer ${user.token!}',
+          'Authorization': 'Bearer ${user.token}',
         },
         body: body);
     // print(value.body);

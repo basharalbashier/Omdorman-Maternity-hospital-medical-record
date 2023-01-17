@@ -338,7 +338,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
               body: {
                 "type": widget.type
               }).then((value) {
-            getUsRespons();
+            getUsRequest();
             if (value.statusCode == 200 || value.statusCode == 201) {
               setState(() {
                 obsHistory = json.decode(value.body);
@@ -362,9 +362,9 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
     // ... Navigate To your Home Page
   }
 
-  getUsRespons() async {
+  getUsRequest() async {
     getRequst
-        .getIt("icureq", widget.user, context, widget.file['id'].toString())
+        .getIt("usrequest", widget.user, context, widget.file['id'].toString())
         .then((value) => setState(() => usRequest = value));
   }
 

@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import '../models/user_hive.dart';
 
 import '../widgets/accept_or_not_lab_request.dart';
+import '../widgets/add_external_lab_request.dart';
 import '../widgets/log_out.dart';
 import '../widgets/waiting_list.dart';
 
@@ -104,7 +105,7 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          TitleD(setUniColor(widget.user.user!['unit']), size),
+          TitleD(setUniColor(widget.user.user['unit']), size),
           // Text(
           //   'Lab Home',
           //   style: kLoginTitleStyle(size, Colors.black),
@@ -122,13 +123,13 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                      widget.user.user!['level'],
+                      widget.user.user['level'],
                       style: kLoginSubtitleStyle(size * 1.2),
                     ),
                     SizedBox(
                       width: size.width / 3.1,
                       child: Text(
-                        widget.user.user!['name'],
+                        widget.user.user['name'],
                         overflow: TextOverflow.fade,
                         style: fileTitle(size),
                       ),
@@ -166,7 +167,7 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                             showDialog(
                                 context: context,
                                 builder: (BuildContext context) =>
-                                    logout(context));
+                                    logout(context, size));
                           },
                           icon: Icon(Icons.logout_outlined))
                     ],
@@ -178,6 +179,12 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Divider(),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              children: [externalLabButton(context, {}, {}, "ex", widget.user)],
+            ),
           ),
           filterRequests(size),
           SizedBox(

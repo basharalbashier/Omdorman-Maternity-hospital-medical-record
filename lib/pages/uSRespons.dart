@@ -9,6 +9,7 @@ import '../constant.dart';
 import '../models/error_message.dart';
 import '../models/make_request.dart';
 import '../models/user_hive.dart';
+import '../widgets/back_button.dart';
 import '../widgets/title.dart';
 
 class UsResponse extends StatefulWidget {
@@ -98,6 +99,7 @@ class _MyHomePageState extends State<UsResponse> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               TitleD(setUniColor('unit'), size),
+              backButton(context),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Column(

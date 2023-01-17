@@ -37,13 +37,13 @@ class _SurgeryHomeState extends State<NutritioneHome> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.user.user!['level'],
+                        widget.user.user['level'],
                         style: kLoginSubtitleStyle(size * 1.2),
                       ),
                       SizedBox(
                         width: size.width / 3.1,
                         child: Text(
-                          widget.user.user!['name'],
+                          widget.user.user['name'],
                           overflow: TextOverflow.fade,
                           style: fileTitle(size),
                         ),
@@ -86,7 +86,7 @@ class _SurgeryHomeState extends State<NutritioneHome> {
                               showDialog(
                                   context: context,
                                   builder: (BuildContext context) =>
-                                      logout(context));
+                                      logout(context, size));
                             },
                             icon: Icon(Icons.logout_outlined))
                       ],

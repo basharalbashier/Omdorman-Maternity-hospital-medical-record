@@ -47,7 +47,7 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
   @override
   void initState() {
     getPatient();
-    if (widget.user.user!['dep'] != 'Department of Statistics') {
+    if (widget.user.user['dep'] != 'Department of Statistics') {
       _tabController = TabController(length: taps.length, vsync: this);
 
       checkThefuckers();
@@ -152,7 +152,7 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
               padding: const EdgeInsets.all(8.0),
               child: Divider(),
             ),
-            widget.user.user!['dep'] != 'Department of Statistics'
+            widget.user.user['dep'] != 'Department of Statistics'
                 ? size.width > 770
                     ? babyTaps(size)
                     : Center(

@@ -21,7 +21,7 @@ routeManager(context, User user) {
   SimpleUIController simpleUIController = Get.find<SimpleUIController>();
   simpleUIController.getUsers(user, context);
 
-  String level = user.user!['dep'];
+  String level = user.user['dep'];
   if (level == 'Department of Pediatrics') {
     Navigator.pushAndRemoveUntil(
       context,

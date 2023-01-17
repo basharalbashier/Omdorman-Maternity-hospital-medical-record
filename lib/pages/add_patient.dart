@@ -31,6 +31,7 @@ class _AddPatientState extends State<AddPatient> {
         }));
     super.initState();
   }
+
   bool show = true;
   @override
   Widget build(BuildContext context) {
@@ -72,7 +73,6 @@ class _AddPatientState extends State<AddPatient> {
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                         ),
-                     
                       ),
                     ),
                   ),
@@ -88,7 +88,6 @@ class _AddPatientState extends State<AddPatient> {
                       alignment: Alignment(0, 0),
                       // color: Colors.green,
                       child: TextFormField(
-                    
                         controller: ageController,
                         style: kTextFormFieldStyle(),
                         decoration: const InputDecoration(
@@ -100,7 +99,6 @@ class _AddPatientState extends State<AddPatient> {
                         ),
                         // controller: nameController,
                         // The validator receives the text that the user has entered.
-                    
                       ),
                     ),
                   ),
@@ -116,24 +114,20 @@ class _AddPatientState extends State<AddPatient> {
                       alignment: Alignment(0, 0),
                       // color: Colors.green,
                       child: TextFormField(
-                            maxLength: 9,
-                        onChanged: ((v){
-                         
-
-                        }),
+                        maxLength: 9,
+                        onChanged: ((v) {}),
                         style: kTextFormFieldStyle(),
                         controller: telController,
                         decoration: const InputDecoration(
                           // prefixIcon: Icon(Icons.person),
-                            hintText: "1 or 9 xxxxxxx",
-                            label: Text('Phone'),
+                          hintText: "1 or 9 xxxxxxx",
+                          label: Text('Phone'),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.all(Radius.circular(15)),
                           ),
                         ),
                         // controller: nameController,
                         // The validator receives the text that the user has entered.
-                     
                       ),
                     ),
                   ),
@@ -159,7 +153,6 @@ class _AddPatientState extends State<AddPatient> {
                         ),
                         // controller: nameController,
                         // The validator receives the text that the user has entered.
-                     
                       ),
                     ),
                   ),
@@ -265,15 +258,15 @@ class _AddPatientState extends State<AddPatient> {
             ),
           ),
           onPressed: () async {
-              setState(() {
-                show = !show;
-              });
+            setState(() {
+              show = !show;
+            });
             final msg = jsonEncode({
               'name': nameController.text,
               'age': replaceArabicNumber(ageController.text),
               'tel': replaceArabicNumber(telController.text),
               'occup': occupController.text,
-              'user_id': user.user!['id']
+              'user_id': user.user['id']
             });
             try {
               await http
@@ -286,9 +279,9 @@ class _AddPatientState extends State<AddPatient> {
                       body: msg)
                   .then((value) {
                 if (value.statusCode == 205) {
-                           setState(() {
-                show = !show;
-              });
+                  setState(() {
+                    show = !show;
+                  });
                   errono(
                       "${json.decode(value.body)['name']}",
                       "${json.decode(value.body)['name']}",
@@ -300,19 +293,18 @@ class _AddPatientState extends State<AddPatient> {
                 } else {
                   // print(value.statusCode);
                   if (value.statusCode == 201) {
-                      setState(() {
-                show = !show;
-              });
-                    chooseFileType(
-                        json.decode(value.body), context, size);
+                    setState(() {
+                      show = !show;
+                    });
+                    chooseFileType(json.decode(value.body), context, size);
                   }
                 }
               });
             } catch (e) {
-                setState(() {
+              setState(() {
                 show = !show;
               });
-                 errono("Connection Error", "Connection Error", context, true,
+              errono("Connection Error", "Connection Error", context, true,
                   Container(), 2);
               // print(e);
             }

@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:aldayat_screens/models/error_message.dart';
+import 'package:aldayat_screens/models/get_request.dart';
 import 'package:aldayat_screens/models/make_request.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
@@ -256,8 +257,10 @@ Widget uSRequest(
                                               )
                                             ],
                                           )
-                                        : oldRequsts[i]['staus'] == "2"
+                                        : oldRequsts[i]['status'] == "2"
                                             ? Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.center,
                                                 children: [
                                                   Icon(
                                                     Icons.check,
@@ -274,8 +277,21 @@ Widget uSRequest(
                             ),
                             onTap: () async => Future.delayed(
                                     Duration(seconds: 1))
-                                .then((value) => Get.to(() =>
-                                    UsResponseOutput(data: oldRequsts[i])))),
+                                .then((value) async => oldRequsts[i]
+                                            ['status'] ==
+                                        "2"
+                                    ? {
+                                        await getIt('usresponse', user, context,
+                                                file['id'].toString())
+                                            .then((value) => value[0]
+                                                        ['request_id'] ==
+                                                    oldRequsts[i]['id']
+                                                        .toString()
+                                                ? Get.to(() => UsResponseOutput(
+                                                    data: value[0]))
+                                                : print('problem made me mad!'))
+                                      }
+                                    : null)),
 
                       // Pop
                     ]),

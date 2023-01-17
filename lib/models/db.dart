@@ -73,4 +73,9 @@ class DbLite {
         : null;
     return user;
   }
+
+  Future deletUserData() async {
+    var db = await database;
+    await db.delete("User");
+  }
 }

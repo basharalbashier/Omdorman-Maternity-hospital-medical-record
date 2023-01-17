@@ -91,7 +91,7 @@ class _MyHomePageState extends State<AddObs> {
   @override
   Widget build(BuildContext context) {
     if (!show) {
-      return Scaffold(body: waitingWidget(widget.user.user!['unit']));
+      return Scaffold(body: waitingWidget(widget.user.user['unit']));
     }
     var size = MediaQuery.of(context).size;
     return Scaffold(
@@ -101,7 +101,7 @@ class _MyHomePageState extends State<AddObs> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TitleD(setUniColor(widget.user.user!['unit']), size),
+              TitleD(setUniColor(widget.user.user['unit']), size),
               backButton(context),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -437,7 +437,7 @@ class _MyHomePageState extends State<AddObs> {
                           "chest_cvs_exam": chestCont.text,
                           "comments_and_social_plans":
                               commentAndSocialController.text,
-                          "dr_id": widget.user.user!['id'].toString(),
+                          "dr_id": widget.user.user['id'].toString(),
                           "patient_id": widget.patient['id'].toString(),
                           "file_id": widget.file['id'].toString(),
                         });
