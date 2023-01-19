@@ -9,27 +9,26 @@ String amOrPm(String timeFrom, bool fullDateAndtime) {
   String after = timeFrom.substring(13, 16);
   String dateFrom = timeFrom.substring(0, 10);
   int intHour = int.parse(hour);
-try{
+  try {
     if (!fullDateAndtime) {
-    if (intHour > 12) {
-      time = "${intHour - 12 + 2}${after} PM";
+      if (intHour > 12) {
+        time = "${intHour - 12 + 2}${after} PM";
+      } else {
+        time = "${intHour + 2}${after} AM";
+      }
     } else {
-      time = "${intHour + 2}${after} AM";
-    }
-  } else {
-    DateTime date = DateTime.parse(dateFrom);
-    String dateFormat = DateFormat('EEEE').format(date);
+      DateTime date = DateTime.parse(dateFrom);
+      String dateFormat = DateFormat('EEEE').format(date);
 
-    if (intHour > 12) {
-      time = "$dateFormat\n${intHour - 12 + 2}${after} PM\n$dateFrom";
-    } else {
-      time = "$dateFormat\n${intHour + 2}${after} AM\n$dateFrom";
+      if (intHour > 12) {
+        time = "$dateFormat\n${intHour - 12 + 2}${after} PM\n$dateFrom";
+      } else {
+        time = "$dateFormat\n${intHour + 2}${after} AM\n$dateFrom";
+      }
     }
+  } catch (e) {
+    time = 'Error on time';
   }
-
-}catch(e){
-  time='Error on time';
-}
   return time;
 }
 

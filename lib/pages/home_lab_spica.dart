@@ -13,7 +13,6 @@ import '../models/user_hive.dart';
 import '../widgets/accept_or_not_lab_request.dart';
 import '../widgets/add_external_lab_request.dart';
 import '../widgets/log_out.dart';
-import '../widgets/waiting_list.dart';
 
 class LabHome extends StatefulWidget {
   final User user;
@@ -26,20 +25,25 @@ class LabHome extends StatefulWidget {
 class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
   List labRequests = [];
   List labRequestsSearch = [];
-  getAllRequests() async {
-    await getIt("lab", widget.user, context, '0').then((value) => {
-          value.length != labRequests.length
-              ? setState(() => {
-                    shouldAlert = true,
-                    _start = value.length * 10,
-                    startTimer(),
-                    labRequests = value,
-                    labRequestsSearch = labRequests.reversed.toList()
-                  })
-              : null,
-        });
-    // ... Navigate To your Home Page
-  }
+  getAllRequests() async =>
+      await getIt("lab", widget.user, context, '0').then((value) => {
+            value.length != labRequests.length
+                ? setState(() => {
+                      shouldAlert = true,
+                      _start = value.length * 10,
+                      startTimer(),
+                      labRequests = value,
+                      labRequestsSearch = labRequests.reversed.toList()
+                    })
+                : null,
+          });
+  // ... Navigate To your Home Page
+  List<String> titles = [
+    "New",
+    "In progress",
+    "Finished",
+    "Rejected",
+  ];
 
   bool shouldAlert = false;
   var color = Colors.white;
@@ -67,28 +71,22 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
 
   int _start = 0;
   Timer? _timer;
-  void startTimer() {
+  void startTimer() async {
     const oneSec = const Duration(seconds: 1);
+    // await getAllRequests().then((value) =>
     _timer = new Timer.periodic(
-      oneSec,
-      (Timer timer) {
-        if (_start == 0) {
-          setState(() {
-            timer.cancel();
-          });
-        } else {
-          setState(() {
-            if (_start % 2 == 0) {
-              color = Colors.pink;
-              runRingTone(1);
-            } else {
-              color = Colors.white;
-            }
-            _start--;
-          });
-        }
-      },
-    );
+        oneSec,
+        (Timer timer) => {
+              _start == 0
+                  ? setState(() => timer.cancel())
+                  : setState(
+                      () => _start % 2 == 0
+                          ? {color = Colors.pink, runRingTone(1)}
+                          : color = Colors.white,
+                    ),
+              _start--,
+            });
+    //      _start--;
   }
 
   @override
@@ -183,7 +181,14 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: Row(
-              children: [externalLabButton(context, {}, {}, "ex", widget.user)],
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                externalLabButton(context, {}, {}, "ex", widget.user),
+                IconButton(
+                  onPressed: () async => await getAllRequests(),
+                  icon: Icon(Icons.refresh),
+                )
+              ],
             ),
           ),
           filterRequests(size),
@@ -193,302 +198,10 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
             child: TabBarView(
               controller: _tabController,
               children: <Widget>[
-                Column(
-                  children: [
-                    Divider(),
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: labRequestsSearch.length,
-                      itemBuilder: (context, index) =>
-                          labRequestsSearch[index]['status'] == '0'
-                              ? GestureDetector(
-                                  onTap: () {
-                                    labRequstDialog(labRequestsSearch[index],
-                                        context, size, widget.user);
-                                  },
-                                  child: Card(
-                                    color: color.withOpacity(.3),
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceAround,
-                                      children: [
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Text(
-                                            "ID : ${labRequestsSearch[index]['id']}",
-                                            style: fileTitle(size),
-                                          ),
-                                        ),
-                                        Text(amOrPm(
-                                                labRequestsSearch[index]
-                                                    ['created_at'],
-                                                true)
-                                            .replaceAll("\n", " "))
-                                      ],
-                                    ),
-                                  ))
-                              : Container(),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: labRequestsSearch.length,
-                      itemBuilder: (context, index) =>
-                          labRequestsSearch[index]['status'] == '1'
-                              ? GestureDetector(
-                                  onTap: () {
-                                    labResult(labRequestsSearch[index], context,
-                                        size, widget.user);
-                                  },
-                                  child: SizedBox(
-                                    height: size.height / 10,
-                                    child: Card(
-                                      // color: setUniColor(request['id'].toString()),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Padding(
-                                            padding: const EdgeInsets.all(8.0),
-                                            child: Text(
-                                              "ID: ${labRequestsSearch[index]['id']}",
-                                              style: fileTitle(size),
-                                            ),
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Received at:  ",
-                                                style: fileTitle(size),
-                                              ),
-                                              Text(amOrPm(
-                                                      labRequestsSearch[index]
-                                                          ['seen_at'],
-                                                      true)
-                                                  .replaceAll("\n", " ")),
-                                            ],
-                                          ),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                "Received by:  ",
-                                                style: fileTitle(size),
-                                              ),
-                                              Text(drName(
-                                                  labRequestsSearch[index]
-                                                      ['got_by_id'])),
-                                            ],
-                                          )
-                                        ],
-                                      ),
-                                    ),
-                                  ))
-                              : Container(),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: labRequestsSearch.length,
-                      itemBuilder: (context, index) => labRequestsSearch[index]
-                                  ['status'] ==
-                              '2'
-                          ? GestureDetector(
-                              onTap: () {
-                                // labRequstDialog(request, context, size);
-                              },
-                              child: Card(
-                                child: Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceBetween,
-                                  children: [
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        for (int i = 1;
-                                            i <
-                                                labRequestsSearch[index]
-                                                        .entries
-                                                        .map((e) => e)
-                                                        .toList()
-                                                        .length -
-                                                    13;
-                                            i++)
-                                          labRequestsSearch[index]
-                                                      .entries
-                                                      .map((e) => e)
-                                                      .toList()[i]
-                                                      .value !=
-                                                  'false'
-                                              ? Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Row(
-                                                    children: [
-                                                      Text(
-                                                        "${labRequestsSearch[index].entries.map((e) => e).toList()[i].key}   :  "
-                                                            .toUpperCase(),
-                                                        style: fileTitle(size),
-                                                      ),
-                                                      Text(
-                                                          "${labRequestsSearch[index]["result"]}"),
-                                                    ],
-                                                  ),
-                                                )
-                                              : Container(),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "comment  :  ".toUpperCase(),
-                                                style: fileTitle(size),
-                                              ),
-                                              Text(
-                                                  "${labRequestsSearch[index]["comm"]}"),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Reqested At  :  "
-                                                    .toUpperCase(),
-                                                style: fileTitle(size),
-                                              ),
-                                              Text(amOrPm(
-                                                      labRequestsSearch[index]
-                                                          ["created_at"],
-                                                      true)
-                                                  .replaceAll("\n", " ")),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Responded At  :  "
-                                                    .toUpperCase(),
-                                                style: fileTitle(size),
-                                              ),
-                                              Text(amOrPm(
-                                                      labRequestsSearch[index]
-                                                          ["updated_at"],
-                                                      true)
-                                                  .replaceAll("\n", " ")),
-                                            ],
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: Row(
-                                            children: [
-                                              Text(
-                                                "Responded by  :  "
-                                                    .toUpperCase(),
-                                                style: fileTitle(size),
-                                              ),
-                                              Text(drName(
-                                                labRequestsSearch[index]
-                                                    ["got_by_id"],
-                                              )),
-                                            ],
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                    Padding(
-                                      padding: const EdgeInsets.all(8.0),
-                                      child: Row(
-                                        children: [
-                                          Text(
-                                            'ID : ',
-                                            style: fileTitle(size),
-                                          ),
-                                          Text(
-                                              "${labRequestsSearch[index]['id']}"),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ))
-                          : Container(),
-                    )
-                  ],
-                ),
-                Column(
-                  children: [
-                    ListView.builder(
-                      shrinkWrap: true,
-                      itemCount: labRequestsSearch.length,
-                      itemBuilder: (context, index) =>
-                          labRequestsSearch[index]['status'] == '5'
-                              ? Card(
-                                  // color: setUniColor(request['id'].toString()),
-                                  child: Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Text(
-                                          "ID: ${labRequestsSearch[index]['id']}",
-                                          style: fileTitle(size),
-                                        ),
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Justification:  ",
-                                            style: fileTitle(size),
-                                          ),
-                                          Text(labRequestsSearch[index]
-                                              ['if_rejected_why']),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Rejected at:  ",
-                                            style: fileTitle(size),
-                                          ),
-                                          Text(amOrPm(
-                                                  labRequestsSearch[index]
-                                                      ['seen_at'],
-                                                  true)
-                                              .replaceAll("\n", " ")),
-                                        ],
-                                      ),
-                                      Row(
-                                        children: [
-                                          Text(
-                                            "Rejected by:  ",
-                                            style: fileTitle(size),
-                                          ),
-                                          Text(drName(labRequestsSearch[index]
-                                              ['got_by_id'])),
-                                        ],
-                                      )
-                                    ],
-                                  ),
-                                )
-
-                              //if_rejected_why
-                              : Container(),
-                    )
-                  ],
-                ),
+                newRequests(size),
+                inProgress(size),
+                finished(size),
+                rejected(size)
               ],
             ),
           ),
@@ -504,30 +217,269 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
         labelColor: Colors.blueGrey.shade900,
         controller: _tabController,
         tabs: <Widget>[
-          Tab(
-            child: Text(
-              "New",
-              style: fileTitle(size / 1.1),
+          for (var i in titles)
+            Tab(
+              child: Text(
+                i,
+                style: fileTitle(size / 1.1),
+              ),
             ),
-          ),
-          Tab(
-            child: Text(
-              "In progress",
-              style: fileTitle(size / 1.1),
-            ),
-          ),
-          Tab(
-            child: Text(
-              "Finished",
-              style: fileTitle(size / 1.1),
-            ),
-          ),
-          Tab(
-            child: Text(
-              "Rejected",
-              style: fileTitle(size / 1.1),
-            ),
-          ),
         ]);
   }
+
+  newRequests(Size size) => ListView.builder(
+        shrinkWrap: true,
+        itemCount: labRequestsSearch.length,
+        itemBuilder: (context, index) => labRequestsSearch[index]['status'] ==
+                '0'
+            ? GestureDetector(
+                onTap: () {
+                  labRequstDialog(
+                      labRequestsSearch[index], context, size, widget.user);
+                },
+                child: Card(
+                  color: color.withOpacity(.3),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          "ID : ${labRequestsSearch[index]['id']}",
+                          style: fileTitle(size),
+                        ),
+                      ),
+                      Text(amOrPm(labRequestsSearch[index]['created_at'], true)
+                          .replaceAll("\n", " "))
+                    ],
+                  ),
+                ))
+            : Container(),
+      );
+
+  inProgress(Size size) => ListView.builder(
+        shrinkWrap: true,
+        itemCount: labRequestsSearch.length,
+        itemBuilder: (context, index) => labRequestsSearch[index]['status'] ==
+                '1'
+            ? GestureDetector(
+                onTap: () {
+                  labResult(
+                      labRequestsSearch[index], context, size, widget.user);
+                },
+                child: SizedBox(
+                  height: size.height / 10,
+                  child: Card(
+                    // color: setUniColor(request['id'].toString()),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            "ID: ${labRequestsSearch[index]['id']}",
+                            style: fileTitle(size),
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Received at:  ",
+                              style: fileTitle(size),
+                            ),
+                            Text(amOrPm(
+                                    labRequestsSearch[index]['seen_at'], true)
+                                .replaceAll("\n", " ")),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Text(
+                              "Received by:  ",
+                              style: fileTitle(size),
+                            ),
+                            Text(drName(labRequestsSearch[index]['got_by_id'])),
+                          ],
+                        )
+                      ],
+                    ),
+                  ),
+                ))
+            : Container(),
+      );
+
+  finished(Size size) => ListView.builder(
+        shrinkWrap: true,
+        itemCount: labRequestsSearch.length,
+        itemBuilder: (context, index) => labRequestsSearch[index]['status'] ==
+                '2'
+            ? GestureDetector(
+                onTap: () {
+                  // labRequstDialog(request, context, size);
+                },
+                child: Card(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (int i = 1;
+                              i <
+                                  labRequestsSearch[index]
+                                          .entries
+                                          .map((e) => e)
+                                          .toList()
+                                          .length -
+                                      13;
+                              i++)
+                            labRequestsSearch[index]
+                                        .entries
+                                        .map((e) => e)
+                                        .toList()[i]
+                                        .value !=
+                                    'false'
+                                ? Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Row(
+                                      children: [
+                                        Text(
+                                          "${labRequestsSearch[index].entries.map((e) => e).toList()[i].key}   :  "
+                                              .toUpperCase(),
+                                          style: fileTitle(size),
+                                        ),
+                                        Text(
+                                            "${labRequestsSearch[index]["result"]}"),
+                                      ],
+                                    ),
+                                  )
+                                : Container(),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "comment  :  ".toUpperCase(),
+                                  style: fileTitle(size),
+                                ),
+                                Text(labRequestsSearch[index]["comm"] ?? ''),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Requested At  :  ".toUpperCase(),
+                                  style: fileTitle(size),
+                                ),
+                                Text(amOrPm(
+                                        labRequestsSearch[index]["created_at"],
+                                        true)
+                                    .replaceAll("\n", " ")),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Responded At  :  ".toUpperCase(),
+                                  style: fileTitle(size),
+                                ),
+                                Text(amOrPm(
+                                        labRequestsSearch[index]["updated_at"],
+                                        true)
+                                    .replaceAll("\n", " ")),
+                              ],
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  "Responded by  :  ".toUpperCase(),
+                                  style: fileTitle(size),
+                                ),
+                                Text(drName(
+                                  labRequestsSearch[index]["got_by_id"],
+                                )),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Row(
+                          children: [
+                            Text(
+                              'ID : ',
+                              style: fileTitle(size),
+                            ),
+                            Text("${labRequestsSearch[index]['id']}"),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ))
+            : Container(),
+      );
+
+  rejected(Size size) => ListView.builder(
+        shrinkWrap: true,
+        itemCount: labRequestsSearch.length,
+        itemBuilder: (context, index) => labRequestsSearch[index]['status'] ==
+                '5'
+            ? Card(
+                // color: setUniColor(request['id'].toString()),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text(
+                        "ID: ${labRequestsSearch[index]['id']}",
+                        style: fileTitle(size),
+                      ),
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Justification:  ",
+                          style: fileTitle(size),
+                        ),
+                        Text(labRequestsSearch[index]['if_rejected_why']),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Rejected at:  ",
+                          style: fileTitle(size),
+                        ),
+                        Text(amOrPm(labRequestsSearch[index]['seen_at'], true)
+                            .replaceAll("\n", " ")),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Text(
+                          "Rejected by:  ",
+                          style: fileTitle(size),
+                        ),
+                        Text(drName(labRequestsSearch[index]['got_by_id'])),
+                      ],
+                    )
+                  ],
+                ),
+              )
+
+            //if_rejected_why
+            : Container(),
+      );
 }

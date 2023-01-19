@@ -8,6 +8,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get_connect/http/src/utils/utils.dart';
 import 'package:http/http.dart' as http;
 import '../constant.dart';
+import '../models/route_manager.dart';
 import '../models/user_hive.dart';
 
 labRequstDialog(Map request, contexte, size, User user) async {
@@ -56,7 +57,6 @@ labRequstDialog(Map request, contexte, size, User user) async {
   List<MapEntry> singles = request.entries.map((e) => e).toList();
 
   if (request['patient_id'] == 'null') {
-    print(request['patient_id']);
   } else {
     await getIt("patient", user, contexte, request['patient_id'])
         .then((value) => patientInfo = value[0]);
@@ -64,7 +64,7 @@ labRequstDialog(Map request, contexte, size, User user) async {
 
   showAll = T;
   await showDialog<void>(
-    barrierDismissible: F,
+    barrierDismissible: true,
     context: contexte,
     builder: (BuildContext context) {
       return AlertDialog(
@@ -209,8 +209,7 @@ labRequstDialog(Map request, contexte, size, User user) async {
                                                         'Baerer ${user.token}'
                                                   },
                                                   body: jsonEncode({
-                                                    "got_by_id": user
-                                                        .user!['id']
+                                                    "got_by_id": user.user['id']
                                                         .toString(),
                                                     "seen_at":
                                                         "${DateTime.now()}",
@@ -221,7 +220,7 @@ labRequstDialog(Map request, contexte, size, User user) async {
                                               .then((value) {
                                             if (value.statusCode == 200 ||
                                                 value.statusCode == 201) {
-                                              Navigator.of(context).pop();
+                                              routeManager(context, user);
                                             }
                                           });
                                         } catch (e) {
@@ -273,14 +272,14 @@ labRequstDialog(Map request, contexte, size, User user) async {
                                           },
                                           body: jsonEncode({
                                             "got_by_id":
-                                                user.user!['id'].toString(),
+                                                user.user['id'].toString(),
                                             "seen_at": "${DateTime.now()}",
                                             "status": "1",
                                           }))
                                       .then((value) {
                                     if (value.statusCode == 200 ||
                                         value.statusCode == 201) {
-                                      Navigator.of(context).pop();
+                                      routeManager(context, user);
                                     }
                                   });
                                 } catch (e) {

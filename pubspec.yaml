@@ -45,7 +45,6 @@ dependencies:
   qr_bar_code_scanner_dialog: ^0.0.5
   hive: ^2.2.3
   qr_flutter: ^4.0.0
-  flutter_native_splash: ^2.2.16
   shimmer: ^2.0.0
   fl_chart: ^0.55.2
   just_audio: ^0.9.30
@@ -56,6 +55,8 @@ dependencies:
   path: ^1.8.3
   sqflite: ^2.2.3
   path_provider: ^2.0.11
+  printing: ^5.6.5
+  pdf: ^3.6.4
 
 dev_dependencies:
   flutter_test:

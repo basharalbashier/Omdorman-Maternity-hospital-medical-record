@@ -2,7 +2,7 @@ import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/login.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_native_splash/flutter_native_splash.dart';
+// import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:hive/hive.dart';
@@ -10,15 +10,15 @@ import 'widgets/contact_me.dart';
 import 'package:flutter/foundation.dart' show kIsWeb;
 
 void main() {
-  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  // WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  // FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   if (kIsWeb) {
     Hive.registerAdapter(UserAdapter());
   }
   if (Platform.isLinux || Platform.isWindows) {
     // DbLite.db.database;
   }
-  FlutterNativeSplash.remove();
+  // FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     DayatApp(),

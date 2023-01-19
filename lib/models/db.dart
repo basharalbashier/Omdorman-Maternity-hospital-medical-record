@@ -52,7 +52,7 @@ class DbLite {
     var db = await database;
     // print(db);
     user.user['token'] = user.token;
-    user.user['id'] = 0;
+    // user.user['id'] = 0;
     user.user.removeWhere((key, value) => key == "created_at");
     user.user.removeWhere((key, value) => key == "updated_at");
     await db.insert('User', user.user);

@@ -13,11 +13,10 @@ class SimpleUIController extends GetxController {
       "id": 70,
       "name": "omer",
     },
-    {}
   ].obs;
 
   getUsers(user, context) async {
     await getIt('user', user, context, '0')
-        .then((value) => {users = value.obs});
+        .then((value) => {users.clear(), users = value.obs});
   }
 }

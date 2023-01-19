@@ -66,6 +66,7 @@ String url = 'http://192.168.13.104/api/';
 
 
 
+
 /*
 1 # php artisan make:mail WelcomeNewUser --markdown=emails/users/welcome-new-user
 
