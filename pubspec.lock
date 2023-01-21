@@ -33,14 +33,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "0.1.13"
-  barcode:
-    dependency: transitive
-    description:
-      name: barcode
-      sha256: "6f4e44699843c336fcb4a14a4f4221f03d21ae47dd8c4ae4c25ffc7b7dd1cfb8"
-      url: "https://pub.dev"
-    source: hosted
-    version: "2.1.0"
   boolean_selector:
     dependency: transitive
     description:
@@ -344,14 +336,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.8.3"
-  path_parsing:
-    dependency: transitive
-    description:
-      name: path_parsing
-      sha256: ee5c47c1058ad66b4a41746ec3996af9593d0858872807bcd64ac118f0700337
-      url: "https://pub.dev"
-    source: hosted
-    version: "0.2.1"
   path_provider:
     dependency: "direct main"
     description:
@@ -408,14 +392,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.7"
-  pdf:
-    dependency: "direct main"
-    description:
-      name: pdf
-      sha256: "51d855ffc6ba3bd029f279590134230d4243b35a2cc9d54b3101ec6ef69ef572"
-      url: "https://pub.dev"
-    source: hosted
-    version: "3.6.4"
   petitparser:
     dependency: transitive
     description:
@@ -448,14 +424,6 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "3.6.2"
-  printing:
-    dependency: "direct main"
-    description:
-      name: printing
-      sha256: "6eeefa2801d19352c7b546a86fe89ab72f3b9770f73be7e08d8143d419f0972d"
-      url: "https://pub.dev"
-    source: hosted
-    version: "5.6.5"
   process:
     dependency: transitive
     description:

@@ -8,11 +8,13 @@ import 'package:aldayat_screens/models/setUnitColor.dart';
 import 'package:aldayat_screens/widgets/lab_result.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
+import 'package:get/route_manager.dart';
 import '../models/user_hive.dart';
 
 import '../widgets/accept_or_not_lab_request.dart';
 import '../widgets/add_external_lab_request.dart';
 import '../widgets/log_out.dart';
+import '../widgets/print_lab_result.dart';
 
 class LabHome extends StatefulWidget {
   final User user;
@@ -412,17 +414,26 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                           ),
                         ],
                       ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Row(
-                          children: [
-                            Text(
-                              'ID : ',
-                              style: fileTitle(size),
+                      Column(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Row(
+                              children: [
+                                Text(
+                                  'ID : ',
+                                  style: fileTitle(size),
+                                ),
+                                Text("${labRequestsSearch[index]['id']}"),
+                              ],
                             ),
-                            Text("${labRequestsSearch[index]['id']}"),
-                          ],
-                        ),
+                          ),
+                          IconButton(
+                              onPressed: () =>
+                                  Get.to(() => PrintLabResult("kjk,gbkj")),
+                              icon: Icon(Icons.print))
+                        ],
                       ),
                     ],
                   ),
