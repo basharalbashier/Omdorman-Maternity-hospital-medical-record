@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/login.dart';
+import 'package:aldayat_screens/widgets/print_lab_result.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -15,9 +16,9 @@ void main() {
   if (kIsWeb) {
     Hive.registerAdapter(UserAdapter());
   }
-  if (Platform.isLinux || Platform.isWindows) {
-    // DbLite.db.database;
-  }
+  // if (Platform.isLinux || Platform.isWindows) {
+  //   // DbLite.db.database;
+  // }
   // FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
   runApp(
@@ -52,7 +53,7 @@ class DayatApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(LoginView(), context));
+        home: PrivateScaffold(PrintLabResult("iujlkjsadfkljdasfj"), context));
   }
   // LoginView()
 }

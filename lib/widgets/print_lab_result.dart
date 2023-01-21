@@ -14,14 +14,14 @@ class PrintLabResult extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
+        var size = MediaQuery.of(context).size;
+
+    return  Scaffold(
         appBar: AppBar(title: Text(title)),
         body: PdfPreview(
           build: (format) => _generatePdf(format, title),
         ),
-      ),
-    );
+      );
   }
 
   Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
@@ -41,7 +41,6 @@ class PrintLabResult extends StatelessWidget {
                 ),
               ),
               pw.SizedBox(height: 20),
-              pw.Flexible(child: pw.FlutterLogo())
             ],
           );
         },
