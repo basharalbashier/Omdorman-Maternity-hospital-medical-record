@@ -35,7 +35,7 @@ packages:
       name: barcode
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
+    version: "2.2.3"
   boolean_selector:
     dependency: transitive
     description:
@@ -309,7 +309,7 @@ packages:
       name: path_parsing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "0.2.1"
+    version: "1.0.1"
   path_provider:
     dependency: "direct main"
     description:
@@ -360,12 +360,12 @@ packages:
     source: hosted
     version: "2.0.7"
   pdf:
-    dependency: "direct main"
+    dependency: transitive
     description:
       name: pdf
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "3.6.4"
+    version: "3.8.4"
   petitparser:
     dependency: transitive
     description:
@@ -400,7 +400,7 @@ packages:
       name: printing
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "5.6.5"
+    version: "5.9.3"
   process:
     dependency: transitive
     description:
@@ -414,28 +414,7 @@ packages:
       name: qr
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "2.1.0"
-  qr_bar_code_scanner_dialog:
-    dependency: "direct main"
-    description:
-      name: qr_bar_code_scanner_dialog
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "0.0.5"
-  qr_code_scanner:
-    dependency: transitive
-    description:
-      name: qr_code_scanner
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "1.0.1"
-  qr_flutter:
-    dependency: "direct main"
-    description:
-      name: qr_flutter
-      url: "https://pub.dartlang.org"
-    source: hosted
-    version: "4.0.0"
+    version: "3.0.1"
   responsive_grid:
     dependency: "direct main"
     description:

@@ -16,10 +16,6 @@ void main() {
   if (kIsWeb) {
     Hive.registerAdapter(UserAdapter());
   }
-  // if (Platform.isLinux || Platform.isWindows) {
-  //   // DbLite.db.database;
-  // }
-  // FlutterNativeSplash.remove();
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     DayatApp(),
@@ -28,22 +24,6 @@ void main() {
 
 class DayatApp extends StatelessWidget {
   const DayatApp({Key? key}) : super(key: key);
-//Unauthenticated.
-  // var item = {
-  //   "id": 1,
-  //   "created_at": "2022-02-13T18:28:2.0000000000",
-  //   "temp": "37",
-  //   "bp": "120.80",
-  //   "puls": "83",
-  //   "breath": "33",
-  //   "other": "70",
-  // };
-
-  // AnaesthiaAndRefreshFollowUp v = AnaesthiaAndRefreshFollowUp(
-  //   file: {},
-  //   patient: {},
-  //   user: User({}, ''),
-  // );
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(
@@ -53,11 +33,10 @@ class DayatApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(PrintLabResult("iujlkjsadfkljdasfj"), context));
+        home: PrivateScaffold(LoginView(), context));
   }
   // LoginView()
 }
-
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {

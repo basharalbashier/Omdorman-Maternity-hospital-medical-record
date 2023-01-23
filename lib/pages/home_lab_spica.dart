@@ -1,5 +1,4 @@
 import 'dart:async';
-
 import 'package:aldayat_screens/constant.dart';
 import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:aldayat_screens/models/get_request.dart';
@@ -10,7 +9,6 @@ import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
 import '../models/user_hive.dart';
-
 import '../widgets/accept_or_not_lab_request.dart';
 import '../widgets/add_external_lab_request.dart';
 import '../widgets/log_out.dart';
@@ -19,7 +17,6 @@ import '../widgets/print_lab_result.dart';
 class LabHome extends StatefulWidget {
   final User user;
   const LabHome({super.key, required this.user});
-
   @override
   State<LabHome> createState() => _SurgeryHomeState();
 }
@@ -40,6 +37,7 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                 : null,
           });
   // ... Navigate To your Home Page
+
   List<String> titles = [
     "New",
     "In progress",
@@ -54,7 +52,6 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
   void initState() {
     getAllRequests();
     _tabController = TabController(length: 4, vsync: this);
-
     super.initState();
   }
 
@@ -430,8 +427,8 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                             ),
                           ),
                           IconButton(
-                              onPressed: () =>
-                                  Get.to(() => PrintLabResult("kjk,gbkj")),
+                              onPressed: () => Get.to(() =>
+                                  PrintLabResult(labRequestsSearch[index])),
                               icon: Icon(Icons.print))
                         ],
                       ),

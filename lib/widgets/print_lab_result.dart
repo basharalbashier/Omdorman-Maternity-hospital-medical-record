@@ -8,20 +8,34 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
 class PrintLabResult extends StatelessWidget {
-  const PrintLabResult(this.title, {Key? key}) : super(key: key);
+  const PrintLabResult(this.request, {Key? key}) : super(key: key);
 
-  final String title;
+  final Map request;
 
   @override
   Widget build(BuildContext context) {
-        var size = MediaQuery.of(context).size;
+    print(request);
+    var size = MediaQuery.of(context).size;
 
-    return  Scaffold(
-        appBar: AppBar(title: Text(title)),
-        body: PdfPreview(
-          build: (format) => _generatePdf(format, title),
+    return MaterialApp(
+      theme: ThemeData.dark(),
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          title: Row(
+            children: [
+              BackButton(
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              Text(request['id'].toString()),
+            ],
+          ),
         ),
-      );
+        body: PdfPreview(
+          build: (format) => _generatePdf(format, "title"),
+        ),
+      ),
+    );
   }
 
   Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {

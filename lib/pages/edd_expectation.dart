@@ -5,7 +5,6 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 import 'package:lottie/lottie.dart';
-
 import '../constant.dart';
 import '../controller/simpleUIController.dart';
 import '../models/error_message.dart';
@@ -107,7 +106,6 @@ class _LoginViewState extends State<EddExpectation> {
             ? MainAxisAlignment.start
             : MainAxisAlignment.spaceBetween,
         children: [
-         
           Center(
             child: SizedBox(
                 width: size.height * .3,
@@ -164,12 +162,13 @@ class _LoginViewState extends State<EddExpectation> {
           const SizedBox(
             height: 10,
           ),
-           Row(mainAxisAlignment: MainAxisAlignment.spaceAround,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Row(
                 children: [
                   Checkbox(
-                       activeColor: Colors.pink,
+                      activeColor: Colors.pink,
                       value: whichWay,
                       onChanged: (v) {
                         setState(() {
@@ -182,7 +181,7 @@ class _LoginViewState extends State<EddExpectation> {
               Row(
                 children: [
                   Checkbox(
-                    activeColor: Colors.pink,
+                      activeColor: Colors.pink,
                       value: !whichWay,
                       onChanged: (v) {
                         setState(() {
@@ -194,7 +193,6 @@ class _LoginViewState extends State<EddExpectation> {
               )
             ],
           ),
-         
           SizedBox(
             height: size.height * 0.03,
           ),
@@ -206,7 +204,6 @@ class _LoginViewState extends State<EddExpectation> {
                   height: size.height * 0.02,
                 ),
 
-
                 /// Login Button
                 pick(size),
 
@@ -216,10 +213,11 @@ class _LoginViewState extends State<EddExpectation> {
                 GestureDetector(
                   onTap: () async {
                     try {
-                      await launchUrl(Uri.parse("https://wa.me/+249117630388?text=Dr."));
+                      await launchUrl(
+                          Uri.parse("https://wa.me/+249117630388?text=Dr."));
                     } catch (e) {
-                      errono('+249117630388', '+249117630388',
-                          context, true,Container(),1);
+                      errono('+249117630388', '+249117630388', context, true,
+                          Container(), 1);
                     }
                   },
                   child: Column(
@@ -310,6 +308,4 @@ class _LoginViewState extends State<EddExpectation> {
           );
         });
   }
-
-
 }
