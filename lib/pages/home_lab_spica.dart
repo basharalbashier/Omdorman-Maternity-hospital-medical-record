@@ -427,8 +427,8 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                             ),
                           ),
                           IconButton(
-                              onPressed: () => Get.to(() =>
-                                  PrintLabResult(labRequestsSearch[index])),
+                              onPressed: () => Get.to(() => PrintLabResult(
+                                  widget.user, labRequestsSearch[index])),
                               icon: Icon(Icons.print))
                         ],
                       ),

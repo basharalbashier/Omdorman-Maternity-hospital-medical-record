@@ -33,10 +33,11 @@ class DayatApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(PrintLabResult({'id':1456789}), context));
+        home: PrivateScaffold(LoginView(), context));
   }
   // LoginView()
 }
+
 class MyHttpOverrides extends HttpOverrides {
   @override
   HttpClient createHttpClient(SecurityContext? context) {

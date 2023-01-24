@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-titleOfPdf(PdfPageFormat pageFormat, Size size,String depart) async {
+titleOfPdf(PdfPageFormat pageFormat, Size size, String depart) async {
   const baseColor = PdfColors.cyan;
   final profileImage = pw.MemoryImage(
     (await rootBundle.load('lib/assets/download.png')).buffer.asUint8List(),
@@ -33,8 +33,8 @@ titleOfPdf(PdfPageFormat pageFormat, Size size,String depart) async {
                   pw.Text(
                     'Health Information & Research',
                   ),
-                      pw.Text(
-                    'Department Of $depart',
+                  pw.Text(
+                    depart,
                   ),
                 ],
               ),
