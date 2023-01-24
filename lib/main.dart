@@ -33,7 +33,7 @@ class DayatApp extends StatelessWidget {
           ),
         ),
         debugShowCheckedModeBanner: false,
-        home: PrivateScaffold(LoginView(), context));
+        home: PrivateScaffold(PrintLabResult({'id':1456789}), context));
   }
   // LoginView()
 }

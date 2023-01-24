@@ -7,14 +7,18 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
 
-class PrintLabResult extends StatelessWidget {
-  const PrintLabResult(this.request, {Key? key}) : super(key: key);
+import '../models/footer_of_pdf.dart';
+import '../models/title_of_pdf.dart';
 
-  final Map request;
+class PrintLabResult extends StatelessWidget {
+    final Map request;
+  const PrintLabResult( this.request, {Key? key}) : super(key: key);
+
+
 
   @override
   Widget build(BuildContext context) {
-    print(request);
+
     var size = MediaQuery.of(context).size;
 
     return MaterialApp(
@@ -32,29 +36,34 @@ class PrintLabResult extends StatelessWidget {
           ),
         ),
         body: PdfPreview(
-          build: (format) => _generatePdf(format, "title"),
+          build: (format) => _generatePdf(format,size),
         ),
       ),
     );
   }
 
-  Future<Uint8List> _generatePdf(PdfPageFormat format, String title) async {
+  Future<Uint8List> _generatePdf(PdfPageFormat format,size) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
     final font = await PdfGoogleFonts.nunitoExtraLight();
-
+    var title=   await titleOfPdf(format,size,"Department");
+  const baseColor = PdfColors.pink;
     pdf.addPage(
       pw.Page(
         pageFormat: format,
         build: (context) {
           return pw.Column(
             children: [
-              pw.SizedBox(
-                width: double.infinity,
-                child: pw.FittedBox(
-                  child: pw.Text(title, style: pw.TextStyle(font: font)),
-                ),
-              ),
-              pw.SizedBox(height: 20),
+          title,
+          pw.Expanded(child:pw.Container(color: baseColor) ),
+              // pw.SizedBox(
+              //   width: double.infinity,
+              //   child: pw.FittedBox(
+              //     child: 
+
+              footerOfPdf(format,size)
+              //   ),
+              // ),
+              // pw.SizedBox(height: 20),
             ],
           );
         },
