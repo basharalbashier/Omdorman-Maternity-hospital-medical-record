@@ -111,7 +111,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   late TabController _tabController;
   @override
   void initState() {
-    widget.user.user!['dep'] != 'Department of Statistics'
+    widget.user.user['dep'] != 'Department of Statistics'
         ? widget.type == "0"
             ? taps = [
                 "Home",
@@ -161,7 +161,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
     return Container(
       height: size.height / 15,
       color: _tabController.index == i
-          ? setUniColor(widget.user.user!['unit'] ?? '').withOpacity(.2)
+          ? setUniColor(widget.user.user['unit'] ?? '').withOpacity(.2)
           : null,
       child: GestureDetector(
         onTap: () => setState(
@@ -177,7 +177,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
               ),
               Container(
                 color: _tabController.index == i
-                    ? setUniColor(widget.user.user!['unit'] ?? '')
+                    ? setUniColor(widget.user.user['unit'] ?? '')
                     : null,
                 width: 5,
                 height: size.height / 15,
@@ -202,7 +202,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
             child: Column(
           children: [
             Visibility(
-              visible: widget.user.user!['dep'] == 'Department of Obstetrics',
+              visible: widget.user.user['dep'] == 'Department of Obstetrics',
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -222,9 +222,9 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
       ),
       floatingActionButton: Visibility(
         visible: size.width < 700 &&
-            widget.user.user!['dep'] != 'Department of Statistics',
+            widget.user.user['dep'] != 'Department of Statistics',
         child: FloatingActionButton(
-          backgroundColor: setUniColor(widget.user.user!['unit'] ?? ''),
+          backgroundColor: setUniColor(widget.user.user['unit'] ?? ''),
           child: Icon(Icons.menu),
           onPressed: () => _key.currentState!.openDrawer(), // <-- Opens drawer
         ),
@@ -234,14 +234,14 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
         width: size.width,
         child: ListView(
           children: [
-            TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
+            TitleD(setUniColor(widget.user.user['unit'] ?? ''), size),
             SizedBox(
               height: 10,
             ),
             backButton(context),
             heading(size),
             Divider(),
-            widget.user.user!['dep'] != 'Department of Statistics'
+            widget.user.user['dep'] != 'Department of Statistics'
                 ? size.width > 700
                     ? obsFileTabs(size)
                     : Center(
@@ -261,7 +261,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
       children: [
         Visibility(
           visible: showAddObsButton &&
-              widget.user.user!['dep'] != 'Department of Statistics',
+              widget.user.user['dep'] != 'Department of Statistics',
           child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: widget.type == "0"
@@ -271,7 +271,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                       context, widget.patient, widget.file, widget.user)),
         ),
         Visibility(
-            visible: widget.user.user!['dep'] != 'Department of Statistics' &&
+            visible: widget.user.user['dep'] != 'Department of Statistics' &&
                 (gynAdmList.isNotEmpty || obsHistory.isNotEmpty),
             child: Text(
               obsHistory.isNotEmpty
@@ -283,14 +283,14 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
             )),
         Visibility(
             visible: (obsHistory.isNotEmpty || gynAdmList.isNotEmpty) &&
-                widget.user.user!['dep'] != 'Department of Statistics',
+                widget.user.user['dep'] != 'Department of Statistics',
             child: obsHistory.isNotEmpty
                 ? obsHistoryTable(size, obsHistory)
                 : Visibility(
                     visible: widget.type == "1",
                     child: gynAdmissionTable(size, gynAdmList))),
         Visibility(
-            visible: widget.user.user!['dep'] == 'Department of Statistics',
+            visible: widget.user.user['dep'] == 'Department of Statistics',
             child: privateInfo(
                 widget.file, widget.patient, size, context, widget.user)),
       ],
@@ -298,12 +298,12 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   }
 
   getLabRequest() async {
-    if (widget.user.user!['dep'] != 'Department of Statistics') {
+    if (widget.user.user['dep'] != 'Department of Statistics') {
       try {
         await http.post(Uri.parse('${url}lab/fileid/${widget.file['id']}'),
             headers: {
               'Accept': 'application/json',
-              'Authorization': 'Bearer ${widget.user.token!}'
+              'Authorization': 'Bearer ${widget.user.token}'
             },
             body: {
               "type": widget.type
@@ -327,13 +327,13 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
   }
 
   getObsHistory() async {
-    if (widget.user.user!['dep'] != 'Department of Statistics') {
+    if (widget.user.user['dep'] != 'Department of Statistics') {
       if (widget.type == "0") {
         try {
           await http.post(Uri.parse('${url}obs/fileid/${widget.file['id']}'),
               headers: {
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ${widget.user.token!}'
+                'Authorization': 'Bearer ${widget.user.token}'
               },
               body: {
                 "type": widget.type
@@ -430,7 +430,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
 
           setState(() {});
         },
-        indicatorColor: setUniColor(widget.user.user!['unit']),
+        indicatorColor: setUniColor(widget.user.user['unit']),
         unselectedLabelColor: Colors.blueGrey.shade100,
         labelColor: Colors.blueGrey.shade900,
         controller: this._tabController,
@@ -447,13 +447,13 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
 
   Future<List> getIt(String privateUrl) async {
     List list = [];
-    if (widget.user.user!['dep'] != 'Department of Statistics') {
+    if (widget.user.user['dep'] != 'Department of Statistics') {
       try {
         await http.get(
           Uri.parse('$url$privateUrl/fileid/${widget.file['id']}'),
           headers: {
             'Accept': 'application/json',
-            'Authorization': 'Bearer ${widget.user.token!}'
+            'Authorization': 'Bearer ${widget.user.token}'
           },
         ).then((value) {
           print(value.body);
@@ -564,7 +564,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                   ),
                   Visibility(
                     visible:
-                        widget.user.user!['dep'] == 'Department of Obstetrics',
+                        widget.user.user['dep'] == 'Department of Obstetrics',
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -589,13 +589,13 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
                 child: Column(
                   children: [
                     Visibility(
-                        visible: widget.user.user!['dep'] ==
+                        visible: widget.user.user['dep'] ==
                             'Department of Statistics',
                         child: addBabyFileWidget(widget.user, context,
                             widget.patient['id'], widget.file['id'])),
                     Visibility(
-                      visible: widget.user.user!['dep'] ==
-                          'Department of Obstetrics',
+                      visible:
+                          widget.user.user['dep'] == 'Department of Obstetrics',
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -712,11 +712,11 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
               child: Divider(),
             ),
             Visibility(
-                visible: widget.user.user!['dep'] == 'Department of Statistics',
+                visible: widget.user.user['dep'] == 'Department of Statistics',
                 child: addBabyFileWidget(widget.user, context,
                     widget.patient['id'], widget.file['id'])),
             Visibility(
-              visible: widget.user.user!['dep'] == 'Department of Obstetrics',
+              visible: widget.user.user['dep'] == 'Department of Obstetrics',
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Row(

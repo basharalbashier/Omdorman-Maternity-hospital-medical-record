@@ -44,6 +44,11 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
     "Finished",
     "Rejected",
   ];
+  bool isSmall(Size size) {
+    bool isSmallScreen = false;
+    size.width < 700 ? isSmallScreen = true : isSmallScreen = false;
+    return isSmallScreen;
+  }
 
   bool shouldAlert = false;
   var color = Colors.white;
@@ -94,11 +99,56 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
     super.dispose();
   }
 
+  final GlobalKey<ScaffoldState> _key = GlobalKey(); // Create a key
+  Widget drawer(int i, Size size) {
+    return Container(
+      height: size.height / 15,
+      color: _tabController.index == i
+          ? setUniColor(widget.user.user['unit'] ?? '').withOpacity(.2)
+          : null,
+      child: GestureDetector(
+        onTap: () => setState(
+            () => {_tabController.index = i, Navigator.of(context).pop()}),
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                titles[i],
+                style: _tabController.index == i ? fileTitle(size / 1.5) : null,
+              ),
+              Container(
+                color: _tabController.index == i
+                    ? setUniColor(widget.user.user['unit'] ?? '')
+                    : null,
+                width: 5,
+                height: size.height / 15,
+                child: Text(''),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
 
     return Scaffold(
+      key: _key,
+      drawer: drawerWidget(size),
+      floatingActionButton: Visibility(
+        visible: isSmall(size) &&
+            widget.user.user['dep'] != 'Department of Statistics',
+        child: FloatingActionButton(
+          backgroundColor: setUniColor(widget.user.user['unit'] ?? ''),
+          child: Icon(Icons.menu),
+          onPressed: () => _key.currentState!.openDrawer(), // <-- Opens drawer
+        ),
+      ),
       body: SingleChildScrollView(
           child: Column(
         children: [
@@ -490,4 +540,14 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
             //if_rejected_why
             : Container(),
       );
+
+  drawerWidget(Size size) {
+    return Drawer(
+        child: SingleChildScrollView(
+            child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+          for (int i = 0; i < _tabController.length; i++) drawer(i, size)
+        ])));
+  }
 }
