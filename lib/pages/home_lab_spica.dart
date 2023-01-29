@@ -240,7 +240,7 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
               ],
             ),
           ),
-          filterRequests(size),
+          Visibility(visible: !isSmall(size), child: filterRequests(size)),
           SizedBox(
             width: size.width,
             height: size.height,

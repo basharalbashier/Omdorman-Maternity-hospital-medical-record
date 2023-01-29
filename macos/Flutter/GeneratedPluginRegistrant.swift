@@ -6,7 +6,7 @@ import FlutterMacOS
 import Foundation
 
 import network_info_plus
-import path_provider_macos
+import path_provider_foundation
 import printing
 import sqflite
 import url_launcher_macos

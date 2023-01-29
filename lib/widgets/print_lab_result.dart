@@ -19,7 +19,6 @@ class PrintLabResult extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
-
     return MaterialApp(
       theme: ThemeData.dark(),
       debugShowCheckedModeBanner: false,
@@ -140,8 +139,19 @@ class PrintLabResult extends StatelessWidget {
                                       ))
                                 ])
                               : pw.TableRow(children: [])
-                      ]))
+                      ])),
+                  pw.Column(
+                      mainAxisAlignment: pw.MainAxisAlignment.spaceBetween,
+                      children: [
+                        pw.Text(
+                          "More  :  ".toUpperCase(),
+                        ),
+                        pw.Text(
+                          request["comm"] ?? '',
+                        ),
+                      ]),
                 ]),
+
                 // color: baseColor
               )),
               footerOfPdf(format, size)

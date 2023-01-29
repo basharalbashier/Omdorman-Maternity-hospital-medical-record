@@ -229,6 +229,7 @@ class _PatientPage extends State<FilePage> with TickerProviderStateMixin {
           onPressed: () => _key.currentState!.openDrawer(), // <-- Opens drawer
         ),
       ),
+
       body: SizedBox(
         height: size.height,
         width: size.width,
