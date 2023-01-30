@@ -1,6 +1,5 @@
 String replacLabKey(String key) {
   var hl = {
-    "id": 'id',
     'Urine general': 'urine',
     'Stool general': 'stoolG',
     'B F F M': 'bffm',

@@ -9,139 +9,138 @@ import 'package:aldayat_screens/widgets/waiting_widget.dart';
 import 'package:responsive_grid/responsive_grid.dart';
 import 'package:http/http.dart' as http;
 
-Widget neoDoctorOrderTable(List data,context,Map file,User user) {
-  List<String> titles=["Date & Time ", "Order", "Dr. Name"];
-    List<String> keys=["created_dr", "order", "dr_id"];
-  Size size=Size(500,500);
+Widget neoDoctorOrderTable(List data, context, Map file, User user) {
+  List<String> titles = ["Date & Time ", "Order", "Dr. Name"];
+  List<String> keys = ["created_dr", "order", "dr_id"];
+  Size size = Size(500, 500);
 
   return Column(
     children: [
       Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Row(mainAxisAlignment: MainAxisAlignment.end,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.end,
           children: [
-          addButtonModel("+",(()async=>addOrder(context, file, user, size))),
-        ],),
+            addButtonModel(
+                "+", (() async => addOrder(context, file, user, size))),
+          ],
+        ),
       ),
       Padding(
         padding: const EdgeInsets.all(8.0),
         child: Table(
-          border: TableBorder.all(width: 2,color: Colors.grey),
-          
+          border: TableBorder.all(width: 2, color: Colors.grey),
           columnWidths: const <int, TableColumnWidth>{
             0: IntrinsicColumnWidth(),
             1: FlexColumnWidth(),
             2: IntrinsicColumnWidth(),
-         
           },
-        
-          
           children: <TableRow>[
             TableRow(
               children: <Widget>[
-                for(var i in titles)
-                Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Container(
-             
-                    height: 32,
-                    child: Center(child: Text(textAlign:TextAlign.center,i,style: fileTitle(size),)),
+                for (var i in titles)
+                  Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Container(
+                      height: 32,
+                      child: Center(
+                          child: Text(
+                        textAlign: TextAlign.center,
+                        i,
+                        style: fileTitle(size),
+                      )),
+                    ),
                   ),
-                ),
-              
               ],
             ),
-            for(var i in data)
-            makeTableRaw(i, keys)
-        
-        
-         
+            for (var i in data) makeTableRaw(i, keys)
           ],
         ),
       ),
     ],
   );
-
-  
 }
 
-
-
-Future <void> addOrder(contexte, Map file, User user, size,)async{
-    var orderController = TextEditingController();
+Future<void> addOrder(
+  contexte,
+  Map file,
+  User user,
+  size,
+) async {
+  var orderController = TextEditingController();
   final _formKey = GlobalKey<FormState>();
   bool show = true;
-    return await showDialog<void>(
-          context: contexte,
-          barrierDismissible: false,
-          builder: (BuildContext context) {
-            
-            return AlertDialog(
-              content: StatefulBuilder(
-                builder: (BuildContext context, StateSetter setState) {
-                  
-                  Widget submit(size, file, User user) {
-                    return Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        MaterialButton(
-                          color: Colors.pink,
-                          onPressed: () async {
-                            Navigator.of(context).pop();
-                          },
-                          child: Text(
-                            'Cancel',
-                            style: confirmStyle(size),
-                          ),
-                        ),
-                        MaterialButton(
-                          color: Colors.teal,
-                          onPressed: () async {
-                          
-                            // Validate returns true if the form is valid, or false otherwise.
-                            if (_formKey.currentState!.validate()) {
-                             setState(()=>show=!show);
-                            final body = jsonEncode({
-                              'order': orderController.text,
-                                'progress': orderController.text,
-                              "dr_id": user.user!['id'].toString(),
-                              "file_id": file['id'].toString(),
-                               "mother_id": file['patient_id'].toString(),
-                            });
-                            try {
-                              await http
-                                  .post(Uri.parse('${url}neodoctor/add'),
-                                      headers: {
-                                        'Content-type': 'application/json',
-                                        'Accept': 'application/json',
-                                        'Authorization': 'Bearer ${user.token!}'
-                                      },
-                                      body: body)
-                                  .then((value) {
-                           if(value.statusCode==200||value.statusCode ==201){
-                             Navigator.of(context).pop();
-                           }else{
-                            print(value.body);
-                             setState(()=>show=!show);
-                           }
-                              });
-                            } catch (e) {
-                              setState(()=>show=!show);
+  return await showDialog<void>(
+    context: contexte,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: StatefulBuilder(
+          builder: (BuildContext context, StateSetter setState) {
+            Widget submit(size, file, User user) {
+              return Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  MaterialButton(
+                    color: Colors.pink,
+                    onPressed: () async {
+                      Navigator.of(context).pop();
+                    },
+                    child: Text(
+                      'Cancel',
+                      style: confirmStyle(size),
+                    ),
+                  ),
+                  MaterialButton(
+                    color: Colors.teal,
+                    onPressed: () async {
+                      // Validate returns true if the form is valid, or false otherwise.
+                      if (_formKey.currentState!.validate()) {
+                        setState(() => show = !show);
+                        final body = jsonEncode({
+                          'order': orderController.text,
+                          'progress': orderController.text,
+                          "dr_id": user.user!['id'].toString(),
+                          "file_id": file['id'].toString(),
+                          "mother_id": file['patient_id'].toString(),
+                        });
+                        try {
+                          await http
+                              .post(Uri.parse('${url}neodoctor/add'),
+                                  headers: {
+                                    'Content-type': 'application/json',
+                                    'Accept': 'application/json',
+                                    'Authorization': 'Bearer ${user.token!}'
+                                  },
+                                  body: body)
+                              .then((value) {
+                            if (value.statusCode == 200 ||
+                                value.statusCode == 201) {
+                              Navigator.of(context).pop();
+                            } else {
+                              print(value.body);
+                              setState(() => show = !show);
                             }
-                            }
-                          },
-                          child: Text(
-                            'Confirm',
-                            style: confirmStyle(size),
-                          ),
-                        ),
-                      ],
-                    );
-                  }
+                          });
+                        } catch (e) {
+                          setState(() => show = !show);
+                        }
+                      }
+                    },
+                    child: Text(
+                      'Confirm',
+                      style: confirmStyle(size),
+                    ),
+                  ),
+                ],
+              );
+            }
 
-                  return SizedBox(
-                    width: size.width,
-                    child: !show?waitingWidget("3"):SingleChildScrollView(
+            return SizedBox(
+              width: size.width,
+              child: !show
+                  ? waitingWidget("3")
+                  : SingleChildScrollView(
                       child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -176,12 +175,12 @@ Future <void> addOrder(contexte, Map file, User user, size,)async{
                                                 Radius.circular(15)),
                                           ),
                                         ),
-                                       validator: ((v){
-                                        if(v!.length<5){
-                                          return "Is this an order?";
-                                        }
-                                        return null;
-                                       }),
+                                        validator: ((v) {
+                                          if (v!.length < 5) {
+                                            return "Is this an order?";
+                                          }
+                                          return null;
+                                        }),
                                       ),
                                     ),
                                   ),
@@ -194,11 +193,10 @@ Future <void> addOrder(contexte, Map file, User user, size,)async{
                             submit(size, file, user)
                           ]),
                     ),
-                  );
-                },
-              ),
             );
           },
-        );
-     
+        ),
+      );
+    },
+  );
 }

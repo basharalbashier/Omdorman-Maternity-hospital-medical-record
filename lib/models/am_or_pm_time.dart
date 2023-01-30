@@ -3,7 +3,11 @@ import 'package:intl/intl.dart';
 
 import '../controller/simpleUIController.dart';
 
-String amOrPm(String timeFrom, bool fullDateAndtime) {
+String amOrPm(String? timeFrom, bool fullDateAndtime) {
+  if (timeFrom == null) {
+    return 'No time added';
+  }
+
   String time;
   String hour = timeFrom.substring(11, 13);
   String after = timeFrom.substring(13, 16);

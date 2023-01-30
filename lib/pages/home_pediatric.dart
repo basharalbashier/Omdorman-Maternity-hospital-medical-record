@@ -132,14 +132,6 @@ class _SurgeryHomeState extends State<PediatricHome>
                             // controller: searchController,
                             style: kTextFormFieldStyle(),
                             decoration: InputDecoration(
-                              // suffixIcon: Visibility(
-                              //     visible: patients.isNotEmpty &&
-                              //         _tabController.index == 0,
-                              //     child: ScanCode(
-                              //       context: context,
-                              //       patients: patients,
-                              //       user: widget.user,
-                              //     )),
                               prefixIcon: Icon(Icons.search),
                               hintText: 'Search',
                             ),

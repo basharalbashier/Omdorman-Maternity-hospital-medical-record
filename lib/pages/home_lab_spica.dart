@@ -8,6 +8,7 @@ import 'package:aldayat_screens/widgets/lab_result.dart';
 import 'package:aldayat_screens/widgets/title.dart';
 import 'package:flutter/material.dart';
 import 'package:get/route_manager.dart';
+import '../models/replace_key.dart';
 import '../models/user_hive.dart';
 import '../widgets/accept_or_not_lab_request.dart';
 import '../widgets/add_external_lab_request.dart';
@@ -56,7 +57,7 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
   @override
   void initState() {
     getAllRequests();
-    _tabController = TabController(length: 4, vsync: this);
+    _tabController = TabController(length: titles.length, vsync: this);
     super.initState();
   }
 
@@ -393,7 +394,8 @@ class _SurgeryHomeState extends State<LabHome> with TickerProviderStateMixin {
                                     child: Row(
                                       children: [
                                         Text(
-                                          "${labRequestsSearch[index].entries.map((e) => e).toList()[i].key}   :  "
+                                          ////
+                                          "${replacLabKey(labRequestsSearch[index].entries.map((e) => e).toList()[i].key)}  :  "
                                               .toUpperCase(),
                                           style: fileTitle(size),
                                         ),

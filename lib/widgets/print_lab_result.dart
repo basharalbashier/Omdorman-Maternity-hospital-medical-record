@@ -8,6 +8,7 @@ import 'package:printing/printing.dart';
 
 import '../models/am_or_pm_time.dart';
 import '../models/footer_of_pdf.dart';
+import '../models/replace_key.dart';
 import '../models/title_of_pdf.dart';
 import '../models/user_hive.dart';
 
@@ -128,7 +129,7 @@ class PrintLabResult extends StatelessWidget {
                                   pw.Padding(
                                     padding: pw.EdgeInsets.all(8.0),
                                     child: pw.Text(
-                                      "${request.entries.map((e) => e).toList()[i].key}"
+                                      "${replacLabKey(request.entries.map((e) => e).toList()[i].key)}"
                                           .toUpperCase(),
                                     ),
                                   ),
