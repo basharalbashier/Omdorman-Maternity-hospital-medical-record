@@ -148,7 +148,7 @@ Widget uSRequest(
                                           final body = jsonEncode({
                                             'remarks': remarksController.text,
                                             'unit':
-                                                user.user!['unit'].toString(),
+                                                user.user['unit'].toString(),
                                             'us_one': usOneController.text,
                                             'us_two': usTwoController.text,
                                             'us_three': usThreeController.text,
@@ -157,7 +157,7 @@ Widget uSRequest(
                                             'us_six': usSixController.text,
                                             'status': "0",
                                             "dr_id":
-                                                user.user!['id'].toString(),
+                                                user.user['id'].toString(),
                                             "patient_id":
                                                 file['patient_id'].toString(),
                                             "file_id": file['id'].toString(),

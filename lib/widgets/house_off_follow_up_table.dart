@@ -149,7 +149,7 @@ Future<void> addhouseOfficerFollowUpTable(
 
                           // 'inv': invController.text,
                           // 'result': resultController.text,
-                          "dr_id": user.user!['id'].toString(),
+                          "dr_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                         });
@@ -160,7 +160,7 @@ Future<void> addhouseOfficerFollowUpTable(
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
+                                    'Authorization': 'Bearer ${user.token}'
                                   },
                                   body: body)
                               .then((value) {

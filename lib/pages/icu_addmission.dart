@@ -277,7 +277,7 @@ class _MyHomePageState extends State<IcuAddmission> {
                           "prob_four": probFourContrller.text,
                           "detailed_history": detaiColntroller.text,
                           "pmh": pmhController.text,
-                          "dr_id": widget.user.user!['id'].toString(),
+                          "dr_id": widget.user.user['id'].toString(),
                           "patient_id": widget.request['patient_id'].toString(),
                           "file_id": widget.request['file_id'].toString(),
                           "icu_file_id": widget.whichCu,

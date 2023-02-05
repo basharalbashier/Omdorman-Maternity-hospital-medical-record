@@ -33,9 +33,9 @@ Widget iCuRequest(contexte, size, Map file, User user) {
           onPressed: () async {
             final body =jsonEncode({
                 'remarks': remarksController.text,
-                'unit': user.user!['unit'].toString(),
+                'unit': user.user['unit'].toString(),
                 'status': "0",
-                "dr_id": user.user!['id'].toString(),
+                "dr_id": user.user['id'].toString(),
                 "patient_id": file['patient_id'].toString(),
                 "file_id": file['id'].toString(),
                 'money': "free",
@@ -45,7 +45,7 @@ Widget iCuRequest(contexte, size, Map file, User user) {
 
                       'Content-type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ${user.token!}'
+                'Authorization': 'Bearer ${user.token}'
               }, body: body).then((value) {
                 print('Value error:  ${json.decode(value.body)}');
               });

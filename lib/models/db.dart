@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/cupertino.dart';
 import 'package:path/path.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
@@ -15,7 +16,7 @@ class DbLite {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    // if _database is null we instantiate it
+    debugPrint('initlizeing..');
     _database = await initDataBase();
     return _database!;
   }

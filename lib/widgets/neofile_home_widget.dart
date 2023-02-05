@@ -18,7 +18,7 @@ Widget homeWidget(context, size, file, User user, List labRequest,
                     children: [
                       Visibility(
                         visible:
-                            user.user!['dep'] != 'Department of Statistics',
+                            user.user['dep'] != 'Department of Statistics',
                         child: Padding(
                           padding: const EdgeInsets.all(8.0),
                           child: Column(
@@ -71,7 +71,7 @@ Widget homeWidget(context, size, file, User user, List labRequest,
                 : Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Visibility(
-                      visible: user.user!['dep'] != 'Department of Statistics',
+                      visible: user.user['dep'] != 'Department of Statistics',
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

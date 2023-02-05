@@ -85,7 +85,7 @@ Future<void> addAnaethSign(
                           'medic': contForVital[5].text,
                           'fluid': contForVital[6].text,
                           'note': contForVital[7].text,
-                          "dr_id": user.user!['id'].toString(),
+                          "dr_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                         });

@@ -129,13 +129,13 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        widget.user.user!['level'],
+                        widget.user.user['level'],
                         style: kLoginSubtitleStyle(size * 1.2),
                       ),
                       SizedBox(
                         width: size.width / 3,
                         child: Text(
-                          widget.user.user!['name'],
+                          widget.user.user['name'],
                           overflow: TextOverflow.fade,
                           style: fileTitle(size),
                         ),
@@ -202,7 +202,7 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
         headers: {
           'Content-type': 'application/json',
           'Accept': 'application/json',
-          'Authorization': 'Bearer ${widget.user.token!}'
+          'Authorization': 'Bearer ${widget.user.token}'
         },
       ).then((value) => {
             setState(() => {
@@ -221,7 +221,7 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
     try {
       await http.get(Uri.parse('${url}patient'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.user.token!}'
+        'Authorization': 'Bearer ${widget.user.token}'
       }).then((value) {
         if (value.statusCode == 200) {
           setState(() {
@@ -241,7 +241,7 @@ class _SurgeryHomeState extends State<AnaesthiayHome>
     try {
       await http.get(Uri.parse('${url}icu'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.user.token!}'
+        'Authorization': 'Bearer ${widget.user.token}'
       }).then((value) {
         if (value.statusCode == 200) {
           setState(() {

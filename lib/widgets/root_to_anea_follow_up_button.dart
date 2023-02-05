@@ -5,7 +5,7 @@ import '../models/user_hive.dart';
 Widget anaesthia_and_refreshFollowUp(
     context, Map patient, Map file, User user) {
   return Visibility(
-    visible: user.user!['dep'] == 'Department of Anesthesiology',
+    visible: user.user['dep'] == 'Department of Anesthesiology',
     child: MaterialButton(
         onPressed: () {
           Navigator.pushAndRemoveUntil(

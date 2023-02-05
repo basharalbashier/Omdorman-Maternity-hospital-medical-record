@@ -96,7 +96,7 @@ Future <void> addToNurseDialog(contexte, Map file, User user, size,)async{
                              setState(()=>show=!show);
                             final body = jsonEncode({
                               'note': orderController.text,
-                              "nurse_id": user.user!['id'].toString(),
+                              "nurse_id": user.user['id'].toString(),
                               "file_id": file['id'].toString(),
                                   "mother_id": file['patient_id'].toString(),
                             });
@@ -106,7 +106,7 @@ Future <void> addToNurseDialog(contexte, Map file, User user, size,)async{
                                       headers: {
                                         'Content-type': 'application/json',
                                         'Accept': 'application/json',
-                                        'Authorization': 'Bearer ${user.token!}'
+                                        'Authorization': 'Bearer ${user.token}'
                                       },
                                       body: body)
                                   .then((value) {

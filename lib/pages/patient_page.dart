@@ -35,7 +35,7 @@ class _PatientPage extends State<PatientPage> {
       await http.get(Uri.parse('${url}file/patientid/${widget.patient['id']}'),
           headers: {
             'Accept': 'application/json',
-            'Authorization': 'Bearer ${widget.user.token!}'
+            'Authorization': 'Bearer ${widget.user.token}'
           }).then((value) {
         getGyneFiles();
         if (value.statusCode == 200) {
@@ -73,7 +73,7 @@ class _PatientPage extends State<PatientPage> {
     try {
       await http.get(Uri.parse('${url}gyn/${widget.patient['id']}'), headers: {
         'Accept': 'application/json',
-        'Authorization': 'Bearer ${widget.user.token!}'
+        'Authorization': 'Bearer ${widget.user.token}'
       }).then((value) {
         if (value.statusCode == 200) {
           setState(() {
@@ -120,7 +120,7 @@ class _PatientPage extends State<PatientPage> {
   @override
   Widget build(BuildContext context) {
     if (widget.user.token == '') {
-      return waitingWidget(widget.user.user!['unit']);
+      return waitingWidget(widget.user.user['unit']);
     }
     var size = MediaQuery.of(context).size;
 
@@ -130,7 +130,7 @@ class _PatientPage extends State<PatientPage> {
           children: [
             Visibility(
               visible: files.isEmpty && !showSorryMessage && gynFiles.isEmpty,
-              child: waitingWidget(widget.user.user!['unit']),
+              child: waitingWidget(widget.user.user['unit']),
             ),
             Padding(
               padding: const EdgeInsets.all(8.0),

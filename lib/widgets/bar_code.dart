@@ -1,4 +1,4 @@
-import 'package:aldayat_screens/pages/patient_page.dart';
+// import 'package:aldayat_screens/pages/patient_page.dart';
 import 'package:flutter/material.dart';
 // import 'package:qr_bar_code_scanner_dialog/qr_bar_code_scanner_dialog.dart';
 

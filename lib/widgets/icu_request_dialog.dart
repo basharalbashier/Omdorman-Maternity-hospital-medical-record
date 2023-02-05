@@ -121,7 +121,7 @@ Widget iCuRequest(contexte, size, Map file, User user, String type) {
                                             // 'unit': user.user!['unit'].toString(),
                                             'status': "0",
                                             "dr_id":
-                                                user.user!['id'].toString(),
+                                                user.user['id'].toString(),
                                             "patient_id":
                                                 file['patient_id'].toString(),
                                             "file_id": file['id'].toString(),

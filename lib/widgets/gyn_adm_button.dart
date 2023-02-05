@@ -4,7 +4,7 @@ import '../models/user_hive.dart';
 
 Widget gynAdmissionButton(context, Map patient, Map file, User user) {
   return Visibility(
-    visible: user.user!['dep'] == 'Department of Obstetrics',
+    visible: user.user['dep'] == 'Department of Obstetrics',
     child: MaterialButton(
         onPressed: () {
           Navigator.pushAndRemoveUntil(

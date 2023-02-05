@@ -2,10 +2,6 @@
 cmake_minimum_required(VERSION 3.10)
 project(runner LANGUAGES CXX)
 
-
-set(PDFIUM_VERSION "5200" CACHE STRING "Version of pdfium used")
-set(PDFIUM_ARCH "x64" CACHE STRING "Architecture of pdfium used")
-
 # The name of the executable created for the application. Change this to change
 # the on-disk name of your application.
 set(BINARY_NAME "aldayat_app")

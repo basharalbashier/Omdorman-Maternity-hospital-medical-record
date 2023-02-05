@@ -1,7 +1,6 @@
 import 'dart:io';
 import 'package:aldayat_screens/models/user_hive.dart';
 import 'package:aldayat_screens/pages/login.dart';
-import 'package:aldayat_screens/widgets/print_lab_result.dart';
 import 'package:flutter/material.dart';
 // import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:get/get.dart';
@@ -16,6 +15,7 @@ void main() {
   if (kIsWeb) {
     Hive.registerAdapter(UserAdapter());
   }
+
   HttpOverrides.global = MyHttpOverrides();
   runApp(
     DayatApp(),

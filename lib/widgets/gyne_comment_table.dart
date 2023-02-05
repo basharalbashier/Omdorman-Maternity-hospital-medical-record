@@ -101,7 +101,7 @@ Future<void> addgynegyneCommentTable(
                         setState(() => show = !show);
                         final body = jsonEncode({
                           'comment': commController.text,
-                          "dr_id": user.user!['id'].toString(),
+                          "dr_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                         });
@@ -111,7 +111,7 @@ Future<void> addgynegyneCommentTable(
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
+                                    'Authorization': 'Bearer ${user.token}'
                                   },
                                   body: body)
                               .then((value) {

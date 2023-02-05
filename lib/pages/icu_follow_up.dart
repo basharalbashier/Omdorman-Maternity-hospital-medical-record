@@ -1308,7 +1308,7 @@ class _MyHomePageState extends State<IcuFollow> {
                         "dvt": dvtCont.text,
                         "activity_pt": actiPtCont.text,
                         "plan_of_management": planCoun.text,
-                        "dr_id": widget.user.user!['id'].toString(),
+                        "dr_id": widget.user.user['id'].toString(),
                         "patient_id": widget.patient['id'].toString(),
                         "file_id": widget.admission['file_id'].toString(),
                       });

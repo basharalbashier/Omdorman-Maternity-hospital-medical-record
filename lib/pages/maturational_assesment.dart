@@ -780,7 +780,7 @@ class _NeuromuscularState extends State<Neuromuscular> {
                         var body = json.encode({
                           for (int i = 0; i < keys.length; i++)
                             keys[i + 3]: postItems[i].toString(),
-                          'dr_id': widget.user.user!['id'].toString(),
+                          'dr_id': widget.user.user['id'].toString(),
                           'mother_id': widget.file['patient_id'],
                           'file_id': widget.file['id'].toString(),
                         });

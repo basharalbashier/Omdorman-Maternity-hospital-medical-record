@@ -101,7 +101,7 @@ class _OperationNoteState extends State<OperationNote> {
   Widget build(BuildContext context) {
     if (!show) {
       return Scaffold(
-        body: waitingWidget(widget.user.user!['unit']),
+        body: waitingWidget(widget.user.user['unit']),
       );
     }
 
@@ -111,7 +111,7 @@ class _OperationNoteState extends State<OperationNote> {
       body: SingleChildScrollView(
           child: Column(
         children: [
-          TitleD(setUniColor(widget.user.user!['unit']), size),
+          TitleD(setUniColor(widget.user.user['unit']), size),
           backButton(context),
           myOperations.isNotEmpty
               ? whoAddDataAndWhen(size, context, myOperations[0])
@@ -505,7 +505,7 @@ class _OperationNoteState extends State<OperationNote> {
                             "iv_fluids": ivFluidsController.text,
                             "blood_trans": bloodController.text,
                             "recommendation": recommendationController.text,
-                            "dr_id": widget.user.user!['id'].toString(),
+                            "dr_id": widget.user.user['id'].toString(),
                             "patient_id": widget.patient['id'].toString(),
                             "file_id": widget.file['id'].toString(),
                           });

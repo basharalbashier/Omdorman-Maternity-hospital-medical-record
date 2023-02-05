@@ -77,7 +77,7 @@ class _MyHomePageState extends State<GynaeAdmission> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              TitleD(setUniColor(widget.user.user!['unit']), size),
+              TitleD(setUniColor(widget.user.user['unit']), size),
               backButton(context),
               Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -569,7 +569,7 @@ class _MyHomePageState extends State<GynaeAdmission> {
                           "previous_operation":
                               previous_operationController.text,
                           "medication": medicationController.text,
-                          "dr_id": widget.user.user!['id'].toString(),
+                          "dr_id": widget.user.user['id'].toString(),
                           "patient_id": widget.patient['id'].toString(),
                           "file_id": widget.file['id'].toString(),
                         });

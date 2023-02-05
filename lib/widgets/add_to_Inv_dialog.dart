@@ -44,7 +44,7 @@ Future <void> addToInvDialog(contexte, Map file, User user, size,)async{
                             final body = jsonEncode({
                               'inv': invController.text,
                                'result': resultController.text,
-                              "dr_id": user.user!['id'].toString(),
+                              "dr_id": user.user['id'].toString(),
                               "file_id": file['id'].toString(),
                                     "mother_id": file['patient_id'].toString(),
                             });
@@ -54,7 +54,7 @@ Future <void> addToInvDialog(contexte, Map file, User user, size,)async{
                                       headers: {
                                         'Content-type': 'application/json',
                                         'Accept': 'application/json',
-                                        'Authorization': 'Bearer ${user.token!}'
+                                        'Authorization': 'Bearer ${user.token}'
                                       },
                                       body: body)
                                   .then((value) {

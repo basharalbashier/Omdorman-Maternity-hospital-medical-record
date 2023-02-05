@@ -239,7 +239,7 @@ class _MyHomePageState extends State<NeonatalAdmission> {
                         'cns': cns.text,
                         'other': other.text,
                         'admis_dia': admissionDiagnosis.text,
-                        "dr_id": widget.user.user!['id'].toString(),
+                        "dr_id": widget.user.user['id'].toString(),
                         "file_id": widget.file['id'].toString(),
                         "mother_id": widget.file['patient_id'].toString(),
                       });
@@ -250,7 +250,7 @@ class _MyHomePageState extends State<NeonatalAdmission> {
                                   'Content-type': 'application/json',
                                   'Accept': 'application/json',
                                   'Authorization':
-                                      'Bearer ${widget.user.token!}'
+                                      'Bearer ${widget.user.token}'
                                 },
                                 body: body)
                             .then((value) {

@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'package:aldayat_screens/pages/icu_addmission.dart';
-import 'package:aldayat_screens/widgets/new_open_mother_file.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:responsive_grid/responsive_grid.dart';
@@ -174,7 +173,7 @@ class _ShowRequestInfoState extends State<ShowRequestInfo> {
                 final body = jsonEncode({
                   'remaks': responsController.text,
                   'comment': responsController.text,
-                  "dr_id": user.user!['id'].toString(),
+                  "dr_id": user.user['id'].toString(),
                   "request_id": request['id'].toString(),
                   "file_id": request['file_id'].toString(),
                   "patient_id": request['patient_id'].toString(),
@@ -185,7 +184,7 @@ class _ShowRequestInfoState extends State<ShowRequestInfo> {
                           headers: {
                             'Content-type': 'application/json',
                             'Accept': 'application/json',
-                            'Authorization': 'Bearer ${user.token!}'
+                            'Authorization': 'Bearer ${user.token}'
                           },
                           body: body)
                       .then((value) {

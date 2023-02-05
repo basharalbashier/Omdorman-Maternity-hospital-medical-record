@@ -113,7 +113,7 @@ class _MyHomePageState extends State<IcuFinalOutCome> {
                         var body = jsonEncode({
                           "final_icu_output": outComeController.text,
                           "final_icu_note": notesController.text,
-                          "dr_id": widget.user.user!['id'].toString(),
+                          "dr_id": widget.user.user['id'].toString(),
                           "patient_id": widget.patient['id'].toString(),
                           "file_id": widget.file['id'].toString(),
                           "icu_file_id": widget.file['id'].toString(),

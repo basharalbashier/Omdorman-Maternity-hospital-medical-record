@@ -1,7 +1,6 @@
 import 'package:aldayat_screens/models/am_or_pm_time.dart';
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_charts/charts.dart';
-import 'package:syncfusion_flutter_charts/sparkcharts.dart';
 
 class Chartooo extends StatefulWidget {
   final List data;

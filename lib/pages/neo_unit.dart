@@ -855,7 +855,7 @@ class _NeoUnitState extends State<NeoUnit> {
                             keysOf[i]: example[i - 3],
                           for (int i = 51; i < 83; i++)
                             keysOf[i]: example[i - 2],
-                          'dr_id': widget.user.user!['id'],
+                          'dr_id': widget.user.user['id'],
                           'mother_id': widget.file['patient_id'],
                           'file_id': widget.file['id']
                         });

@@ -42,7 +42,7 @@ Future <void> addToDrProgressDialog(contexte, Map file, User user, size,)async{
                              setState(()=>show=!show);
                             final body = jsonEncode({
                               'progress': orderController.text,
-                              "dr_id": user.user!['id'].toString(),
+                              "dr_id": user.user['id'].toString(),
                               "file_id": file['id'].toString(),
                                "mother_id": file['patient_id'].toString(),
 
@@ -53,7 +53,7 @@ Future <void> addToDrProgressDialog(contexte, Map file, User user, size,)async{
                                       headers: {
                                         'Content-type': 'application/json',
                                         'Accept': 'application/json',
-                                        'Authorization': 'Bearer ${user.token!}'
+                                        'Authorization': 'Bearer ${user.token}'
                                       },
                                       body: body)
                                   .then((value) {

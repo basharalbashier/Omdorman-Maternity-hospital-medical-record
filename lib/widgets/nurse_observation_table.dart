@@ -54,7 +54,7 @@ Widget nurseObserTable(List data, context, Map file, User user) {
   return Column(
     children: [
       Visibility(
-        visible: user.user!['dep'] == 'Department of Obstetrics',
+        visible: user.user['dep'] == 'Department of Obstetrics',
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -177,7 +177,7 @@ Future<void> addnurseObserTable(
                         final body = jsonEncode({
                           for (int i = 1; i < keys.length - 1; i++)
                             keys[i]: controllers[i - 1].text,
-                          "nurse_id": user.user!['id'].toString(),
+                          "nurse_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                         });
@@ -188,7 +188,7 @@ Future<void> addnurseObserTable(
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
+                                    'Authorization': 'Bearer ${user.token}'
                                   },
                                   body: body)
                               .then((value) {

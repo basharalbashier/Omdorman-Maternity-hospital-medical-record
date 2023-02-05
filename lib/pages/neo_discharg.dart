@@ -178,7 +178,7 @@ class _MyHomePageState extends State<NeonatalDischarg> {
 
 
 
-                        "dr_id": widget.user.user!['id'].toString(),
+                        "dr_id": widget.user.user['id'].toString(),
                         "file_id": widget.file['id'].toString(),
                         "patient_id": widget.file['patient_id'].toString(),
                       });
@@ -189,7 +189,7 @@ class _MyHomePageState extends State<NeonatalDischarg> {
                                   'Content-type': 'application/json',
                                   'Accept': 'application/json',
                                   'Authorization':
-                                      'Bearer ${widget.user.token!}'
+                                      'Bearer ${widget.user.token}'
                                 },
                                 body: body)
                             .then((value) {

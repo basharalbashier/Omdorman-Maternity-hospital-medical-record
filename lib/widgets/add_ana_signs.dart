@@ -83,7 +83,7 @@ Future<void> addAnaethSign(
                           'breath': contForVital[4].text,
                           'other': contForVital[5].text,
                           'comment': contForVital[6].text,
-                          "dr_id": user.user!['id'].toString(),
+                          "dr_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                         });

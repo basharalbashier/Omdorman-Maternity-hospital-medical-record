@@ -90,7 +90,7 @@ class _VaginalExamState extends State<VaginalExam> {
   Widget build(BuildContext context) {
     if (!show) {
       return Scaffold(
-        body: waitingWidget(widget.user.user!['unit']),
+        body: waitingWidget(widget.user.user['unit']),
       );
     }
     size = MediaQuery.of(context).size;
@@ -99,7 +99,7 @@ class _VaginalExamState extends State<VaginalExam> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            TitleD(setUniColor(widget.user.user!['unit'] ?? ''), size),
+            TitleD(setUniColor(widget.user.user['unit'] ?? ''), size),
             backButton(context),
             Padding(
               padding: const EdgeInsets.all(8.0),
@@ -702,7 +702,7 @@ class _VaginalExamState extends State<VaginalExam> {
                         "uss": uss.text,
                         "ctg": ctg.text,
                         "comm": others.text,
-                        "dr_id": widget.user.user!['id'].toString(),
+                        "dr_id": widget.user.user['id'].toString(),
                         "patient_id": widget.patient['id'].toString(),
                         "file_id": widget.file['id'].toString(),
                       });

@@ -306,7 +306,7 @@ bool show=true;
               'husband_tel': replaceArabicNumber(husbandTelController.text),
               'husband_occup': husbandOccupController.text,
               'patient_id': "${widget.patienId}",
-              'user_id': "${user.user!['id']}"
+              'user_id': "${user.user['id']}"
             });
             try {
               await http

@@ -7,8 +7,8 @@ import 'package:aldayat_screens/widgets/contact_me.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:lottie/lottie.dart';
-import 'package:http/http.dart' as http;
-import 'package:network_info_plus/network_info_plus.dart';
+// import 'package:http/http.dart' as http;
+// import 'package:network_info_plus/network_info_plus.dart';
 import '../constant.dart';
 import '../controller/simpleUIController.dart';
 import 'add_user.dart';
@@ -27,24 +27,24 @@ class _LoginViewState extends State<LoginView> {
   TextEditingController passwordController = TextEditingController();
 
   final _formKey = GlobalKey<FormState>();
-  Future<String> getIP() async {
-    try {
-      var ip = await NetworkInfo();
-      print(ip);
-      const url = 'https://api.ipify.org';
-      var response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        print(response.body);
-        return response.body;
-      } else {
-        print(response.body);
-        return '';
-      }
-    } catch (exception) {
-      print(exception);
-      return '';
-    }
-  }
+  // Future<String> getIP() async {
+  //   try {
+  //     var ip = await NetworkInfo();
+  //     // print(ip);
+  //     const url = 'https://api.ipify.org';
+  //     var response = await http.get(Uri.parse(url));
+  //     if (response.statusCode == 200) {
+  //       print(response.body);
+  //       return response.body;
+  //     } else {
+  //       print(response.body);
+  //       return '';
+  //     }
+  //   } catch (exception) {
+  //     print(exception);
+  //     return '';
+  //   }
+  // }
 
   @override
   void initState() {

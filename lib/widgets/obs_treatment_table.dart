@@ -28,7 +28,7 @@ Widget obsTeatmentTable(List data, context, Map file, User user) {
   return Column(
     children: [
       Visibility(
-        visible: user.user!['dep'] == 'Department of Clinical Pharmacy',
+        visible: user.user['dep'] == 'Department of Clinical Pharmacy',
         child: Padding(
           padding: const EdgeInsets.all(8.0),
           child: Row(
@@ -122,7 +122,7 @@ Future<void> anteFollowUpTabled(
 
                           // 'inv': invController.text,
                           // 'result': resultController.text,
-                          "dr_id": user.user!['id'].toString(),
+                          "dr_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                         });
@@ -132,7 +132,7 @@ Future<void> anteFollowUpTabled(
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
+                                    'Authorization': 'Bearer ${user.token}'
                                   },
                                   body: body)
                               .then((value) {

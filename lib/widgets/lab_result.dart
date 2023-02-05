@@ -200,7 +200,7 @@ labResult(Map request, contexte, size, User user) async {
                             var body = jsonEncode({
                               'result': item,
                               "comm": comm.text,
-                              "got_by_id": user.user!['id'].toString(),
+                              "got_by_id": user.user['id'].toString(),
                               "if_rejected_why": "${DateTime.now()}",
                               "status": "2",
                             });

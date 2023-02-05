@@ -6,7 +6,7 @@ import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 
 footerOfPdf(PdfPageFormat pageFormat, Size size)  {
-  const baseColor = PdfColors.cyan;
+  // const baseColor = PdfColors.cyan;
 
   return pw.Column(
     children: [

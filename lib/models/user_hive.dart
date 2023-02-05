@@ -123,6 +123,7 @@ Future<User> getinfo(context) async {
   User user = User({}, '');
   if (kIsWeb) {
     User i = await getForWeb();
+    i;
   }
   if (Platform.isLinux || Platform.isWindows) {
     User i = await DbLite.db.getForLinuxOrWindows();

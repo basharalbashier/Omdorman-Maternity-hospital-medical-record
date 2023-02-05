@@ -43,9 +43,9 @@ class PrintLabResult extends StatelessWidget {
 
   Future<Uint8List> _generatePdf(PdfPageFormat format, size, context) async {
     final pdf = pw.Document(version: PdfVersion.pdf_1_5, compress: true);
-    final font = await PdfGoogleFonts.nunitoExtraLight();
+    // final font = await PdfGoogleFonts.nunitoExtraLight();
     var title = await titleOfPdf(format, size, user.user['dep']);
-    const baseColor = PdfColors.pink;
+    // const baseColor = PdfColors.pink;
     var patientInfo;
     await getIt("patient", user, context, request['patient_id'])
         .then((value) => patientInfo = value[0]);

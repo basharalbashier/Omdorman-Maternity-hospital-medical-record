@@ -14,7 +14,6 @@ import '../models/make_request.dart';
 import '../widgets/ana_add_rescu_record_button.dart';
 
 import '../widgets/waiting_widget.dart';
-import '../widgets/single_chart_line.dart';
 
 class AnaesthiaAndRefreshFollowUp extends StatefulWidget {
   final Map patient;

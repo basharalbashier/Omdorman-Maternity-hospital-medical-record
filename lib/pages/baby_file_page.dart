@@ -1,4 +1,4 @@
-import 'dart:convert';
+import 'dart:convert' show json;
 
 import 'package:aldayat_screens/widgets/neo_dr_order_table.dart';
 import 'package:aldayat_screens/widgets/neo_dr_progress_tabel.dart';
@@ -174,7 +174,7 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
   bool hasNeoUnit = true;
 
   getLabRequest() async {
-    if (widget.user.user!['dep'] != 'Department of Statistics') {
+    if (widget.user.user['dep'] != 'Department of Statistics') {
       try {
         var value = await makeHttpRequest(
             '${url}lab/fileid/${widget.file['id']}',
@@ -193,7 +193,7 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
   }
 
   void checkThefuckers() async {
-    if (widget.user.user!['dep'] != 'Department of Statistics') {
+    if (widget.user.user['dep'] != 'Department of Statistics') {
       if (_tabController.index == 0) {
         neoUnitList.isEmpty
             ? await getIt('neounit', widget.user, context,
@@ -251,7 +251,7 @@ class _BabyFileState extends State<BabyFile> with TickerProviderStateMixin {
   TabBar babyTaps(size) {
     return TabBar(
         onTap: (value) {
-          if (widget.user.user!['dep'] != 'Department of Statistics') {
+          if (widget.user.user['dep'] != 'Department of Statistics') {
             checkThefuckers();
             setState(() {});
           }

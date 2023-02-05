@@ -100,7 +100,7 @@ Future<void> addToIcuNurseDialog(
                         setState(() => show = !show);
                         final body = jsonEncode({
                           'note': orderController.text,
-                          "nurse_id": user.user!['id'].toString(),
+                          "nurse_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "patient_id": file['patient_id'].toString(),
                           "type": file['icu_file_id'],
@@ -111,7 +111,7 @@ Future<void> addToIcuNurseDialog(
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
+                                    'Authorization': 'Bearer ${user.token}'
                                   },
                                   body: body)
                               .then((value) {

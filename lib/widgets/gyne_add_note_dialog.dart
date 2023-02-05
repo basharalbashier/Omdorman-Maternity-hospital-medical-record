@@ -46,7 +46,7 @@ Future<void> gyneAddNote(
                         final body = jsonEncode({
                           'gestation': gestController.text,
                           'note': noteController.text,
-                          "dr_id": user.user!['id'].toString(),
+                          "dr_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "mother_id": file['patient_id'].toString(),
                         });
@@ -56,7 +56,7 @@ Future<void> gyneAddNote(
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
+                                    'Authorization': 'Bearer ${user.token}'
                                   },
                                   body: body)
                               .then((value) {

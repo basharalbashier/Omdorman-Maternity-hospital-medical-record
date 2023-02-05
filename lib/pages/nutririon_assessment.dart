@@ -651,7 +651,7 @@ class _MyHomePageState extends State<NutritionAssessment> {
       "one_hour": oneHourCont.text,
       "counseling": netritionConsCont.text,
       "comment": comm.text,
-      "dr_id": user.user!['id'].toString(),
+      "dr_id": user.user['id'].toString(),
       "patient_id": widget.patient['id'].toString(),
       "file_id": widget.file['id'].toString(),
     });
@@ -662,7 +662,7 @@ class _MyHomePageState extends State<NutritionAssessment> {
               headers: {
                 'Content-type': 'application/json',
                 'Accept': 'application/json',
-                'Authorization': 'Bearer ${user.token!}'
+                'Authorization': 'Bearer ${user.token}'
               },
               body: body)
           .then((value) {

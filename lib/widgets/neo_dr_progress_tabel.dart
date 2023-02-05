@@ -98,7 +98,7 @@ Future<void> addToDrProgressDialog(
                         setState(() => show = !show);
                         final body = jsonEncode({
                           'progress': orderController.text,
-                          "dr_id": user.user!['id'].toString(),
+                          "dr_id": user.user['id'].toString(),
                           "file_id": file['id'].toString(),
                           "mother_id": file['patient_id'].toString(),
                         });
@@ -108,7 +108,7 @@ Future<void> addToDrProgressDialog(
                                   headers: {
                                     'Content-type': 'application/json',
                                     'Accept': 'application/json',
-                                    'Authorization': 'Bearer ${user.token!}'
+                                    'Authorization': 'Bearer ${user.token}'
                                   },
                                   body: body)
                               .then((value) {
