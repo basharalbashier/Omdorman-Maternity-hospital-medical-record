@@ -22,7 +22,7 @@ class DbLite {
   }
 
   initDataBase() async {
-    // sqfliteFfiInit();
+    sqfliteFfiInit();
     Directory dir = await getApplicationDocumentsDirectory();
     var databaseFactory = databaseFactoryFfi;
     // var database = await databaseFactory.openDatabase(inMemoryDatabasePath);
