@@ -48,10 +48,10 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   void initState() {
-    getinfo(context).then((value) => value.token != ''
-        ? {routeManager(context, value)}
-        : setState(() => show = true));
-
+    // getinfo(context).then((value) => value.token != ''
+    //     ? {routeManager(context, value)}
+    //     : setState(() => show = true));
+setState(() => show = true);
     super.initState();
   }
 

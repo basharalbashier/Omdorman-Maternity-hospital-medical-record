@@ -56,56 +56,53 @@ class _AddPatientState extends State<AddUser> {
 
   void sendData() async {
     // ignore: unused_local_variable
-    var body = jsonEncode({
-      'unit': depart == 'Department of Obstetrics'
-          ? replaceArabicNumber(unit.toString())
-          : "General",
-      'name': controlers[0].text,
-      'email': controlers[2].text,
-      'phone': replaceArabicNumber(controlers[1].text),
-      'level': whichlevel,
-      'dep': depart,
-    });
-    List o = [];
-    // var body1 = jsonEncode({
-    //   'unit': "1",
-    //   'name': "obs",
-    //   'password': "123456",
-    //   'email': "obs@gmail.com",
-    //   'phone': "4329805742389",
-    //   'level': 'Consultant',
-    //   'dep': 'Department of Obstetrics',
+    // var body = jsonEncode({
+    //   'unit': depart == 'Department of Obstetrics'
+    //       ? replaceArabicNumber(unit.toString())
+    //       : "General",
+    //   'name': controlers[0].text,
+    //   'email': controlers[2].text,
+    //   'phone': replaceArabicNumber(controlers[1].text),
+    //   'level': whichlevel,
+    //   'dep': depart,
     // });
-    o.add(
-      jsonEncode({
-        'unit': "1",
-        'name': "ana",
-        'password': "123456",
-        'email': "ana@gmail.com",
-        'phone': "4329805742389",
-        'level': 'Consultant',
-        'dep': 'Department of Anesthesiology',
-      }),
-//  jsonEncode({
-//       'unit': replaceArabicNumber(unit.toString()),
-//       'name': 'sta',
-//       'password': "123456",
-//       'email': "sta@gmail.com",
-//       'phone': "4329805742389",
-//       'level': 'Statistics Officer',
-//       'dep': 'Department of Statistics',
-//     });
-
-// jsonEncode({
-//       'unit': replaceArabicNumber(unit.toString()),
-//       'name': 'sta',
-//       'password': "123456",
-//       'email': "sta@gmail.com",
-//       'phone': "4329805742389",
-//       'level': 'Statistics Officer',
-//       'dep': 'Department of Statistics',
-//     });
-    );
+    List o = [];
+    o.add(jsonEncode({
+      'unit': "1",
+      'name': "obs",
+      'password': "123456",
+      'email': "obs@gmail.com",
+      'phone': "4329805742389",
+      'level': 'Consultant',
+      'dep': 'Department of Obstetrics',
+    }));
+    o.add(jsonEncode({
+      'unit': "1",
+      'name': "ana",
+      'password': "123456",
+      'email': "ana@gmail.com",
+      'phone': "4329805742389",
+      'level': 'Consultant',
+      'dep': 'Department of Anesthesiology',
+    }));
+    o.add(jsonEncode({
+      'unit': "General",
+      'name': "lab",
+      'password': "123456",
+      'email': "lab@gmail.com",
+      'phone': "4329805742389",
+      'level': 'Consultant',
+      'dep': 'Medical lab',
+    }));
+    o.add(jsonEncode({
+      'unit': replaceArabicNumber(unit.toString()),
+      'name': 'sta',
+      'password': "123456",
+      'email': "sta@gmail.com",
+      'phone': "4329805742389",
+      'level': 'Statistics Officer',
+      'dep': 'Department of Statistics',
+    }));
 
     for (var i in o) {
       try {
@@ -124,7 +121,7 @@ class _AddPatientState extends State<AddUser> {
   List<TextEditingController> controlers = [];
   @override
   void initState() {
-    // sendData();
+    sendData();
     for (var i in titles) {
       i;
       controlers.add(TextEditingController());
@@ -243,22 +240,21 @@ class _AddPatientState extends State<AddUser> {
                         child: SizedBox(
                           width: double.infinity,
                           child: PopupMenuButton<int>(
-                            
                               shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(20)),
                               itemBuilder: (context) => [
                                     for (int i = 0; i < dep.length; i++)
                                       PopupMenuItem(
-                                        padding:const EdgeInsets.all(8.0) ,
-                                        value: i,                                        child: Container(
+                                        padding: const EdgeInsets.all(8.0),
+                                        value: i,
+                                        child: Container(
                                           width: double.infinity,
                                           color: i % 2 == 0
                                               ? Colors.white
                                               : Colors.amber.withOpacity(.3),
                                           child: Text(
                                             dep[i],
-                                            overflow:
-                                                TextOverflow.ellipsis,
+                                            overflow: TextOverflow.ellipsis,
                                           ),
                                         ),
                                       ),
