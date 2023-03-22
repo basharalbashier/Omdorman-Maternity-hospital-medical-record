@@ -143,6 +143,7 @@ class _AddPatientState extends State<AddUser> {
           child: Column(
             children: [
               TitleD(setUniColor(unit), size),
+             BackButton(),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
