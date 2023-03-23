@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 
 import '../pages/add_file.dart';
 import '../pages/add_gynae_file.dart';
+import 'user_hive.dart';
 
-chooseFileType(Map patient, context, size) async {
+chooseFileType(Map patient, context, size,User user) async {
   await showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -26,16 +27,17 @@ chooseFileType(Map patient, context, size) async {
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                      patient['name'],
-                      style: kLoginTitleStyle(size/2, Colors.blueGrey.shade900),
+                      style: kLoginTitleStyle(size/2.01, Colors.blueGrey.shade900),
                     ),
                   ),
                     Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Text(
                      patient['age'],
-                      style: kLoginTitleStyle(size/2, Colors.blueGrey.shade900),
+                      style: kLoginTitleStyle(size/2.01, Colors.blueGrey.shade900),
                     ),
                   ),
+                
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
@@ -44,7 +46,7 @@ chooseFileType(Map patient, context, size) async {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddFile(patient['id'])),
+                                builder: (context) => AddFile(patient['id'],user)),
                             (Route<dynamic> route) => true,
                           );
                         },
@@ -59,7 +61,7 @@ chooseFileType(Map patient, context, size) async {
                           Navigator.pushAndRemoveUntil(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => AddGynaeFile(patient['id'])),
+                                builder: (context) => AddGynaeFile(patient['id'],user)),
                             (Route<dynamic> route) => true,
                           );
                         },
@@ -71,6 +73,7 @@ chooseFileType(Map patient, context, size) async {
                       ),
                     ],
                   ),
+             
                 ],
               ),
             );

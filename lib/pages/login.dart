@@ -51,7 +51,7 @@ class _LoginViewState extends State<LoginView> {
     // getinfo(context).then((value) => value.token != ''
     //     ? {routeManager(context, value)}
     //     : setState(() => show = true));
-setState(() => show = true);
+    setState(() => show = true);
     super.initState();
   }
 
@@ -266,18 +266,18 @@ setState(() => show = true);
                       },
                     ),
                   ),
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      children: [
-                        Checkbox(
-                            value: _remember,
-                            onChanged: ((v) =>
-                                setState(() => _remember = !_remember))),
-                        Text("Remember me"),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.all(8.0),
+                  //   child: Row(
+                  //     children: [
+                  //       Checkbox(
+                  //           value: _remember,
+                  //           onChanged: ((v) =>
+                  //               setState(() => _remember = !_remember))),
+                  //       Text("Remember me"),
+                  //     ],
+                  //   ),
+                  // ),
                   SizedBox(
                     height: size.height * 0.01,
                   ),
@@ -347,7 +347,6 @@ setState(() => show = true);
           {"email": emailController.text, "password": passwordController.text});
       var tryLogin =
           await makeHttpRequest('${url}user/login', msg, true, User({}, ""));
-
       if (tryLogin[1] == "Successfully sent") {
         List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
 

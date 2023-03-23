@@ -56,62 +56,70 @@ class _AddPatientState extends State<AddUser> {
 
   void sendData() async {
     // ignore: unused_local_variable
-    // var body = jsonEncode({
-    //   'unit': depart == 'Department of Obstetrics'
-    //       ? replaceArabicNumber(unit.toString())
-    //       : "General",
-    //   'name': controlers[0].text,
-    //   'email': controlers[2].text,
-    //   'phone': replaceArabicNumber(controlers[1].text),
-    //   'level': whichlevel,
-    //   'dep': depart,
-    // });
-    List o = [];
-    o.add(jsonEncode({
-      'unit': "1",
-      'name': "obs",
-      'password': "123456",
-      'email': "obs@gmail.com",
-      'phone': "4329805742389",
-      'level': 'Consultant',
-      'dep': 'Department of Obstetrics',
-    }));
-    o.add(jsonEncode({
-      'unit': "1",
-      'name': "ana",
-      'password': "123456",
-      'email': "ana@gmail.com",
-      'phone': "4329805742389",
-      'level': 'Consultant',
-      'dep': 'Department of Anesthesiology',
-    }));
-    o.add(jsonEncode({
-      'unit': "General",
-      'name': "lab",
-      'password': "123456",
-      'email': "lab@gmail.com",
-      'phone': "4329805742389",
-      'level': 'Consultant',
-      'dep': 'Medical lab',
-    }));
-    o.add(jsonEncode({
-      'unit': replaceArabicNumber(unit.toString()),
-      'name': 'sta',
-      'password': "123456",
-      'email': "sta@gmail.com",
-      'phone': "4329805742389",
-      'level': 'Statistics Officer',
-      'dep': 'Department of Statistics',
-    }));
+    var body = jsonEncode({
+      'unit': depart == 'Department of Obstetrics'
+          ? replaceArabicNumber(unit.toString())
+          : "General",
+      'name': controlers[0].text,
+      'email': controlers[2].text,
+      'phone': replaceArabicNumber(controlers[1].text),
+      'level': whichlevel,
+      'dep': depart,
+    });
+    // List o = [];
+    // o.add(jsonEncode({
+    //   'unit': "1",
+    //   'name': "obs",
+    //   'password': "123456",
+    //   'email': "obs@gmail.com",
+    //   'phone': "4329805742389",
+    //   'level': 'Consultant',
+    //   'dep': 'Department of Obstetrics',
+    // }));
+    // o.add(jsonEncode({
+    //   'unit': "1",
+    //   'name': "ana",
+    //   'password': "123456",
+    //   'email': "ana@gmail.com",
+    //   'phone': "4329805742389",
+    //   'level': 'Consultant',
+    //   'dep': 'Department of Anesthesiology',
+    // }));
+    // o.add(jsonEncode({
+    //   'unit': "General",
+    //   'name': "lab",
+    //   'password': "123456",
+    //   'email': "lab@gmail.com",
+    //   'phone': "4329805742389",
+    //   'level': 'Consultant',
+    //   'dep': 'Medical lab',
+    // }));
+    // o.add(jsonEncode({
+    //   'unit': "General",
+    //   'name': 'sta',
+    //   'password': "123456",
+    //   'email': "sta@gmail.com",
+    //   'phone': "4329805742389",
+    //   'level': 'Statistics Officer',
+    //   'dep': 'Department of Statistics',
+    // }));
 
-    for (var i in o) {
-      try {
-        await http.post(Uri.parse('${url}user/donat'), body: i).then((value) {
-          print('Value error:  ${value.body}');
-        });
-      } catch (e) {
-        print(e);
-      }
+    // for (var i in o) {
+    try {
+      await http
+          .post(Uri.parse('${url}user/donat'),
+              headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Content-type': 'application/json',
+                'Accept': 'application/json',
+              },
+              body: body)
+          .then((value) {
+        print('Value error:  ${value.body}');
+      });
+    } catch (e) {
+      print(e);
+      // }
     }
 //Validate returns true if the form is valid, or false otherwise.
 
@@ -143,7 +151,11 @@ class _AddPatientState extends State<AddUser> {
           child: Column(
             children: [
               TitleD(setUniColor(unit), size),
-             BackButton(),
+              Row(
+                children: [
+                  BackButton(),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(

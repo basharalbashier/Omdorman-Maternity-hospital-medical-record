@@ -144,7 +144,7 @@ class _SurgeryHomeState extends State<StatisticsHome>
                                           context,
                                           MaterialPageRoute(
                                               builder: (context) =>
-                                                  const AddPatient()),
+                                                   AddPatient(widget.user)),
                                           (Route<dynamic> route) => true,
                                         );
                                       },
@@ -220,7 +220,7 @@ class _SurgeryHomeState extends State<StatisticsHome>
                                             ],
                                           ),
                                           addFile(searchPatients[index],
-                                              context, size),
+                                              context, size,widget.user),
                                         ],
                                       ),
                                     ),

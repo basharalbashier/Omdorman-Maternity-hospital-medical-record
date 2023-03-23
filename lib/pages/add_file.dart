@@ -13,7 +13,8 @@ import '../models/user_hive.dart';
 
 class AddFile extends StatefulWidget {
   final int patienId;
-  const AddFile(this.patienId, {super.key});
+  final User user;
+  const AddFile(this.patienId,this.user, {super.key});
 
   @override
   State<AddFile> createState() => _AddPatientState();
@@ -33,20 +34,15 @@ class _AddPatientState extends State<AddFile> {
 
   bool varified = F;
   bool show = true;
-  User user = User({}, '');
   @override
   void initState() {
-    getinfo(context).then((value) => setState(() {
-          user = value;
 
-          // print(user.user);
-        }));
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (user.token == '' || !show) {
+    if (widget.user.token == '' || !show) {
       return Scaffold(
         body: Center(
             child: LinearProgressIndicator(
@@ -306,7 +302,7 @@ class _AddPatientState extends State<AddFile> {
               'husband_tel': replaceArabicNumber(husbandTelController.text),
               'husband_occup': husbandOccupController.text,
               'patient_id': "${widget.patienId}",
-              'user_id': "${user.user['id']}"
+              'user_id': "${widget.user.user['id']}"
             });
             try {
               await http
@@ -314,7 +310,7 @@ class _AddPatientState extends State<AddFile> {
                       headers: {
                         'Content-type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': 'Bearer ${user.token}'
+                        'Authorization': 'Bearer ${widget.user.token}'
                       },
                       body: msg)
                   .then((value) {

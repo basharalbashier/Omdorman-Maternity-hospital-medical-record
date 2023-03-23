@@ -31,14 +31,9 @@ class _AddPatientState extends State<AddBabyFile> {
 
   bool show = true;
 
-  User user = User({}, '');
   @override
   void initState() {
-    getinfo(context).then((value) => setState(() {
-          user = value;
 
-          // print(user.user);
-        }));
     super.initState();
   }
 
@@ -62,6 +57,11 @@ class _AddPatientState extends State<AddBabyFile> {
           child: Column(
             children: [
               TitleD(Colors.lightBlueAccent, size),
+              Row(
+                children: [
+                  BackButton(),
+                ],
+              ),
               Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: Text(
@@ -243,7 +243,7 @@ class _AddPatientState extends State<AddBabyFile> {
               'phone': replaceArabicNumber(phoneNumberController.text),
               'patient_id': "${widget.patientId}",
               'file_id': "${widget.fileId}",
-              'user_id': "${user.user['id']}"
+              'user_id': "${widget.user.user['id']}"
             });
             try {
               await http
@@ -251,7 +251,7 @@ class _AddPatientState extends State<AddBabyFile> {
                       headers: {
                         'Content-type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': 'Bearer ${user.token}'
+                        'Authorization': 'Bearer ${widget.user.token}'
                       },
                       body: msg)
                   .then((value) {

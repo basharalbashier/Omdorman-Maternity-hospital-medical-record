@@ -11,7 +11,8 @@ import '../models/choos_file_type.dart';
 import '../models/user_hive.dart';
 
 class AddPatient extends StatefulWidget {
-  const AddPatient({super.key});
+  final User user;
+  const AddPatient(this.user,{super.key});
 
   @override
   State<AddPatient> createState() => _AddPatientState();
@@ -23,19 +24,16 @@ class _AddPatientState extends State<AddPatient> {
   var telController = TextEditingController();
   var occupController = TextEditingController();
 
-  User user = User({}, '');
   @override
   void initState() {
-    getinfo(context).then((value) => setState(() {
-          user = value;
-        }));
+ 
     super.initState();
   }
 
   bool show = true;
   @override
   Widget build(BuildContext context) {
-    if (user.token == '' || !show) {
+    if (widget.user.token == '' || !show) {
       return Scaffold(
         body: Center(
             child: LinearProgressIndicator(
@@ -53,6 +51,11 @@ class _AddPatientState extends State<AddPatient> {
           child: Column(
             children: [
               TitleD(setUniColor('General'), size),
+                 Row(
+                children: [
+                  BackButton(),
+                ],
+              ),
               ResponsiveGridRow(children: [
                 ResponsiveGridCol(
                   xs: 6,
@@ -266,7 +269,7 @@ class _AddPatientState extends State<AddPatient> {
               'age': replaceArabicNumber(ageController.text),
               'tel': replaceArabicNumber(telController.text),
               'occup': occupController.text,
-              'user_id': user.user['id']
+              'user_id': widget.user.user['id']
             });
             try {
               await http
@@ -274,7 +277,7 @@ class _AddPatientState extends State<AddPatient> {
                       headers: {
                         'Content-type': 'application/json',
                         'Accept': 'application/json',
-                        'Authorization': 'Bearer ${user.token}'
+                        'Authorization': 'Bearer ${widget.user.token}'
                       },
                       body: msg)
                   .then((value) {
@@ -296,7 +299,7 @@ class _AddPatientState extends State<AddPatient> {
                     setState(() {
                       show = !show;
                     });
-                    chooseFileType(json.decode(value.body), context, size);
+                    chooseFileType(json.decode(value.body), context, size,widget.user);
                   }
                 }
               });
