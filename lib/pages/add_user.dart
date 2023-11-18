@@ -65,6 +65,7 @@ class _AddPatientState extends State<AddUser> {
       'phone': replaceArabicNumber(controlers[1].text),
       'level': whichlevel,
       'dep': depart,
+          'password': "123456", /**need to do somthing whith optaining password */
     });
     // List o = [];
     // o.add(jsonEncode({
@@ -129,7 +130,6 @@ class _AddPatientState extends State<AddUser> {
   List<TextEditingController> controlers = [];
   @override
   void initState() {
-    sendData();
     for (var i in titles) {
       i;
       controlers.add(TextEditingController());

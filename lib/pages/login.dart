@@ -347,6 +347,7 @@ class _LoginViewState extends State<LoginView> {
           {"email": emailController.text, "password": passwordController.text});
       var tryLogin =
           await makeHttpRequest('${url}user/login', msg, true, User({}, ""));
+          print(tryLogin);
       if (tryLogin[1] == "Successfully sent") {
         List<dynamic> info = [tryLogin[0]['user'], tryLogin[0]['token']];
 
